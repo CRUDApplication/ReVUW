@@ -1,11 +1,16 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
+const flash = require('connect-flash');
 const passport = require('passport');
 const path = require('path');
+const initialiseDb = require(path.join(__dirname, 'utils', 'database'));
 const passportSetup = require(path.join(__dirname, 'utils', 'passport-setup'));
 
 const app = express();
+
+// Connect to database
+initialiseDb();
 
 // Set up view engine and views directory
 app.set('view engine', 'ejs');
@@ -15,7 +20,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Parse incoming request bodies (for form data)
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+
+app.use(flash());
 
 // Set up sessions
 app.use(session({

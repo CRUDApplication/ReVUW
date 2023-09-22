@@ -6,23 +6,23 @@ const User = require(path.join(__dirname, '..', 'models', 'user'));
 
 const router = express.Router();
 
-// Local Signup
 router.get('/signup', (req, res) => res.render('signup'));
 router.post('/signup', async (req, res) => {
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 12);
-    await User.create({ email: req.body.email, password: hashedPassword });
-    res.redirect('/login');
-  } catch (error) {
-    res.render('signup', { error: error.message });
-  }
-});
+    try {
+      await User.create({ email: req.body.email, password: req.body.password });
+      res.redirect('/');
+    } catch (error) {
+      res.render('/auth/signup', { error: error.message });
+    }
+  });
 
-// Local Login
-router.get('/login', (req, res) => res.render('login'));
+router.get('/login', (req, res) => {
+    const errorMessage = req.flash('error');
+    res.render('login', { errorMessage: errorMessage[0] });
+});
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/login',
+  failureRedirect: '/auth/login',
   failureFlash: true
 }));
 
@@ -30,7 +30,7 @@ router.post('/login', passport.authenticate('local', {
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 router.get('/google/callback', passport.authenticate('google', {
   successRedirect: '/',
-  failureRedirect: '/login'
+  failureRedirect: '/auth/login'
 }));
 
 module.exports = router;
