@@ -1,0 +1,24 @@
+{
+  "name": "revuw",
+  "version": "1.0.0",
+  "description": "Initializing project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CRUDApplication/ReVUW.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CRUDApplication/ReVUW/issues"
+  },
+  "homepage": "https://github.com/CRUDApplication/ReVUW#readme",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2"
+  }
+}
