@@ -6,26 +6,17 @@ const router = express.Router();
 
 router.get('/allcourses', async (req, res) => {
     try {
-        const courses = await getAllCourses();
+        const courses = await CourseModel.find();
         res.render('courses', { courses });
     } catch (error) {
         res.status(500).json({ error: 'Failed to retrieve courses'});
     }
 });
 
-async function getAllCourses() {
+router.get('/:courseCode', async (req, res) => {
     try {
-        return await CourseModel.find();
-    } catch (error) {
-        console.error('Error retrieving courses:', error);
-        throw error;
-    }
-}
-
-router.get('/:name', async (req, res) => {
-    try {
-        const name = req.params.name;
-        const courses = await CourseModel.find({ name: name });
+        const courseCode = req.params.courseCode;
+        const courses = await CourseModel.find({ courseCode: courseCode });
         res.render('courses', { courses });
 
         if (!courses) {
