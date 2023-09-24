@@ -37,6 +37,7 @@ app.use(passport.session());
 
 // Define routes
 app.use('/auth', require('./routes/auth'));
+app.use('/courses', require('./routes/courses'));
 
 // Ensure authenticated middleware for protected routes
 function ensureAuthenticated(req, res, next) {
