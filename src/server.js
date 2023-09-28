@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const expressLayouts = require('express-ejs-layouts');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
@@ -13,6 +14,7 @@ const app = express();
 initialiseDb();
 
 // Set up view engine and views directory
+app.use(expressLayouts);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -47,7 +49,7 @@ function ensureAuthenticated(req, res, next) {
 
 // Root route
 app.get('/', (req, res) => {
-    res.render('index', { title: 'ReVUW' });
+    res.render('index', { title: 'ReVUW | Home' });
 });
 
 const PORT = 3000;
