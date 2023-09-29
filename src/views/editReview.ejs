@@ -1,0 +1,6 @@
+<h2>Edit Review for <%= courseCode %></h2>
+
+<form action="/courses/<%= courseCode %>/reviews/<%= review._id %>/edit" method="POST">
+    <textarea name="reviewContent"><%= review.content %></textarea>
+    <button type="submit">Update Review</button>
+</form>

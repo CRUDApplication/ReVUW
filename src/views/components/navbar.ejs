@@ -11,7 +11,9 @@
             <div class="col-8 text-center lead my-auto"><a href="/">ReVUW</a></div>
             <div class="col-2 text-end my-auto">
                 <% if (user) { %>
-                    <a href="/logout">Log Out</a>
+                    <form action="/auth/logout" method="post">
+                        <button type="submit">Log Out</button>
+                    </form>
                 <% } else { %>
                     <a href="/signin">Sign In</a>
                 <% } %>
