@@ -1,0 +1,17 @@
+<h1><%= course.courseCode %></h1>
+<p><%= course.description %></p>
+
+<!-- Display reviews -->
+<% reviews.forEach(review => { %>
+    <p><%= review.content %></p>
+<% }); %>
+
+<!-- If user is authenticated, show form to post review -->
+<% if(user) { %>
+    <form action="/courses/<%= course.courseCode %>/review" method="POST">
+      <textarea name="reviewContent" placeholder="Write your review..."></textarea>
+      <button type="submit">Post Review</button>
+    </form>
+<% } else { %>
+<p>You must be logged in to post a review.</p>
+<% } %>
