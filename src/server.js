@@ -59,6 +59,20 @@ app.get('/signin', (req, res) => {
     res.render('signin', { title: 'ReVUW | SignIn', user: req.session.user });
 });
 
+// Add routes for About Us, Contact, and Privacy Policy
+app.get('/about', (req, res) => {
+    res.render('about', { title: 'ReVUW | About Us', user: req.session.user });
+});
+
+app.get('/contact', (req, res) => {
+    res.render('contact', { title: 'ReVUW | Contact', user: req.session.user });
+});
+
+app.get('/privacy', (req, res) => {
+    res.render('privacy', { title: 'ReVUW | Privacy Policy', user: req.session.user });
+});
+
+
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
