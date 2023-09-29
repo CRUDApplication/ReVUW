@@ -52,7 +52,11 @@ function ensureAuthenticated(req, res, next) {
 
 // Root route
 app.get('/', (req, res) => {
-    res.render('index', { title: 'ReVUW | Home' });
+    res.render('index', { title: 'ReVUW | Home', user: req.session.user });
+});
+
+app.get('/signin', (req, res) => {
+    res.render('signin', { title: 'ReVUW | SignIn', user: req.session.user });
 });
 
 const PORT = 3000;

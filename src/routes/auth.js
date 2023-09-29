@@ -6,19 +6,19 @@ const User = require(path.join(__dirname, '..', 'models', 'user'));
 
 const router = express.Router();
 
-router.get('/signup', (req, res) => res.render('signup', { title: 'ReVUW | SignUp'}));
+router.get('/signup', (req, res) => res.render('signup', { title: 'ReVUW | SignUp', user: req.session.user}));
 router.post('/signup', async (req, res) => {
     try {
       await User.create({ email: req.body.email, password: req.body.password });
       res.redirect('/');
     } catch (error) {
-      res.render('/auth/signup', { error: error.message, title: 'Authentication Failed' });
+      res.render('/auth/signup', { error: error.message, title: 'Authentication Failed', user: req.session.user });
     }
   });
 
 router.get('/login', (req, res) => {
     const errorMessage = req.flash('error');
-    res.render('login', { errorMessage: errorMessage[0], title: 'ReVUW | Login' });
+    res.render('login', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user });
 });
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
