@@ -1,9 +1,10 @@
-.nav-bar {
-    background-color: bisque;
+
+.navbar {
+    position: sticky;
+    top: 0;
 }
 
 .navbar .container {
     display: block;
     color: white;
 }
-    
