@@ -8,8 +8,8 @@
         <h3>Users' Reviews</h3>
         <% reviews.forEach((review, index) => { %>
             <div class="col-md-4">
-                <div class="card mb-3">
-                    <div class="card-body">
+                <div class="card mb-3" style="height: 100px;">
+                    <div class="card-body" style="max-height: 100px; overflow-y: auto;">
                         <p style="margin-bottom: 0;"><p><%= review.content %></p>
                         <% if (user && review.userId._id.toString() === user._id.toString()) { %>
                             - this is your review
