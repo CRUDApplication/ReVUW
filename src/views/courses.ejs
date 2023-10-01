@@ -4,7 +4,7 @@
     <% courses.forEach(course => { %>
         <li>
             <strong>Name:</strong> <%= course.name %><br>
-            <strong>Title:</strong> <%= course.title %><br>
+            <strong>Title:</strong> <a href="/courses/<%= course.courseCode %>"><%= course.title %></a><br>
             <strong>Description:</strong> <%= course.description %><br>
             <strong>Lecturers:</strong> <%= course.lecturers %><br>
             <strong>Tags:</strong> <%= course.tags %><br>
