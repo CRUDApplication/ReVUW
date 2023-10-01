@@ -6,15 +6,35 @@ const User = require(path.join(__dirname, '..', 'models', 'user'));
 
 const router = express.Router();
 
-router.get('/signup', (req, res) => res.render('signup', { title: 'ReVUW | SignUp', user: req.session.user}));
+router.get('/signup', (req, res) => {
+  let errorMessage = null;
+  res.render('signup', { title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: errorMessage});
+});
 router.post('/signup', async (req, res) => {
+  let userPassword = req.body.password;
+  let passwordCheckResult = checkPasswordStrength(userPassword);
+  if (passwordCheckResult != null) {
+    res.render('signup', { title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: passwordCheckResult});
+  } 
+  else {
     try {
-      await User.create({ email: req.body.email, password: req.body.password });
+      await User.create({ email: req.body.email, password: userPassword });
       res.redirect('/');
     } catch (error) {
-      res.render('/auth/signup', { error: error.message, title: 'Authentication Failed', user: req.session.user });
+      res.render('signup', { errorMessage: error.message, title: 'Authentication Failed', user: req.session.user });
     }
-  });
+  }
+});
+
+function checkPasswordStrength(userPassword) {
+  let errorMessage = null;
+  if (userPassword.length < 8) {
+    errorMessage = 'Use 8 characters or more for your password';
+  } else if (!/(?=.*[a-z])/.test(userPassword) || !/(?=.*[A-Z])/.test(userPassword) || !/[0-9]/.test(userPassword)) {
+    errorMessage = 'Please choose a stronger password. Use a mix of numbers and letters with upper and lower case';
+  } 
+  return errorMessage;
+}
 
 router.get('/login', (req, res) => {
     const errorMessage = req.flash('error');
