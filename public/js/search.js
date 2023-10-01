@@ -1,7 +1,7 @@
 // Display the courses in the list that match the input search term
 function initSearch(courseList) {
     const courseSearchInput = document.getElementById('courseSearch');
-    const courses = [...courseList.querySelectorAll('li')];
+    const courses = [...courseList.querySelectorAll('.col-md-4')];
 
     courseSearchInput.addEventListener('input', () => {
         const searchTerm = courseSearchInput.value.toLowerCase();
