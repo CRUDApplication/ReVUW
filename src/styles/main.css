@@ -21,3 +21,10 @@ input, textarea {
     margin-bottom: 10px; /* Add spacing between input elements */
 }
 
+.post-button {
+    background-color: #227823;
+    color: #fff;
+    outline: none;
+}
+
+
