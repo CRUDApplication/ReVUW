@@ -1,17 +1,21 @@
 <div class="container main-content">
     <h1>Courses</h1>
     <input type="text" id="courseSearch" placeholder="Search for a course...">
-    <ul id="courseList">
+    <div class="row" id="courseList">
         <% courses.forEach(course => { %>
-            <li>
-                <strong>Title:</strong> <a href="/courses/<%= course.courseCode %>" class="course-title"><%= course.title %></a><br>
-                <strong>Course Code:</strong> <span class="course-code"><%= course.courseCode %></span><br>
-                <strong>Description:</strong> <%= course.description %><br>
-                <strong>Lecturers:</strong> <%= course.lecturers %><br>
-                <strong>Tags:</strong> <%= course.tags %><br>
-            </li>
+            <div class="col-md-4 mb-3">
+                <div class="card" style="height: 300px;">
+                    <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                        <strong>Title:</strong> <a href="/courses/<%= course.courseCode %>" class="course-title"><%= course.title %></a><br>
+                        <strong>Course Code:</strong> <span class="course-code"><%= course.courseCode %></span><br>
+                        <strong>Description:</strong> <%= course.description %><br>
+                        <strong>Lecturers:</strong> <%= course.lecturers %><br>
+                        <strong>Tags:</strong> <%= course.tags %><br>
+                    </div>
+                </div>
+            </div>
         <% }); %>
-    </ul>
+    </div>
 </div>
 
 <!-- Use the search functionality -->
@@ -23,3 +27,4 @@
         initSearch(courseList);
     });
 </script>
+
