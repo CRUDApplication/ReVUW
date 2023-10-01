@@ -1,13 +1,25 @@
+<div class="container main-content">
+    <h1>Courses</h1>
+    <input type="text" id="courseSearch" placeholder="Search for a course...">
+    <ul id="courseList">
+        <% courses.forEach(course => { %>
+            <li>
+                <strong>Title:</strong> <a href="/courses/<%= course.courseCode %>" class="course-title"><%= course.title %></a><br>
+                <strong>Course Code:</strong> <span class="course-code"><%= course.courseCode %></span><br>
+                <strong>Description:</strong> <%= course.description %><br>
+                <strong>Lecturers:</strong> <%= course.lecturers %><br>
+                <strong>Tags:</strong> <%= course.tags %><br>
+            </li>
+        <% }); %>
+    </ul>
+</div>
 
-<h1>Courses</h1>
-<ul>
-    <% courses.forEach(course => { %>
-        <li>
-            <strong>Name:</strong> <%= course.name %><br>
-            <strong>Title:</strong> <a href="/courses/<%= course.courseCode %>"><%= course.title %></a><br>
-            <strong>Description:</strong> <%= course.description %><br>
-            <strong>Lecturers:</strong> <%= course.lecturers %><br>
-            <strong>Tags:</strong> <%= course.tags %><br>
-        </li>
-    <% }); %>
-</ul>
+<!-- Use the search functionality -->
+<script src="/js/search.js"></script>
+<script>
+    // Pass the courseList as an argument to the initSearch function in search.js
+    document.addEventListener('DOMContentLoaded', function () {
+        const courseList = document.getElementById('courseList');
+        initSearch(courseList);
+    });
+</script>
