@@ -1,16 +1,28 @@
 document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById('passwordInput').addEventListener('keyup', function() {
-        console.log('keypress');
-        const passwordValue = this.value;
-        const feedback = checkPasswordStrength(passwordValue);
-    
-        const feedbackElement = document.getElementById('passwordFeedback');
-        if (feedback) {
-        feedbackElement.textContent = feedback;
-        feedbackElement.style.color = 'red';
+    const eyeIcon = document.querySelector('#togglePassword i');
+
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const passwordInput = document.getElementById('passwordInput');
+        // Toggle between showing and hiding the password
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            eyeIcon.classList.remove('fas', 'fa-eye');
+            eyeIcon.classList.add('fas', 'fa-eye-slash');
         } else {
-        feedbackElement.textContent = 'Password looks strong!';
-        feedbackElement.style.color = 'green';
+            passwordInput.type = "password";
+            eyeIcon.classList.remove('fas', 'fa-eye-slash');
+            eyeIcon.classList.add('fas', 'fa-eye');
+        }
+    });
+    document.getElementById('passwordInput').addEventListener('keyup', function() {
+        const feedbackElement = document.getElementById('passwordFeedback');
+        const password = this.value;
+        const errorMessage = checkPasswordStrength(password);
+
+        if (errorMessage) {
+            feedbackElement.textContent = errorMessage;
+        } else {
+            feedbackElement.textContent = "";
         }
     });
 });
