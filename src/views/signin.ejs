@@ -39,18 +39,19 @@
                 <form>
                     <!-- Email input -->
                     <div class="form-floating">
-                        <input type="email" id="loginName" class="form-control" placeholder="name@example.com"/>
+                        <input type="email" id="loginName" class="form-control mb-2" placeholder="name@example.com"/>
                         <label class="form-label" for="loginName">Email or username</label>
                     </div>
             
                     <!-- Password input -->
                     <div class="form-floating">
-                        <input type="password" id="loginPassword" class="form-control" placeholder="password" />
+                        <input type="password" id="loginPassword" class="form-control mb-2" placeholder="password" />
                         <label class="form-label" for="loginPassword">Password</label>
+                        <i class="bi bi-eye-slash toggle-password" data-target="loginPassword"></i>
                     </div>
 
                     <!-- Submit button -->
-                    <button type="submit" class="signin-btn btn btn-primary btn-block">Sign in</button>
+                    <button type="submit" class="signin-btn btn btn-primary btn-block mt-2">Sign in</button>
 
                     <hr class="my-4 w-100">
                     <button class="signin-btn google-btn btn btn-lg btn-block btn-primary mb-2" type="submit">
@@ -71,36 +72,38 @@
                 <form>
                     <!-- Name input -->
                     <div class="form-floating">
-                        <input type="text" id="registerName" class="form-control" placeholder="" />
+                        <input type="text" id="registerName" class="form-control mb-2" placeholder="" />
                         <label class="form-label" for="registerName">Name</label>
                     </div>
             
                     <!-- Username input -->
                     <div class="form-floating">
-                        <input type="text" id="registerUsername" class="form-control" placeholder="" />
+                        <input type="text" id="registerUsername" class="form-control mb-2" placeholder="" />
                         <label class="form-label" for="registerUsername">Username</label>
                     </div>
             
                     <!-- Email input -->
                     <div class="form-floating">
-                        <input type="email" id="registerEmail" class="form-control" placeholder="" />
+                        <input type="email" id="registerEmail" class="form-control mb-2" placeholder="" />
                         <label class="form-label" for="registerEmail">Email</label>
                     </div>
             
                     <!-- Password input -->
                     <div class="form-floating">
-                        <input type="password" id="registerPassword" class="form-control" placeholder="" />
+                        <input type="password" id="registerPassword" class="form-control mb-2" placeholder="" />
                         <label class="form-label" for="registerPassword">Password</label>
+                        <i class="bi bi-eye-slash toggle-password" data-target="registerPassword"></i>
                     </div>
             
                     <!-- Repeat Password input -->
                     <div class="form-floating">
-                        <input type="password" id="registerRepeatPassword" class="form-control" placeholder="" />
+                        <input type="password" id="registerRepeatPassword" class="form-control mb-2" placeholder="" />
                         <label class="form-label" for="registerRepeatPassword">Repeat password</label>
+                        <i class="bi bi-eye-slash toggle-password" data-target="registerRepeatPassword"></i>
                     </div>
             
                     <!-- Submit button -->
-                    <button type="submit" class="signin-btn btn btn-primary btn-block">Sign up</button>
+                    <button type="submit" class="signin-btn btn btn-primary btn-block mt-2">Sign up</button>
 
                     <hr class="my-4 w-100">
                     <button class="signin-btn google-btn btn btn-lg btn-block btn-primary mb-2" type="submit">
@@ -112,5 +115,25 @@
                 </form>
             </div>
         </div>
+
+        <script>
+            const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+    
+            togglePasswordButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-target');
+                const passwordInput = document.querySelector(`#${targetId}`);
+                
+                if (passwordInput) {
+                    // Toggle the type attribute of the password input
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    
+                    // Toggle the eye and bi-eye-slash icons
+                    button.classList.toggle('bi-eye');
+                }
+            });
+        });
+        </script>
     </div>
 </div>

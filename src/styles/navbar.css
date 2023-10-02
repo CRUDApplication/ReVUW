@@ -6,5 +6,8 @@
 
 .navbar .container {
     display: block;
-    color: #0D4C38;
+}
+
+nav {
+    background-color: #0D4C38;
 }

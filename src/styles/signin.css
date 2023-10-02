@@ -4,14 +4,28 @@
 }
 
 .box-container {
-    width: 500px;
+    width: 350px;
     height: 600px;
-    background-color: beige;
-    overflow: hidden;
+}
+
+.nav-link.active {
+    color: #0D4C38 !important;
+    background-color: #e3ebf7 !important;
 }
 
 .form-control, .signin-btn {
     width: 350px;
+}
+
+.form-floating i {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    height: 100%;
+    padding: 1rem 0.75rem;
+    overflow: hidden;
+    text-align: end;
 }
 
 .google-btn {
