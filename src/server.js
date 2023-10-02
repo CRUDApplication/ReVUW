@@ -57,6 +57,11 @@ app.get('/', (req, res) => {
     res.render('index', { title: 'ReVUW | Home', user: req.session.user });
 });
 
+app.get('/signin', (req, res) => {
+    const errorMessage = req.flash('error');
+    res.render('signin', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user });
+});
+
 // Add routes for About Us, Contact, and Privacy Policy
 app.get('/about', (req, res) => {
     res.render('about', { title: 'ReVUW | About Us', user: req.session.user });
