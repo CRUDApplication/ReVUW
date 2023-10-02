@@ -1,5 +1,5 @@
-.nav-bar {
-    background-color: bisque;
+.navbar {
+    background-color: #1d2624;
 }
 
 .navbar .container {
@@ -7,3 +7,6 @@
     color: white;
 }
     
+.navbar a {
+    color: white; 
+}
