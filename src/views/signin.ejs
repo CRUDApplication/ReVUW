@@ -30,22 +30,28 @@
         
         <!-- Pills content -->
         <div class="tab-content d-flex justify-content-center p-0" id="ex1-content">
+            <!--Login-->
             <div 
                 class="tab-pane fade show active"  
                 id="pills-login" 
                 role="tabpanel" 
                 aria-labelledby="tab-login"
             >
-                <form>
+                <form action="/auth/signin" method="post">
+                    <% if (errorMessage) { %>
+                        <div style="color: red; margin-bottom: 10px;">
+                            <%= errorMessage %>
+                        </div>
+                    <% } %>
                     <!-- Email input -->
                     <div class="form-floating">
-                        <input type="email" id="loginName" class="form-control mb-2" placeholder="name@example.com"/>
+                        <input type="email" id="loginName" class="form-control mb-2" placeholder="" required/>
                         <label class="form-label" for="loginName">Email or username</label>
                     </div>
             
                     <!-- Password input -->
                     <div class="form-floating">
-                        <input type="password" id="loginPassword" class="form-control mb-2" placeholder="password" />
+                        <input type="password" id="loginPassword" class="form-control mb-2" placeholder="" required/>
                         <label class="form-label" for="loginPassword">Password</label>
                         <i class="bi bi-eye-slash toggle-password" data-target="loginPassword"></i>
                     </div>
@@ -54,7 +60,8 @@
                     <button type="submit" class="signin-btn btn btn-primary btn-block mt-2">Sign in</button>
 
                     <hr class="my-4 w-100">
-                    <button class="signin-btn google-btn btn btn-lg btn-block btn-primary mb-2" type="submit">
+                    <button class="signin-btn google-btn btn btn-lg btn-block btn-primary mb-2" type="submit"
+                        onclick="window.location.href='/auth/google';">
                         <i class="bi bi-google"></i>&nbsp;&nbsp;&nbsp;Sign in with Google
                     </button>
                     <button class="signin-btn facebook-btn btn btn-lg btn-block btn-primary mb-2" type="submit">
@@ -62,14 +69,14 @@
                     </button>
                 </form>
             </div>
-
+            <!--Register-->
             <div 
                 class="tab-pane fade" 
                 id="pills-register" 
                 role="tabpanel" 
                 aria-labelledby="tab-register"
             >
-                <form>
+                <form action="/auth/signup" method="post">
                     <!-- Name input -->
                     <div class="form-floating">
                         <input type="text" id="registerName" class="form-control mb-2" placeholder="" />
@@ -84,13 +91,13 @@
             
                     <!-- Email input -->
                     <div class="form-floating">
-                        <input type="email" id="registerEmail" class="form-control mb-2" placeholder="" />
+                        <input type="email" id="registerEmail" class="form-control mb-2" placeholder="" required/>
                         <label class="form-label" for="registerEmail">Email</label>
                     </div>
             
                     <!-- Password input -->
                     <div class="form-floating">
-                        <input type="password" id="registerPassword" class="form-control mb-2" placeholder="" />
+                        <input type="password" id="registerPassword" class="form-control mb-2" placeholder="" required/>
                         <label class="form-label" for="registerPassword">Password</label>
                         <i class="bi bi-eye-slash toggle-password" data-target="registerPassword"></i>
                     </div>

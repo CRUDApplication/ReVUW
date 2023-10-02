@@ -6,7 +6,7 @@ const User = require(path.join(__dirname, '..', 'models', 'user'));
 
 const router = express.Router();
 
-router.get('/signup', (req, res) => res.render('signup', { title: 'ReVUW | SignUp', user: req.session.user}));
+router.get('/signup', (req, res) => res.render('signin', { title: 'ReVUW | SignUp', user: req.session.user}));
 router.post('/signup', async (req, res) => {
     try {
       await User.create({ email: req.body.email, password: req.body.password });
@@ -16,13 +16,13 @@ router.post('/signup', async (req, res) => {
     }
   });
 
-router.get('/login', (req, res) => {
+router.get('/signin', (req, res) => {
     const errorMessage = req.flash('error');
-    res.render('login', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user });
+    res.render('signin', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user });
 });
-router.post('/login', passport.authenticate('local', {
+router.post('/signin', passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/auth/login',
+  failureRedirect: '/auth/signin',
   failureFlash: true
 }));
 
