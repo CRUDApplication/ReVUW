@@ -6,22 +6,24 @@ const User = require(path.join(__dirname, '..', 'models', 'user'));
 
 const router = express.Router();
 
+//Signup
 router.get('/signup', (req, res) => {
-  res.render('signin', { title: 'ReVUW | SignUp', user: req.session.user, activeTab: 'register' });
+  let errorMessage = null;
+  res.render('signin', { title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: errorMessage, errorMessage: null, activeTab: 'register' });
 });
 
 router.post('/signup', async (req, res) => {
   let userPassword = req.body.registerPassword;
   let passwordCheckResult = checkPasswordStrength(userPassword);
   if (passwordCheckResult != null) {
-    res.render('signin', { title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: passwordCheckResult, activeTab: 'register'});
+    res.render('signin', { title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: passwordCheckResult, errorMessage: null, activeTab: 'register'});
   } 
   else {
     try {
       await User.create({ email: req.body.email, password: userPassword });
       res.redirect('/');
     } catch (error) {
-      res.render('signin', { errorMessage: error.message, title: 'Authentication Failed', user: req.session.user, activeTab: 'register' });
+      res.render('signin', { passwordError: error.message,  errorMessage: null, title: 'Authentication Failed', user: req.user, activeTab: 'register' });
     }
   }
 });
@@ -36,9 +38,10 @@ function checkPasswordStrength(userPassword) {
   return errorMessage;
 }
 
+//Login
 router.get('/signin', (req, res) => {
   const errorMessage = req.flash('error');
-  res.render('signin', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
+  res.render('signin', {  passwordError: null, errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.user, activeTab: 'login' });
 });
 
 router.post('/signin', passport.authenticate('local', {
@@ -58,7 +61,7 @@ router.post('/logout', function(req, res, next) {
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 router.get('/google/callback', passport.authenticate('google', {
   successRedirect: '/',
-  failureRedirect: '/auth/login'
+  failureRedirect: '/auth/signin'
 }));
 
 module.exports = router;
