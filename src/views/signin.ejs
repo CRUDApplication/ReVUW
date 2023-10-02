@@ -1,10 +1,116 @@
 <link rel="stylesheet" href="/styles/signin.css" />
 
-<div class="container-fluid d-flex align-items-center justify-content-center">
+<div class="container-fluid d-flex">
     <div class="box-container my-auto mx-auto">
-        <a href="/auth/login" class="btn">Login</a>
-        <a href="/auth/signup" class="btn">Signup</a>
+        <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button 
+                    class="nav-link active" 
+                    id="tab-login" 
+                    data-bs-toggle="pill" 
+                    data-bs-target="#pills-login" 
+                    role="tab"
+                    aria-controls="pills-login" 
+                    aria-selected="true"
+                    >Login</button>
+            </li>
 
+            <li class="nav-item" role="presentation">
+                <button 
+                    class="nav-link" 
+                    id="tab-register"
+                    data-bs-toggle="pill" 
+                    data-bs-target="#pills-register" 
+                    role="tab"
+                    aria-controls="pills-register" 
+                    aria-selected="false"
+                    >Register</button>
+            </li>
+        </ul>
+        
+        <!-- Pills content -->
+        <div class="tab-content d-flex justify-content-center p-0" id="ex1-content">
+            <div 
+                class="tab-pane fade show active"  
+                id="pills-login" 
+                role="tabpanel" 
+                aria-labelledby="tab-login"
+            >
+                <form>
+                    <!-- Email input -->
+                    <div class="form-floating">
+                        <input type="email" id="loginName" class="form-control" placeholder="name@example.com"/>
+                        <label class="form-label" for="loginName">Email or username</label>
+                    </div>
+            
+                    <!-- Password input -->
+                    <div class="form-floating">
+                        <input type="password" id="loginPassword" class="form-control" placeholder="password" />
+                        <label class="form-label" for="loginPassword">Password</label>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="signin-btn btn btn-primary btn-block">Sign in</button>
+
+                    <hr class="my-4 w-100">
+                    <button class="signin-btn google-btn btn btn-lg btn-block btn-primary mb-2" type="submit">
+                        <i class="bi bi-google"></i>&nbsp;&nbsp;&nbsp;Sign in with Google
+                    </button>
+                    <button class="signin-btn facebook-btn btn btn-lg btn-block btn-primary mb-2" type="submit">
+                        <i class="bi bi-facebook"></i>&nbsp;&nbsp;&nbsp;Sign in with Facebook
+                    </button>
+                </form>
+            </div>
+
+            <div 
+                class="tab-pane fade" 
+                id="pills-register" 
+                role="tabpanel" 
+                aria-labelledby="tab-register"
+            >
+                <form>
+                    <!-- Name input -->
+                    <div class="form-floating">
+                        <input type="text" id="registerName" class="form-control" placeholder="" />
+                        <label class="form-label" for="registerName">Name</label>
+                    </div>
+            
+                    <!-- Username input -->
+                    <div class="form-floating">
+                        <input type="text" id="registerUsername" class="form-control" placeholder="" />
+                        <label class="form-label" for="registerUsername">Username</label>
+                    </div>
+            
+                    <!-- Email input -->
+                    <div class="form-floating">
+                        <input type="email" id="registerEmail" class="form-control" placeholder="" />
+                        <label class="form-label" for="registerEmail">Email</label>
+                    </div>
+            
+                    <!-- Password input -->
+                    <div class="form-floating">
+                        <input type="password" id="registerPassword" class="form-control" placeholder="" />
+                        <label class="form-label" for="registerPassword">Password</label>
+                    </div>
+            
+                    <!-- Repeat Password input -->
+                    <div class="form-floating">
+                        <input type="password" id="registerRepeatPassword" class="form-control" placeholder="" />
+                        <label class="form-label" for="registerRepeatPassword">Repeat password</label>
+                    </div>
+            
+                    <!-- Submit button -->
+                    <button type="submit" class="signin-btn btn btn-primary btn-block">Sign up</button>
+
+                    <hr class="my-4 w-100">
+                    <button class="signin-btn google-btn btn btn-lg btn-block btn-primary mb-2" type="submit">
+                        <i class="bi bi-google"></i>&nbsp;&nbsp;&nbsp;Sign up with Google
+                    </button>
+                    <button class="signin-btn facebook-btn btn btn-lg btn-block btn-primary mb-2" type="submit">
+                        <i class="bi bi-facebook"></i>&nbsp;&nbsp;&nbsp;Sign up with Facebook
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
-   
 </div>

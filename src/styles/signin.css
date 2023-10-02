@@ -1,13 +1,37 @@
 .container-fluid {
     width: 100vw;
-    height: 85vh;
+    height: 80vh;
 }
 
 .box-container {
-    width: 300px;
-    height: 300px;
+    width: 500px;
+    height: 600px;
     background-color: beige;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    overflow: hidden;
+}
+
+.form-control, .signin-btn {
+    width: 350px;
+}
+
+.google-btn {
+    background-color: #DB4437;
+    border-color: #c73e31;
+}
+
+.google-btn:hover,
+.google-btn:active {
+    border-color: #c73e31 !important;
+    background-color: #c73e31 !important;
+}
+
+.facebook-btn {
+    background-color: #3B5998;
+    border-color: #395185;
+}
+
+.facebook-btn:hover,
+.facebook-btn:active {
+    background-color: #395185 !important;
+    border-color: #395185 !important;
 }
