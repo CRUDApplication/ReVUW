@@ -6,10 +6,7 @@ const User = require(path.join(__dirname, '..', 'models', 'user'));
 
 const router = express.Router();
 
-router.get('/signup', (req, res) => {
-  let errorMessage = null;
-  res.render('signup', { title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: errorMessage});
-});
+router.get('/signup', (req, res) => res.render('signin', { title: 'ReVUW | SignUp', user: req.session.user}));
 router.post('/signup', async (req, res) => {
   let userPassword = req.body.password;
   let passwordCheckResult = checkPasswordStrength(userPassword);
@@ -36,13 +33,13 @@ function checkPasswordStrength(userPassword) {
   return errorMessage;
 }
 
-router.get('/login', (req, res) => {
+router.get('/signin', (req, res) => {
     const errorMessage = req.flash('error');
-    res.render('login', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user });
+    res.render('signin', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user });
 });
-router.post('/login', passport.authenticate('local', {
+router.post('/signin', passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/auth/login',
+  failureRedirect: '/auth/signin',
   failureFlash: true
 }));
 
