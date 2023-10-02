@@ -15,6 +15,7 @@ initialiseDb();
 
 // Set up view engine and views directory
 app.use(expressLayouts);
+app.set('layout', 'layouts/main');
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -22,6 +23,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/styles', express.static(path.join(__dirname, 'styles')));
 app.use('/css', express.static(path.join(__dirname, '../node_modules', 'bootstrap', 'dist', 'css'))); 
+app.use('/icons', express.static(path.join(__dirname, '../node_modules', 'bootstrap-icons', 'font'))); 
 app.use('/js', express.static(path.join(__dirname, '../node_modules', 'bootstrap', 'dist', 'js')));
 
 // Parse incoming request bodies (for form data)
@@ -56,7 +58,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/signin', (req, res) => {
-    res.render('signin', { title: 'ReVUW | SignIn', user: req.session.user });
+    const errorMessage = req.flash('error');
+    res.render('signin', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
 });
 
 // Add routes for About Us, Contact, and Privacy Policy
