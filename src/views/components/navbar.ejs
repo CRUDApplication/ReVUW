@@ -9,12 +9,12 @@
             <div id="title" class="col-8 text-center my-auto"><a href="/">ReVUW</a></div>
             <div class="col-2 text-end my-auto text-white">
                 <% if (user) { %>
-                    <button id="logout" class="status-button">
-                        <form action="/auth/logout" method="post">
-                            <button type="submit">Log Out</button> 
+                    <form class="logout-form" action="/auth/logout" method="post">
+                        <button type="submit" id="logout" class="status-button p-2">
+                            Log Out &nbsp;
                             <i class="bi bi-box-arrow-right"></i>
-                        </form>
-                    </button>
+                        </button> 
+                    </form>
                 <% } else { %>
                     <button id="signin" class="status-button p-2">
                         <a href="/auth/signin">Sign In &nbsp;</a>

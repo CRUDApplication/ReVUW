@@ -41,6 +41,9 @@ nav {
 #menu i:hover {
     color:rgb(88, 141, 123);
 }
+.logout-form {
+    display: block;
+}
 
 .status-button {
     background: none;
