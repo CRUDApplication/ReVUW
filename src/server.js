@@ -59,7 +59,7 @@ app.get('/', (req, res) => {
 
 app.get('/signin', (req, res) => {
     const errorMessage = req.flash('error');
-    res.render('signin', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user });
+    res.render('signin', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
 });
 
 // Add routes for About Us, Contact, and Privacy Policy

@@ -6,19 +6,22 @@ const User = require(path.join(__dirname, '..', 'models', 'user'));
 
 const router = express.Router();
 
-router.get('/signup', (req, res) => res.render('signin', { title: 'ReVUW | SignUp', user: req.session.user}));
+router.get('/signup', (req, res) => {
+  res.render('signin', { title: 'ReVUW | SignUp', user: req.session.user, activeTab: 'register' });
+});
+
 router.post('/signup', async (req, res) => {
-  let userPassword = req.body.password;
+  let userPassword = req.body.registerPassword;
   let passwordCheckResult = checkPasswordStrength(userPassword);
   if (passwordCheckResult != null) {
-    res.render('signup', { title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: passwordCheckResult});
+    res.render('signin', { title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: passwordCheckResult, activeTab: 'register'});
   } 
   else {
     try {
       await User.create({ email: req.body.email, password: userPassword });
       res.redirect('/');
     } catch (error) {
-      res.render('signup', { errorMessage: error.message, title: 'Authentication Failed', user: req.session.user });
+      res.render('signin', { errorMessage: error.message, title: 'Authentication Failed', user: req.session.user, activeTab: 'register' });
     }
   }
 });
@@ -34,9 +37,10 @@ function checkPasswordStrength(userPassword) {
 }
 
 router.get('/signin', (req, res) => {
-    const errorMessage = req.flash('error');
-    res.render('signin', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user });
+  const errorMessage = req.flash('error');
+  res.render('signin', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
 });
+
 router.post('/signin', passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/auth/signin',
