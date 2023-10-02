@@ -55,25 +55,26 @@ function ensureAuthenticated(req, res, next) {
 
 // Root route
 app.get('/', (req, res) => {
-    res.render('index', { title: 'ReVUW | Home', user: req.session.user });
+    res.render('index', { title: 'ReVUW | Home', user: req.user });
 });
 
 app.get('/signin', (req, res) => {
     const errorMessage = req.flash('error');
-    res.render('signin', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
+    res.render('signin', { errorMessage: errorMessage[0], passwordError: null, title: 'ReVUW | Login', user: req.user, activeTab: 'login' });
 });
 
 // Add routes for About Us, Contact, and Privacy Policy
 app.get('/about', (req, res) => {
-    res.render('about', { title: 'ReVUW | About Us', user: req.session.user });
+    
+    res.render('about', { title: 'ReVUW | About Us', user: req.user });
 });
 
 app.get('/contact', (req, res) => {
-    res.render('contact', { title: 'ReVUW | Contact', user: req.session.user });
+    res.render('contact', { title: 'ReVUW | Contact', user: req.user });
 });
 
 app.get('/privacy', (req, res) => {
-    res.render('privacy', { title: 'ReVUW | Privacy Policy', user: req.session.user });
+    res.render('privacy', { title: 'ReVUW | Privacy Policy', user: req.user });
 });
 
 const PORT = 3000;
