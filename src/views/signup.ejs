@@ -1,12 +1,14 @@
+<script src="/js/validatePassword.js"></script>
+
 <div class="container">
     <form action="/auth/signup" method="post">
         <input type="email" name="email" placeholder="Email" value="<%= userEmail %>" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <% if (errorMessage) { %>
-            <div style="color: red; margin-bottom: 10px;">
+        <input type="password" id="passwordInput" name="password" placeholder="Password" required>
+        <div id="passwordFeedback"style="color: red; margin-bottom: 10px; height: 20px">
+            <% if (errorMessage) { %>
                 <%= errorMessage %>
-            </div>
-        <% } %>
+            <% } %>
+        </div>
         <button type="submit">Sign Up</button>
     </form>
 </div>
