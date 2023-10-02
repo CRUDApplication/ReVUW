@@ -10,4 +10,68 @@
 
 nav {
     background-color: #0D4C38;
+    padding: 0 !important;
+    z-index: 1000;
+}
+
+#title a {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: lighter;
+    font-size: 30px;
+    color: white !important;
+    text-decoration: none;
+}
+
+#menu {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    
+}
+
+#menu i {
+    font-size: 30px;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+#menu i:hover {
+    color:rgb(88, 141, 123);
+}
+
+.status-button {
+    background: none;
+    border: none;
+    border-radius: 10px;
+    transition: border 0.3s ease;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+.status-button a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.status-button i {
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.status-button:hover {
+    border: 1px solid rgb(88, 141, 123);
+}
+
+.status-button:hover a,
+.status-button:hover i {
+    color: rgb(88, 141, 123);
 }

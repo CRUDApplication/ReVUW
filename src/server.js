@@ -26,6 +26,7 @@ app.use('/styles', express.static(path.join(__dirname, 'styles')));
 app.use('/css', express.static(path.join(__dirname, '../node_modules', 'bootstrap', 'dist', 'css'))); 
 app.use('/icons', express.static(path.join(__dirname, '../node_modules', 'bootstrap-icons', 'font'))); 
 app.use('/js', express.static(path.join(__dirname, '../node_modules', 'bootstrap', 'dist', 'js')));
+app.use('/fonts', express.static(path.join(__dirname, '../public', 'fonts')));
 
 // Parse incoming request bodies (for form data)
 app.use(express.urlencoded({ extended: true }));
