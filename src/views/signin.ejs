@@ -77,9 +77,9 @@
                 aria-labelledby="tab-register"
             >
                 <form action="/auth/signup" method="post">
-                    <% if (errorMessage) { %>
+                    <% if (passwordError) { %>
                         <div style="color: red; margin-bottom: 10px;">
-                            <%= errorMessage %>
+                            <%= passwordError %>
                         </div>
                     <% } %>
                     <!-- Name input -->

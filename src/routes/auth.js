@@ -6,13 +6,14 @@ const User = require(path.join(__dirname, '..', 'models', 'user'));
 
 const router = express.Router();
 
+//Signup
 router.get('/signup', (req, res) => {
   if(req.query.origin)
     req.session.returnTo = req.query.origin;
   else
     req.session.returnTo = req.header('Referer');
     
-  res.render('signin', { title: 'ReVUW | SignUp', user: req.session.user, activeTab: 'register' });
+  res.render('signin', { title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: null, errorMessage: null, activeTab: 'register' });
 });
 
 
@@ -21,7 +22,7 @@ router.post('/signup', async (req, res) => {
   const userEmail = req.body.email;
   let passwordCheckResult = checkPasswordStrength(userPassword);
   if (passwordCheckResult != null) {
-    res.render('signin', { title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: passwordCheckResult, activeTab: 'register'});
+    res.render('signin', { title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: passwordCheckResult, errorMessage: null, activeTab: 'register'});
   } 
   else {
     try {
@@ -36,7 +37,7 @@ router.post('/signup', async (req, res) => {
         res.redirect(returnTo);
       }
     } catch (error) {
-      res.render('signin', { errorMessage: error.message, title: 'Authentication Failed', user: req.session.user, activeTab: 'register' });
+      res.render('signin', { passwordError: error.message,  errorMessage: null, title: 'Authentication Failed', user: req.user, activeTab: 'register' });
     }
   }
 });
@@ -74,7 +75,7 @@ router.get('/signin', (req, res, next) => {
     req.session.returnTo = req.header('Referer')
   const errorMessage = req.flash('error');
   req.session.save(() => {
-    res.render('signin', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
+    res.render('signin', { passwordError: null, errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
   });
 });
 
