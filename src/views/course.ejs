@@ -10,6 +10,8 @@
             <div class="col-md-4">
                 <div class="card mb-3" style="height: 100px;">
                     <div class="card-body" style="max-height: 100px; overflow-y: auto;">
+                        <!-- Display the course rating -->
+                        <p style="margin-bottom: 0;">Course Rating: <%= review.rating %> / 5</p>
                         <p style="margin-bottom: 0;"><p><%= review.content %></p>
                         <% if (user && review.userId._id.toString() === user._id.toString()) { %>
                             - this is your review
@@ -29,6 +31,11 @@
 <!-- If user is authenticated, show form to post review -->
 <% if(user) { %>
     <form action="/courses/<%= course.courseCode %>/review" method="POST">
+        <!-- Add a form where the user can give a rating number of the course -->
+        <label for="rating">Course Rating:</label>
+        <input type="number" name="rating" min="1" max="5" placeholder="(1-5)" required>
+        
+        <!-- Add an input field for the review content -->
         <textarea name="reviewContent" placeholder="Write your review..."></textarea>
         <button type="submit" class="post-button">Post Review</button>
     </form>
