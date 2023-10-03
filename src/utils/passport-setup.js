@@ -3,6 +3,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const path = require('path');
+const { db } = require('../models/user');
 const User = require(path.join(__dirname, '..', 'models', 'user'));
 
 passport.use(new GoogleStrategy({
@@ -26,19 +27,24 @@ passport.use(new GoogleStrategy({
   }
 }));
 
-passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
-  try {
-    const user = await User.findOne({ email: email });
-    if (!user) return done(null, false, { message: 'No user found.' });
+passport.use(new LocalStrategy({
+    usernameField: 'loginName',
+    passwordField: 'loginPassword'
+  }, 
+  async (loginName, loginPassword, done) => {
+    try {
+      const user = await User.findOne({ email: loginName });
+      if (!user) return done(null, false, { message: 'No user found.' });
+      const isMatch = await bcrypt.compare(loginPassword, user.password);
+      if (!isMatch) return done(null, false, { message: 'Incorrect password.' });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return done(null, false, { message: 'Incorrect password.' });
-
-    return done(null, user);
-  } catch (error) {
-    return done(error);
+      return done(null, user);
+    } catch (error) {
+      return done(error);
+    }
   }
-}));
+));
+
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
