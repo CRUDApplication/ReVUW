@@ -1,4 +1,6 @@
+<link rel="stylesheet" href="/styles/rating.css">
 <script src="/js/deleteReview.js"></script>
+
 <div class="container main-content">
     <h1><%= course.courseCode %></h1>
     <p><%= course.description %></p>
@@ -8,10 +10,18 @@
         <h3>Users' Reviews</h3>
         <% reviews.forEach((review, index) => { %>
             <div class="col-md-4">
-                <div class="card mb-3" style="height: 100px;">
-                    <div class="card-body" style="max-height: 100px; overflow-y: auto;">
-                        <!-- Display the course rating -->
-                        <p style="margin-bottom: 0;">Course Rating: <%= review.rating %> / 5</p>
+                <div class="card mb-3" style="height: 120px;">
+                    <div class="card-body" style="max-height: 120px; overflow-y: auto;">
+                        <!-- Display the course rating as stars -->
+                        <div class="star-rating">
+                            <% for (let i = 1; i <= 5; i++) { %>
+                            <% if (i <= review.rating) { %>
+                            <span class="star-filled">★</span>
+                            <% } else { %>
+                            <span class="star-empty">☆</span>
+                            <% } %>
+                            <% } %>
+                        </div>
                         <p style="margin-bottom: 0;"><p><%= review.content %></p>
                         <% if (user && review.userId._id.toString() === user._id.toString()) { %>
                             - this is your review
