@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const reviewSchema = new mongoose.Schema({
     courseCode: String,
     content: String,
+    rating: Number,
     userId: {
         type: Schema.Types.ObjectId, // This is the auto generated ObjectId from MongoDB
         ref: 'User'
