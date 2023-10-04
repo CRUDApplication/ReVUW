@@ -1,0 +1,24 @@
+<div class="col-md-4">
+    <div class="card mb-3" style="height: 120px;">
+        <div class="card-body" style="max-height: 120px; overflow-y: auto;">
+            <div class="d-flex align-items-center justify-content-between">
+                <!-- Display the course rating as stars -->
+                <div class="star-rating">
+                    <%- include('../components/rating', { rating: review.rating }) %>
+                </div>
+                <!-- Display the edit and delete icons if editable is true -->
+                <% if (editable) { %>
+                    <div>
+                        <a href="/courses/<%= courseCode %>/reviews/<%= review._id %>/edit" class="text-success">
+                            <i class="fas fa-edit star-filled"></i>
+                        </a>
+                        <a href="#" data-id="<%= review._id %>" data-course="<%= courseCode %>" class="text-danger delete-review-btn">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                <% } %>
+            </div>
+            <p style="margin-bottom: 0;"><p><%= review.content %></p>
+        </div>
+    </div>
+</div>
