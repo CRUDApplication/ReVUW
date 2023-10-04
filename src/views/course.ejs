@@ -6,58 +6,42 @@
     <h1><%= course.courseCode %></h1>
     <p><%= course.description %></p>
 
-    <!-- Display reviews in rows and columns -->
+    <!-- Display user reviews in rows and columns -->
     <div class="row">
-        <h3>Users' Reviews</h3>
-        <% reviews.forEach((review, index) => { %>
-            <div class="col-md-4">
-                <div class="card mb-3" style="height: 120px;">
-                    <div class="card-body" style="max-height: 120px; overflow-y: auto;">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <!-- Display the course rating as stars -->
-                            <div class="star-rating">
-                                <% for (let i = 1; i <= 5; i++) { %>
-                                <% if (i <= review.rating) { %>
-                                <span class="star-filled">★</span>
-                                <% } else { %>
-                                <span class="star-empty">☆</span>
-                                <% } %>
-                                <% } %>
-                            </div>
-                            <% if (user && review.userId._id.toString() === user._id.toString()) { %>
-                                <!-- Add Font Awesome icons inside anchor tags -->
-                                <div>
-                                    <a href="/courses/<%= course.courseCode %>/reviews/<%= review._id %>/edit" class="text-success">
-                                        <i class="fas fa-edit star-filled"></i>
-                                    </a>
-                                    <a href="#" data-id="<%= review._id %>" data-course="<%= course.courseCode %>" class="text-danger delete-review-btn">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </div>
-                            <% } %>
-                        </div>
-                        <p style="margin-bottom: 0;"><p><%= review.content %></p>
-                    </div>
-                </div>
-            </div>
+        <h3>Your Reviews</h3>
+        <% let userReviews = reviews.filter(review => review.userId._id.toString() === user._id.toString()); %>
+        <% userReviews.forEach((review, index) => { %>
+            <%- include('components/review-card', { review: review, courseCode: course.courseCode, editable: true }) %>
             <% if ((index + 1) % 3 === 0) { %>
                 </div><div class="row">
             <% } %>
         <% }); %>
     </div>
 
-<!-- If user is authenticated, show form to post review -->
-<% if(user) { %>
-    <form action="/courses/<%= course.courseCode %>/review" method="POST">
-        <!-- Add a form where the user can give a rating number of the course -->
-        <label for="rating">Course Rating:</label>
-        <input type="number" name="rating" min="1" max="5" placeholder="(1-5)" required>
-        
-        <!-- Add an input field for the review content -->
-        <textarea name="reviewContent" placeholder="Write your review..."></textarea>
-        <button type="submit" class="post-button">Post Review</button>
-    </form>
-<% } else { %>
-    <p>You must be logged in to post a review.</p>
-<% } %>
+    <!-- Display other users' reviews -->
+    <div class="row">
+        <h3>Other Reviews for <%= course.courseCode %></h3>
+        <% let otherReviews = reviews.filter(review => review.userId._id.toString() !== user._id.toString()); %>
+        <% otherReviews.forEach((review, index) => { %>
+            <%- include('components/review-card', { review: review, courseCode: course.courseCode, editable: false }) %>
+            <% if ((index + 1) % 3 === 0) { %>
+                </div><div class="row">
+            <% } %>
+        <% }); %>
+    </div>
+
+    <!-- If user is authenticated, show form to post review -->
+    <% if(user) { %>
+        <form action="/courses/<%= course.courseCode %>/review" method="POST">
+            <!-- Add a form where the user can give a rating number of the course -->
+            <label for="rating">Course Rating:</label>
+            <input type="number" name="rating" min="1" max="5" placeholder="(1-5)" required>
+            
+            <!-- Add an input field for the review content -->
+            <textarea name="reviewContent" placeholder="Write your review..."></textarea>
+            <button type="submit" class="post-button">Post Review</button>
+        </form>
+    <% } else { %>
+        <p>You must be logged in to post a review.</p>
+    <% } %>
 </div>
