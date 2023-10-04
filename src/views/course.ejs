@@ -24,15 +24,25 @@
                 </div><div class="row">
             <% } %>
         <% }); %>
-    </div>
-
-<!-- If user is authenticated, show form to post review -->
-<% if(user) { %>
-    <form action="/courses/<%= course.courseCode %>/review" method="POST">
-        <textarea name="reviewContent" placeholder="Write your review..."></textarea>
-        <button type="submit" class="post-button">Post Review</button>
-    </form>
-<% } else { %>
-    <p>You must be logged in to post a review.</p>
-<% } %>
+        <% if(user) { %>
+            <form id="reviewForm" action="/courses/<%= course.courseCode %>/review" method="POST">
+                <textarea name="reviewContent" placeholder="Write your review..."></textarea>
+                <button type="button" class="post-button" onclick="submitReview()">Post Review</button>
+            </form>
+        <% } else { %>
+            <!-- Keep the form but disable the textarea, and handle button click with JS -->
+            <form id="reviewForm" action="/signin" method="GET">
+                <textarea name="reviewContent" placeholder="Write your review..." disabled></textarea>
+                <button type="button" class="post-button" onclick="redirectToSignIn()">Post Review</button>
+            </form>
+        <% } %>
+        <script>
+            function submitReview() {
+                document.getElementById('reviewForm').submit();
+            }
+        
+            function redirectToSignIn() {
+                window.location.href = `/auth/signin?origin=/courses/<%= course.courseCode %>`;
+            }
+        </script>
 </div>
