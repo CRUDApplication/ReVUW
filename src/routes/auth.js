@@ -7,8 +7,14 @@ const User = require(path.join(__dirname, '..', 'models', 'user'));
 const router = express.Router();
 
 router.get('/signup', (req, res) => {
+  if(req.query.origin)
+    req.session.returnTo = req.query.origin;
+  else
+    req.session.returnTo = req.header('Referer');
+    
   res.render('signin', { title: 'ReVUW | SignUp', user: req.session.user, activeTab: 'register' });
 });
+
 
 router.post('/signup', async (req, res) => {
   const userPassword = req.body.registerPassword;
@@ -22,15 +28,19 @@ router.post('/signup', async (req, res) => {
       const emailIsUnique = await isEmailUnique(userEmail);
       if (!emailIsUnique) {
         res.render('signin', { title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: 'Email already in use', activeTab: 'register'});
+      } else {
+        await User.create({ email: userEmail, password: userPassword });
+        
+        let returnTo = req.session.returnTo || '/';
+        delete req.session.returnTo; // Cleanup session
+        res.redirect(returnTo);
       }
-
-      await User.create({ email: userEmail, password: userPassword });
-      res.redirect('/');
     } catch (error) {
       res.render('signin', { errorMessage: error.message, title: 'Authentication Failed', user: req.session.user, activeTab: 'register' });
     }
   }
 });
+
 
 function checkPasswordStrength(userPassword) {
   let errorMessage = null;
