@@ -28,6 +28,25 @@
         <p>You must be logged in to post a review.</p>
     <% } %>
 
+    <!-- Display total number of reviews and average rating -->
+    <div>
+        <h3 class="header-label">Total Reviews: <%= reviews.length %></h3>
+        <% if (reviews.length > 0) { %>
+            <% let totalRating = reviews.reduce((sum, review) => {
+                return sum + (isNaN(review.rating) ? 0 : review.rating);
+            }, 0); %>
+            <% let averageRating = totalRating / reviews.length; %>
+            <% if (!isNaN(averageRating)) { %>
+                <h3 class="header-label">Average Rating: <%= averageRating.toFixed(1) %> / 5</h3>
+            <% } else { %>
+                <h3 class="header-label">No ratings available.</h3>
+            <% } %>
+        <% } else { %>
+            <h3 class="header-label">No reviews available.</h3>
+        <% } %>
+    </div>
+
+
     <!-- Display user reviews in rows and columns -->
     <div class="row">
         <h3 class="header-label">Your Reviews</h3>
