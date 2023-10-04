@@ -42,7 +42,11 @@ function checkPasswordStrength(userPassword) {
   return errorMessage;
 }
 
-
+/**
+ * Check if the email is already in use by querying the database
+ * @param {string} email 
+ * @returns true if email is unique, false otherwise
+ */
 async function isEmailUnique(email) {
   try {
     const existingUser = await User.findOne({ email: email });
@@ -53,18 +57,35 @@ async function isEmailUnique(email) {
   }
 }
 
-router.get('/signin', (req, res) => {
+router.get('/signin', (req, res, next) => {
+  if( req.query.origin )
+    req.session.returnTo = req.query.origin
+  else
+    req.session.returnTo = req.header('Referer')
   const errorMessage = req.flash('error');
-  res.render('signin', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
+  req.session.save(() => {
+    res.render('signin', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
+  });
 });
 
-router.post('/signin', passport.authenticate('local', {
+router.post('/signin', storeRedirectInLocals, passport.authenticate('local', {
   failureRedirect: '/auth/signin',
   failureFlash: true
 }), (req, res) => {
-  const redirectURL = req.query.origin || '/'; // Default redirect URL
-  res.redirect(redirectURL);
+  let returnTo = res.locals.returnTo || '/'
+  res.redirect(returnTo);
 });
+
+/**
+ * Store the redirect URL in res.locals so it can be used later
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function storeRedirectInLocals(req, res, next) {
+  res.locals.returnTo = req.session.returnTo;
+  next();
+}
 
 router.post('/logout', function(req, res, next) {
   req.logout(function(err) {
@@ -74,10 +95,19 @@ router.post('/logout', function(req, res, next) {
 });
 
 // Google OAuth
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-router.get('/google/callback', passport.authenticate('google', {
-  successRedirect: '/',
-  failureRedirect: '/auth/login'
-}));
+router.get('/google', (req, res, next) => {
+  const returnTo = req.session.returnTo || req.header('Referer');
+  passport.authenticate('google', { 
+      scope: ['profile', 'email'], 
+      state: returnTo
+  })(req, res, next);
+});
+
+
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/auth/login' }), (req, res) => {
+  let returnTo = req.query.state || '/';
+  res.redirect(returnTo);
+});
+
 
 module.exports = router;
