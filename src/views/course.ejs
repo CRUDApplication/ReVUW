@@ -6,9 +6,31 @@
     <h1><%= course.courseCode %></h1>
     <p><%= course.description %></p>
 
+    <!-- If user is authenticated, show form to post review -->
+    <% if(user) { %>
+        <h3 class="header-label">Post Your Review</h3>
+        <form action="/courses/<%= course.courseCode %>/review" method="POST">
+            <!-- Course Rating -->
+            <div class="form-group">
+                <label for="rating">Course Rating:</label>
+                <input type="number" class="form-control" name="rating" min="1" max="5" placeholder="(1-5)" required>
+            </div>
+            
+            <!-- Review Content -->
+            <div class="form-group">
+                <textarea class="form-control" name="reviewContent" rows="4" placeholder="Write your review..." required></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Post Review</button>
+        </form>
+    <% } else { %>
+        <p>You must be logged in to post a review.</p>
+    <% } %>
+
     <!-- Display user reviews in rows and columns -->
     <div class="row">
-        <h3>Your Reviews</h3>
+        <h3 class="header-label">Your Reviews</h3>
         <% let userReviews = reviews.filter(review => review.userId._id.toString() === user._id.toString()); %>
         <% userReviews.forEach((review, index) => { %>
             <%- include('components/review-card', { review: review, courseCode: course.courseCode, editable: true }) %>
@@ -20,7 +42,7 @@
 
     <!-- Display other users' reviews -->
     <div class="row">
-        <h3>Other Reviews for <%= course.courseCode %></h3>
+        <h3 class="header-label">Other Reviews for <%= course.courseCode %></h3>
         <% let otherReviews = reviews.filter(review => review.userId._id.toString() !== user._id.toString()); %>
         <% otherReviews.forEach((review, index) => { %>
             <%- include('components/review-card', { review: review, courseCode: course.courseCode, editable: false }) %>
@@ -30,18 +52,4 @@
         <% }); %>
     </div>
 
-    <!-- If user is authenticated, show form to post review -->
-    <% if(user) { %>
-        <form action="/courses/<%= course.courseCode %>/review" method="POST">
-            <!-- Add a form where the user can give a rating number of the course -->
-            <label for="rating">Course Rating:</label>
-            <input type="number" name="rating" min="1" max="5" placeholder="(1-5)" required>
-            
-            <!-- Add an input field for the review content -->
-            <textarea name="reviewContent" placeholder="Write your review..."></textarea>
-            <button type="submit" class="post-button">Post Review</button>
-        </form>
-    <% } else { %>
-        <p>You must be logged in to post a review.</p>
-    <% } %>
 </div>
