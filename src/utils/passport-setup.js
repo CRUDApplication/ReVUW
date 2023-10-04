@@ -36,6 +36,12 @@ passport.use(new LocalStrategy({
     try {
       const user = await User.findOne({ email: loginName });
       if (!user) return done(null, false, { message: 'No user found.' });
+
+      // Check if user has a null password (i.e., OAuth user)
+      if (!user.password) {
+        return done(null, false, { message: 'Please sign in using your OAuth provider' });
+      }
+      
       const isMatch = await bcrypt.compare(loginPassword, user.password);
       if (!isMatch) return done(null, false, { message: 'Incorrect password.' });
       
