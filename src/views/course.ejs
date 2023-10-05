@@ -27,7 +27,7 @@
     <!-- If user is authenticated, show form to post review -->
     <% if(user) { %>
         <h3 class="header-label">Post Your Review</h3>
-        <form action="/courses/<%= course.courseCode %>/review" method="POST">
+        <form id="reviewForm" action="/courses/<%= course.courseCode %>/review" method="POST">
             <!-- Course Rating -->
             <div class="form-group">
                 <label for="rating">Course Rating:</label>
@@ -40,7 +40,7 @@
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary">Post Review</button>
+            <button type="submit" class="btn btn-primary" onclick="submitReview">Post Review</button>
         </form>
 
     <!-- Display user reviews in rows and columns -->
@@ -53,6 +53,7 @@
                 </div><div class="row">
             <% } %>
         <% }); %>
+
     </div>
 
     <!-- Display other users' reviews -->
@@ -69,6 +70,12 @@
     <% } else { %>
         <!-- If user is not authenticated, show all reviews in a single section -->
 
+        <!-- Keep the form but disable the textarea, and handle button click with JS -->
+        <form id="reviewForm" action="/signin" method="GET">
+            <textarea name="reviewContent" placeholder="Write your review..." disabled></textarea>
+            <button type="submit" class="btn btn-primary" onclick="redirectToSignIn()">Post Review</button>
+        </form>
+        
         <!-- Display all reviews in rows and columns -->
         <div class="row">
             <h3 class="header-label">Users' Reviews</h3>
@@ -100,3 +107,13 @@
     <% } %>
 
 </div>
+
+<script>
+    function submitReview() {
+        document.getElementById('reviewForm').submit();
+    }
+
+    function redirectToSignIn() {
+        window.location.href = `/auth/signin?origin=/courses/<%= course.courseCode %>`;
+    }
+</script>

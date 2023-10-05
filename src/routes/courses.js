@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const CourseModel = require(path.join(__dirname, '..', 'models', 'course'));
 const ReviewModel = require(path.join(__dirname, '..', 'models', 'review'));
+const isAuthenticated = require('../middleware/isAuthenticated');
 
 const router = express.Router();
 
@@ -52,7 +53,7 @@ const checkReviewOwnership = async (req, res, next) => {
     }
 };
 
-router.post('/:courseCode/review', async (req, res) => {
+router.post('/:courseCode/review', isAuthenticated, async (req, res) => {
     try {
         if(!req.user || !req.user._id) {
             return res.redirect('/login');
