@@ -40,7 +40,7 @@
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary" onclick="submitReview">Post Review</button>
+            <button type="submit" class="btn btn-primary" onclick="submitReview()">Post Review</button>
         </form>
 
     <!-- Display user reviews in rows and columns -->
@@ -69,13 +69,23 @@
     </div>
     <% } else { %>
         <!-- If user is not authenticated, show all reviews in a single section -->
-
         <!-- Keep the form but disable the textarea, and handle button click with JS -->
         <form id="reviewForm" action="/signin" method="GET">
-            <textarea name="reviewContent" placeholder="Write your review..." disabled></textarea>
+            <!-- Course Rating -->
+            <div class="form-group">
+                <label for="rating">Course Rating:</label>
+                <input type="number" class="form-control" name="rating" min="1" max="5" placeholder="(1-5)" disabled>
+            </div>
+            
+            <!-- Review Content -->
+            <div class="form-group">
+                <textarea class="form-control" name="reviewContent" rows="4" placeholder="Write your review..." disabled></textarea>
+            </div>
+
+            <!-- Submit Button -->
             <button type="submit" class="btn btn-primary" onclick="redirectToSignIn()">Post Review</button>
         </form>
-        
+
         <!-- Display all reviews in rows and columns -->
         <div class="row">
             <h3 class="header-label">Users' Reviews</h3>
