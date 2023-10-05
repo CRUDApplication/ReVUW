@@ -9,11 +9,11 @@
                 <!-- Display the edit and delete icons if editable is true -->
                 <% if (editable) { %>
                     <div>
-                        <a href="/courses/<%= courseCode %>/reviews/<%= review._id %>/edit" class="text-success">
-                            <i class="fas fa-edit star-filled"></i>
+                        <a href="/courses/<%= course.courseCode %>/reviews/<%= review._id %>/edit" class="text-success">
+                            <i class="bi bi-pencil-square star-filled"></i>
                         </a>
-                        <a href="#" data-id="<%= review._id %>" data-course="<%= courseCode %>" class="text-danger delete-review-btn">
-                            <i class="fas fa-trash"></i>
+                        <a href="#" data-id="<%= review._id %>" data-course="<%= course.courseCode %>" class="text-danger delete-review-btn">
+                            <i class="bi bi-trash-fill"></i>
                         </a>
                     </div>
                 <% } %>
