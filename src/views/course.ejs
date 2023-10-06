@@ -83,7 +83,7 @@
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary" onclick="redirectToSignIn()">Post Review</button>
+            <button type="button" class="btn btn-primary" onclick="redirectToSignIn()">Post Review</button>
         </form>
 
         <!-- Display all reviews in rows and columns -->
@@ -124,6 +124,7 @@
     }
 
     function redirectToSignIn() {
+        console.log('redirecting to sign in at /auth/signin?origin=/courses/<%= course.courseCode %>')
         window.location.href = `/auth/signin?origin=/courses/<%= course.courseCode %>`;
     }
 </script>
