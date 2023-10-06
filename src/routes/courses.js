@@ -64,6 +64,7 @@ router.post('/:courseCode/review', isAuthenticated, async (req, res) => {
         const review = new ReviewModel({
             courseCode: req.params.courseCode,
             content: req.body.reviewContent,
+            rating: req.body.rating,
             userId: userId,
             datePosted: new Date()
         });
@@ -93,6 +94,8 @@ router.post('/:courseCode/reviews/:reviewId/edit', checkReviewOwnership, async (
     try {
         const review = await ReviewModel.findById(req.params.reviewId);
         review.content = req.body.reviewContent;
+        review.rating = req.body.rating;
+
         await review.save();
         res.redirect(`/courses/${req.params.courseCode}`);
     } catch (error) {
