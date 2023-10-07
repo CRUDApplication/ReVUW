@@ -5,6 +5,54 @@ const ReviewModel = require(path.join(__dirname, '..', 'models', 'review'));
 
 const router = express.Router();
 
+<<<<<<< Updated upstream
+=======
+router.post('/:courseCode/toggleSavedCourses', async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.user.email });
+        const courseCode = req.params.courseCode;
+        const course = await CourseModel.findOne({ courseCode: courseCode });
+
+        if (!user) {
+            return res.status(404).send('cli: User not found in saved courses');
+        }
+        const courseId = course._id.toString();
+
+        if (user.savedCourses.map(id => id.toString()).includes(courseId)) { // Removes from savedCourses
+            const index = user.savedCourses.map(id => id.toString()).indexOf(courseId);
+            user.savedCourses.splice(index, 1);
+            await user.save();
+        }
+        else { // Adds to savedCourses
+            user.savedCourses.push(course);
+            await user.save();
+        }
+        res.send({message: 'Added to saved'});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to toggle saved courses', success: false });
+    }
+});
+
+router.get('/:courseCode/isSavedCourse', async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.user.email });
+        const course = await CourseModel.findOne({ courseCode: req.params.courseCode });
+        if (!course || !user) {
+            return res.status(404).send('Course/user not found');
+        }
+
+        const isSavedCourse = user.savedCourses.map(id => id.toString()).includes(course._id.toString());
+        res.send({ isSavedCourse });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to find saved courses', success: false });
+    }
+});
+
+
+>>>>>>> Stashed changes
 // Course routes
 router.get('/allcourses', async (req, res) => {
     try {
