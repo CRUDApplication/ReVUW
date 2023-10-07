@@ -51,6 +51,16 @@ router.get('/:courseCode/isSavedCourse', async (req, res) => {
     }
 });
 
+router.get('/allSavedCourses', async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.user.email });
+        res.send(user.savedCourses);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to return all saved courses', success: false });
+    }
+});
+
 
 // Course routes
 router.get('/allcourses', async (req, res) => {
