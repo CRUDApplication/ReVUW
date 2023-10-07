@@ -146,11 +146,11 @@
             const data = await response.json();
 
             if (data.isSavedCourse) {
-                button.classList.remove('bi-bookmark');  // remove "unfavorited" look
-                button.classList.add('bi-bookmark-fill');  // add "favorited" look
+                button.classList.remove('bi-bookmark');  // removes "unsaved"
+                button.classList.add('bi-bookmark-fill');  // adds "saved" 
             } else {
-                button.classList.remove('bi-bookmark-fill');  // remove "favorited" look
-                button.classList.add('bi-bookmark');  // add "unfavorited" look
+                button.classList.remove('bi-bookmark-fill');  // removes "unsaved"
+                button.classList.add('bi-bookmark');  // add "saved"
             }
 
             button.addEventListener('click', async () => {
@@ -165,8 +165,8 @@
                     const errorData = await toggleResponse.text();
                     console.error("Error toggling SavedCourse serv:", errorData);
                 }
-                button.classList.toggle('bi-bookmark-fill');
-                button.classList.toggle('bi-bookmark');
+                button.classList.toggle('bi-bookmark-fill'); // adds "saved"
+                button.classList.toggle('bi-bookmark'); // removes "unsaved"
             });
         });
     </script>
