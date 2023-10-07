@@ -2,12 +2,11 @@ const express = require('express');
 const path = require('path');
 const CourseModel = require(path.join(__dirname, '..', 'models', 'course'));
 const ReviewModel = require(path.join(__dirname, '..', 'models', 'review'));
+const User = require(path.join(__dirname, '..', 'models', 'user'));
 const isAuthenticated = require('../middleware/isAuthenticated');
 
 const router = express.Router();
 
-<<<<<<< Updated upstream
-=======
 router.post('/:courseCode/toggleSavedCourses', async (req, res) => {
     try {
         const user = await User.findOne({ email: req.user.email });
@@ -53,7 +52,6 @@ router.get('/:courseCode/isSavedCourse', async (req, res) => {
 });
 
 
->>>>>>> Stashed changes
 // Course routes
 router.get('/allcourses', async (req, res) => {
     try {
