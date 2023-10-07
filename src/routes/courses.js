@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const CourseModel = require(path.join(__dirname, '..', 'models', 'course'));
 const ReviewModel = require(path.join(__dirname, '..', 'models', 'review'));
+const isAuthenticated = require('../middleware/isAuthenticated');
 
 const router = express.Router();
 
@@ -100,7 +101,7 @@ const checkReviewOwnership = async (req, res, next) => {
     }
 };
 
-router.post('/:courseCode/review', async (req, res) => {
+router.post('/:courseCode/review', isAuthenticated, async (req, res) => {
     try {
         if(!req.user || !req.user._id) {
             return res.redirect('/login');
@@ -111,6 +112,7 @@ router.post('/:courseCode/review', async (req, res) => {
         const review = new ReviewModel({
             courseCode: req.params.courseCode,
             content: req.body.reviewContent,
+            rating: req.body.rating,
             userId: userId,
             datePosted: new Date()
         });
@@ -140,6 +142,8 @@ router.post('/:courseCode/reviews/:reviewId/edit', checkReviewOwnership, async (
     try {
         const review = await ReviewModel.findById(req.params.reviewId);
         review.content = req.body.reviewContent;
+        review.rating = req.body.rating;
+
         await review.save();
         res.redirect(`/courses/${req.params.courseCode}`);
     } catch (error) {

@@ -1,0 +1,51 @@
+.container-fluid {
+    width: 100vw;
+    height: 80vh;
+}
+
+.box-container {
+    width: 350px;
+    height: 600px;
+}
+
+.nav-link.active {
+    color: #0D4C38 !important;
+    background-color: #e3ebf7 !important;
+}
+
+.form-control, .signin-btn {
+    width: 350px;
+}
+
+.form-floating i {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    height: 100%;
+    padding: 1rem 0.75rem;
+    overflow: hidden;
+    text-align: end;
+}
+
+.google-btn {
+    background-color: #DB4437;
+    border-color: #c73e31;
+}
+
+.google-btn:hover,
+.google-btn:active {
+    border-color: #c73e31 !important;
+    background-color: #c73e31 !important;
+}
+
+.facebook-btn {
+    background-color: #3B5998;
+    border-color: #395185;
+}
+
+.facebook-btn:hover,
+.facebook-btn:active {
+    background-color: #395185 !important;
+    border-color: #395185 !important;
+}

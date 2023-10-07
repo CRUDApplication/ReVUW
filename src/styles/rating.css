@@ -1,0 +1,23 @@
+.star-rating {
+    font-size: 24px;
+  }
+  
+.star-filled {
+  color: #0D4C38;
+}
+
+.star-empty {
+  color: gray;
+}
+
+.delete-review-btn {
+  margin-left: 5px;
+}
+  
+.form-group {
+  margin-bottom: 10px;
+}
+
+.header-label {
+  margin-top: 20px;
+}

@@ -1,12 +1,13 @@
+
 .navbar {
-    background-color: #1d2624;
+    position: sticky;
+    top: 0;
 }
 
 .navbar .container {
     display: block;
-    color: white;
 }
-    
-.navbar a {
-    color: white; 
+
+nav {
+    background-color: #0D4C38;
 }
