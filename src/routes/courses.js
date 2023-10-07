@@ -7,61 +7,6 @@ const isAuthenticated = require('../middleware/isAuthenticated');
 
 const router = express.Router();
 
-router.post('/:courseCode/toggleSavedCourses', async (req, res) => {
-    try {
-        const user = await User.findOne({ email: req.user.email });
-        const courseCode = req.params.courseCode;
-        const course = await CourseModel.findOne({ courseCode: courseCode });
-
-        if (!user) {
-            return res.status(404).send('cli: User not found in saved courses');
-        }
-        const courseId = course._id.toString();
-
-        if (user.savedCourses.map(id => id.toString()).includes(courseId)) { // Removes from savedCourses
-            const index = user.savedCourses.map(id => id.toString()).indexOf(courseId);
-            user.savedCourses.splice(index, 1);
-            await user.save();
-        }
-        else { // Adds to savedCourses
-            user.savedCourses.push(course);
-            await user.save();
-        }
-        res.send({message: 'Added to saved'});
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to toggle saved courses', success: false });
-    }
-});
-
-router.get('/:courseCode/isSavedCourse', async (req, res) => {
-    try {
-        const user = await User.findOne({ email: req.user.email });
-        const course = await CourseModel.findOne({ courseCode: req.params.courseCode });
-        if (!course || !user) {
-            return res.status(404).send('Course/user not found');
-        }
-
-        const isSavedCourse = user.savedCourses.map(id => id.toString()).includes(course._id.toString());
-        res.send({ isSavedCourse });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to find saved courses', success: false });
-    }
-});
-
-router.get('/allSavedCourses', async (req, res) => {
-    try {
-        const user = await User.findOne({ email: req.user.email });
-        res.send(user.savedCourses);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to return all saved courses', success: false });
-    }
-});
-
-
 // Course routes
 router.get('/allcourses', async (req, res) => {
     try {
@@ -90,7 +35,6 @@ router.get('/:courseCode', async (req, res) => {
         res.status(500).json({ error: 'Failed to retrieve course'});
     }
 });
-
 
 // Review routes
 
@@ -174,6 +118,65 @@ router.delete('/:courseCode/reviews/:reviewId', checkReviewOwnership, async (req
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to delete review', success: false });
+    }
+});
+
+// Save course routes
+
+// Adds or removes from saved courses
+router.post('/:courseCode/toggleSavedCourses', async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.user.email });
+        const courseCode = req.params.courseCode;
+        const course = await CourseModel.findOne({ courseCode: courseCode });
+
+        if (!user) {
+            return res.status(404).send('cli: User not found in saved courses');
+        }
+        const courseId = course._id.toString();
+
+        if (user.savedCourses.map(id => id.toString()).includes(courseId)) { // Removes from savedCourses
+            const index = user.savedCourses.map(id => id.toString()).indexOf(courseId);
+            user.savedCourses.splice(index, 1);
+            await user.save();
+        }
+        else { // Adds to savedCourses
+            user.savedCourses.push(course);
+            await user.save();
+        }
+        res.send({message: 'Added to saved'});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to toggle saved courses', success: false });
+    }
+});
+
+// Returns boolean whether course is in users saved courses
+router.get('/:courseCode/isSavedCourse', async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.user.email });
+        const course = await CourseModel.findOne({ courseCode: req.params.courseCode });
+        if (!course || !user) {
+            return res.status(404).send('Course/user not found');
+        }
+
+        const isSavedCourse = user.savedCourses.map(id => id.toString()).includes(course._id.toString());
+        res.send({ isSavedCourse });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to find saved courses', success: false });
+    }
+});
+
+// Returns all saved courses for user
+router.get('/allSavedCourses', async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.user.email });
+        res.send(user.savedCourses);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to return all saved courses', success: false });
     }
 });
 
