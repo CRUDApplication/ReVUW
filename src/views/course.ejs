@@ -4,6 +4,12 @@
 
 <div class="container main-content">
     <h1><%= course.courseCode %></h1>
+
+    <!-- Display SavedCourse button -->
+    <% if(user) { %>
+        <button class="bi-bookmark toggleSavedCourses" data-target="toggleSavedCourses"></button>
+    <% }%>
+
     <p><%= course.description %></p>
 
     <!-- Display total number of reviews and average rating -->
@@ -128,3 +134,40 @@
         window.location.href = `/auth/signin?origin=/courses/<%= course.courseCode %>`;
     }
 </script>
+
+
+
+<% if(user) { %>
+    <script>
+        const toggleSavedCourseButtons = document.querySelectorAll('.toggleSavedCourses');
+
+        toggleSavedCourseButtons.forEach(async button => {
+            const response = await fetch(`/courses/<%= course.courseCode %>/isSavedCourse`);
+            const data = await response.json();
+
+            if (data.isSavedCourse) {
+                button.classList.remove('bi-bookmark');  // removes "unsaved"
+                button.classList.add('bi-bookmark-fill');  // adds "saved" 
+            } else {
+                button.classList.remove('bi-bookmark-fill');  // removes "unsaved"
+                button.classList.add('bi-bookmark');  // add "saved"
+            }
+
+            button.addEventListener('click', async () => {
+                const toggleResponse = await fetch('/courses/<%= course.courseCode %>/toggleSavedCourses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!toggleResponse.ok) {
+                    const errorData = await toggleResponse.text();
+                    console.error("Error toggling SavedCourse serv:", errorData);
+                }
+                button.classList.toggle('bi-bookmark-fill'); // adds "saved"
+                button.classList.toggle('bi-bookmark'); // removes "unsaved"
+            });
+        });
+    </script>
+<% } %>
