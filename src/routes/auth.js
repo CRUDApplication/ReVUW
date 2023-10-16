@@ -13,7 +13,7 @@ router.get('/signup', (req, res) => {
   else
     req.session.returnTo = req.header('Referer');
     
-  res.render('signin', { title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: null, errorMessage: null, activeTab: 'register' });
+  res.render('signin', { layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: null, errorMessage: null, activeTab: 'register' });
 });
 
 
@@ -22,13 +22,13 @@ router.post('/signup', async (req, res) => {
   const userEmail = req.body.email;
   let passwordCheckResult = checkPasswordStrength(userPassword);
   if (passwordCheckResult != null) {
-    res.render('signin', { title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: passwordCheckResult, errorMessage: null, activeTab: 'register'});
+    res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: passwordCheckResult, errorMessage: null, activeTab: 'register'});
   } 
   else {
     try {
       const emailIsUnique = await isEmailUnique(userEmail);
       if (!emailIsUnique) {
-        res.render('signin', { title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: 'Email already in use', activeTab: 'register'});
+        res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: 'Email already in use', activeTab: 'register'});
       } else {
         await User.create({ email: userEmail, password: userPassword });
         
@@ -37,7 +37,7 @@ router.post('/signup', async (req, res) => {
         res.redirect(returnTo);
       }
     } catch (error) {
-      res.render('signin', { passwordError: error.message,  errorMessage: null, title: 'Authentication Failed', user: req.user, activeTab: 'register' });
+      res.render('signin', {layout: 'layouts/fullWidth', passwordError: error.message,  errorMessage: null, title: 'Authentication Failed', user: req.user, activeTab: 'register' });
     }
   }
 });
@@ -75,7 +75,7 @@ router.get('/signin', (req, res, next) => {
     req.session.returnTo = req.header('Referer')
   const errorMessage = req.flash('error');
   req.session.save(() => {
-    res.render('signin', { passwordError: null, errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
+    res.render('signin', {layout: 'layouts/fullWidth', passwordError: null, errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
   });
 });
 
