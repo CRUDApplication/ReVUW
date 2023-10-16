@@ -1,0 +1,31 @@
+.website-info {
+    position: relative;
+    background: linear-gradient(162deg, rgba(18,40,66,1) 0%, rgba(22,73,54,1) 42%, rgba(27,224,196,1) 100%);
+    color: #fff;
+    padding: 40px 70px;
+    border: 1px solid #ccc;
+    border-radius: 10px; 
+    text-align: left; 
+    margin: 20px; 
+}
+
+.website-info .brief {
+    font-size: 18px;
+    margin-bottom: 20px; 
+}
+
+.website-info button {
+    background-color: transparent;
+    border-color: #fff;
+    border-width: 1px;
+    position: absolute;
+    bottom: 41px;
+    right: 53px;
+    padding: 16px 38px;
+}
+
+.website-info button:hover {
+    background-color: transparent;
+    border-color: #ffffff;
+    box-shadow: 0px 0px 10px rgb(255, 255, 255);
+}
