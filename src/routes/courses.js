@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const axios = require('axios');
 const CourseModel = require(path.join(__dirname, '..', 'models', 'course'));
 const ReviewModel = require(path.join(__dirname, '..', 'models', 'review'));
 const User = require(path.join(__dirname, '..', 'models', 'user'));
@@ -10,31 +11,33 @@ const router = express.Router();
 // Course routes
 router.get('/allcourses', async (req, res) => {
     try {
-        const courses = await CourseModel.find();
+        const response = await axios.get('http://localhost:3001/allcourses');
+        const courses = response.data;
         res.render('courses', { courses, title: 'ReVUW | Courses', user: req.user });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to retrieve courses'});
+        res.status(500).json({ error: 'Failed to retrieve courses' });
     }
 });
 
 router.get('/:courseCode', async (req, res) => {
     try {
-        const courseCode = req.params.courseCode;
-        const course = await CourseModel.findOne({ courseCode: courseCode });
-
-        if (!course) {
-            return res.status(404).json({ error: 'Course not found'});
-        }
+        const response = await axios.get(`http://localhost:3001/course/${req.params.courseCode}`);
         
-        const reviews = await ReviewModel.find({ courseCode: courseCode }).populate('userId');
+        const courseData = response.data;
 
-        res.render('course', { course, reviews, title: 'ReVUW | ' + course.courseName, user: req.user });
-
+        const reviews = await ReviewModel.find({ courseCode: req.params.courseCode }).populate('userId');
+        
+        res.render('course', { course: courseData, reviews, title: 'ReVUW | ' + courseData.courseName, user: req.user });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Failed to retrieve course'});
+        if (error.response && error.response.data && error.response.data.details) {
+            res.status(500).json({ error: error.response.data.details });
+        } else {
+            res.status(500).json({ error: 'Failed to retrieve course' });
+        }
     }
 });
+
 
 // Review routes
 

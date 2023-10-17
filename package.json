@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev:grpc": "nodemon src/grpc_server/server.js",
+    "dev:api_gateway": "nodemon src/api_gateway/gateway.js",
+    "dev:client": "nodemon src/server.js",
+    "dev": "concurrently \"npm run dev:grpc\" \"npm run dev:api_gateway\" \"npm run dev:client\""
   },
   "repository": {
     "type": "git",
@@ -20,6 +23,9 @@
   },
   "homepage": "https://github.com/CRUDApplication/ReVUW#readme",
   "dependencies": {
+    "@grpc/grpc-js": "^1.9.5",
+    "@grpc/proto-loader": "^0.7.10",
+    "axios": "^1.5.1",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.2",
     "bootstrap-icons": "^1.11.1",
@@ -36,6 +42,7 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
+    "concurrently": "^8.2.1",
     "nodemon": "^3.0.1"
   }
 }
