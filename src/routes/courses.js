@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/allcourses', async (req, res) => {
     try {
         const courses = await CourseModel.find();
-        res.render('courses', { courses, title: 'ReVUW | Courses', user: req.session.user });
+        res.render('courses', { courses, title: 'ReVUW | Courses', user: req.user });
     } catch (error) {
         res.status(500).json({ error: 'Failed to retrieve courses'});
     }

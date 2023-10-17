@@ -26,6 +26,8 @@ app.use('/styles', express.static(path.join(__dirname, 'styles')));
 app.use('/css', express.static(path.join(__dirname, '../node_modules', 'bootstrap', 'dist', 'css'))); 
 app.use('/icons', express.static(path.join(__dirname, '../node_modules', 'bootstrap-icons', 'font'))); 
 app.use('/js', express.static(path.join(__dirname, '../node_modules', 'bootstrap', 'dist', 'js')));
+app.use('/fonts', express.static(path.join(__dirname, '../public', 'fonts')));
+app.use('/images', express.static(path.join(__dirname, '../public', 'images')));
 
 // Parse incoming request bodies (for form data)
 app.use(express.urlencoded({ extended: true }));
@@ -59,25 +61,21 @@ app.use('/courses', require('./routes/courses'));
 
 // Root route
 app.get('/', (req, res) => {
-    res.render('index', { title: 'ReVUW | Home', user: req.session.user });
-});
-
-app.get('/signin', (req, res) => {
-    const errorMessage = req.flash('error');
-    res.render('signin', { errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
+    res.render('index', { title: 'ReVUW | Home', user: req.user });
 });
 
 // Add routes for About Us, Contact, and Privacy Policy
 app.get('/about', (req, res) => {
-    res.render('about', { title: 'ReVUW | About Us', user: req.session.user });
+    
+    res.render('about', { title: 'ReVUW | About Us', user: req.user });
 });
 
 app.get('/contact', (req, res) => {
-    res.render('contact', { title: 'ReVUW | Contact', user: req.session.user });
+    res.render('contact', { title: 'ReVUW | Contact', user: req.user });
 });
 
 app.get('/privacy', (req, res) => {
-    res.render('privacy', { title: 'ReVUW | Privacy Policy', user: req.session.user });
+    res.render('privacy', { title: 'ReVUW | Privacy Policy', user: req.user });
 });
 
 const PORT = 3000;

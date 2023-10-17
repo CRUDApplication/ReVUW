@@ -1,5 +1,52 @@
+@font-face {
+    font-family: 'Anton';
+    src: url('/fonts/Anton/Anton-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Arsenal';
+    src: url('/fonts/Arsenal/Arsenal-Regular.ttf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Arsenal';
+    src: url('/fonts/Arsenal/Arsenal-Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Dosis';
+    src: url('/fonts/Dosis/Dosis-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Teko';
+    src: url('/fonts/Teko/Teko-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Unbounded';
+    src: url('/fonts/Unbounded/Unbounded-ExtraLight.ttf') format('truetype');
+    font-weight: lighter;
+}
+
+@font-face {
+    font-family: 'Unbounded';
+    src: url('/fonts/Unbounded/Unbounded-SemiBold.ttf') format('truetype');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'MPLUSRounded1c';
+    src: url('/fonts/M_PLUS_Rounded_1c/MPLUSRounded1c-Regular.ttf') format('truetype');
+    font-weight: normal;
+}
+
+
 body {
     background-color: #a5a9a8;
+    font-family: 'Arsenal', sans-serif !important;
 }
 
 .wrapper {
