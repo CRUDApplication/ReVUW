@@ -31,16 +31,14 @@ jobs:
       run: |
         docker-compose build
         docker-compose push
-    - name: List directory contents for debugging
-      run: |
-        ls -al
 
     - name: Copy docker-compose file to GCP VM
       run: |
-        cd $GITHUB_WORKSPACE
-        gcloud compute scp docker-compose.yml ${{ secrets.GCP_VM_INSTANCE }}:/home/richarsamu1/ --zone=${{ secrets.GCP_VM_ZONE }}
+        gcloud compute scp ./docker-compose.yml ubuntu@${{ secrets.GCP_VM_INSTANCE }}:/home/ubuntu/docker-compose.yml --zone=${{ secrets.GCP_VM_ZONE }}
+
 
 
     - name: Deploy to GCP
       run: |
-        gcloud compute ssh ${{ secrets.GCP_VM_INSTANCE }} --zone=${{ secrets.GCP_VM_ZONE }} --command="sudo docker-compose pull && sudo docker-compose up -d" --quiet
+        gcloud compute ssh ubuntu@${{ secrets.GCP_VM_INSTANCE }} --zone=${{ secrets.GCP_VM_ZONE }} --command="sudo docker-compose -f /home/ubuntu/docker-compose.yml pull && sudo docker-compose -f /home/ubuntu/docker-compose.yml up -d" --quiet
+
