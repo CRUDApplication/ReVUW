@@ -6,7 +6,6 @@ const initialiseDatabase = require('../utils/database');
 
 initialiseDatabase();
 
-
 const PROTO_PATH = path.join(__dirname, '..', 'protos', 'courses.proto');
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
     keepCase: true,
@@ -24,10 +23,7 @@ const CourseModel = require('../models/course');
 server.addService(coursesProto.courses.CourseService.service, {
     GetCourse: async (call, callback) => {
         try {
-            console.log("code: ",call.request.courseCode)
             let course = await CourseModel.findOne({ courseCode: call.request.courseCode })
-            console.log(course)
-            console.log("code: ",call.request.courseCode)
             if (!course) {
                 callback({
                     code: grpc.status.NOT_FOUND,
@@ -40,6 +36,17 @@ server.addService(coursesProto.courses.CourseService.service, {
             callback({
                 code: grpc.status.INTERNAL,
                 details: 'Failed to retrieve course'
+            });
+        }
+    },
+    GetAllCourses: async (call, callback) => {
+        try {
+            let courses = await CourseModel.find();
+            callback(null, { courses });
+        } catch (err) {
+            callback({
+                code: grpc.status.INTERNAL,
+                details: 'Failed to retrieve all courses'
             });
         }
     }

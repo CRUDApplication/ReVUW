@@ -1,4 +1,5 @@
 syntax = "proto3";
+import "google/protobuf/empty.proto";
 package courses;
 message CourseRequest {
     string courseCode = 1;
@@ -12,6 +13,11 @@ message CourseResponse {
     string tags = 5;
 }
 
+message CoursesResponse {
+    repeated CourseResponse courses = 1;
+}
+
 service CourseService {
     rpc GetCourse (CourseRequest) returns (CourseResponse);
+    rpc GetAllCourses (google.protobuf.Empty) returns (CoursesResponse);
 }
