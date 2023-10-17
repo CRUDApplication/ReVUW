@@ -28,7 +28,7 @@ router.post('/signup', async (req, res) => {
     try {
       const emailIsUnique = await isEmailUnique(userEmail);
       if (!emailIsUnique) {
-        res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: 'Email already in use', activeTab: 'register'});
+        res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: null, passwordError: 'Email already in use', activeTab: 'register'});
       } else {
         await User.create({ email: userEmail, password: userPassword });
         
