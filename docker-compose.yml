@@ -2,35 +2,42 @@ services:
   client:
     environment:
       - API_URL=http://api_gateway:3001
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - MONGODB_URI=${MONGODB_URI}
     build:
       context: .
       dockerfile: ./src/Dockerfile
     ports:
       - "3000:3000"
-    env_file: 
-      - .env
 
   api_gateway:
     environment:
       - GRPC_ENDPOINT=grpc_server:50051
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - MONGODB_URI=${MONGODB_URI}
     build:
       context: .
       dockerfile: ./src/api_gateway/Dockerfile
     ports:
       - "3001:3001"
-    env_file: 
-      - .env
     depends_on:
       - client
 
   grpc_server:
+    environment:
+        - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+        - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+        - SESSION_SECRET=${SESSION_SECRET}
+        - MONGODB_URI=${MONGODB_URI}
     build:
       context: .
       dockerfile: ./src/grpc_server/Dockerfile
     ports:
       - "50051:50051"
-    env_file: 
-      - .env
     depends_on:
       - api_gateway
 

@@ -6,39 +6,85 @@ on:
       - 39-containerize-and-deploy-app-with-all-services
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Setup Google Cloud SDK
+    # Setup Google Cloud SDK
+    - name: Setup gcloud
       uses: google-github-actions/setup-gcloud@v0.3.0
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
-    
-    - name: Setup Environment Variables
+
+    - name: Authenticate Docker to GCR
+      run: gcloud auth configure-docker
+
+    - name: Build and push client image
+      env:
+        GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       run: |
-        echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
-        echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
-        echo "SESSION_SECRET=${{ secrets.SESSION_SECRET }}" >> .env
-        echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env 
+        docker build -f src/Dockerfile -t gcr.io/$GCP_PROJECT_ID/client:latest .
+        docker push gcr.io/$GCP_PROJECT_ID/client:latest
 
-    - name: Build and Push Docker Compose services
+    - name: Build and push gateway image
+      env:
+        GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       run: |
-        docker-compose build
-        docker-compose push
+        docker build -f src/api_gateway/Dockerfile -t gcr.io/$GCP_PROJECT_ID/gateway:latest .
+        docker push gcr.io/$GCP_PROJECT_ID/gateway:latest
 
-    - name: Copy docker-compose file to GCP VM
+    - name: Build and push grpc-server image
+      env:
+        GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       run: |
-        gcloud compute scp ./docker-compose.yml ubuntu@${{ secrets.GCP_VM_INSTANCE }}:/home/ubuntu/docker-compose.yml --zone=${{ secrets.GCP_VM_ZONE }}
+        docker build -f src/grpc_server/Dockerfile -t gcr.io/$GCP_PROJECT_ID/grpc-server:latest .
+        docker push gcr.io/$GCP_PROJECT_ID/grpc-server:latest
+  
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
 
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
+    # Setup Google Cloud SDK
+    - name: Setup gcloud
+      uses: google-github-actions/setup-gcloud@v0.3.0
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
 
-    - name: Deploy to GCP
+    - name: Authenticate Docker to GCR
+      run: gcloud auth configure-docker
+
+    - name: Deploy to GCE VM
+      env:
+        GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        GCP_VM_INSTANCE: ${{ secrets.GCP_VM_INSTANCE }}
+        GCP_VM_ZONE: ${{ secrets.GCP_VM_ZONE }}
+        GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+        GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
       run: |
-        gcloud compute ssh ubuntu@${{ secrets.GCP_VM_INSTANCE }} --zone=${{ secrets.GCP_VM_ZONE }} --command="sudo docker-compose -f /home/ubuntu/docker-compose.yml pull && sudo docker-compose -f /home/ubuntu/docker-compose.yml up -d" --quiet
+        # Copy docker-compose.yml to the VM's /tmp directory
+        gcloud compute scp ./docker-compose.yml $GCP_VM_INSTANCE:/tmp/docker-compose.yml --zone=$GCP_VM_ZONE
 
+        # SSH into the GCP VM, move the docker-compose.yml to /home/ubuntu and run docker-compose with sudo
+        gcloud compute ssh $GCP_VM_INSTANCE --zone=$GCP_VM_ZONE --command='
+          sudo mv /tmp/docker-compose.yml /home/ubuntu/docker-compose.yml &&
+          export GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID &&
+          export GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET &&
+          export MONGODB_URI=$MONGODB_URI &&
+          export SESSION_SECRET=$SESSION_SECRET &&
+          cd /home/ubuntu/ &&
+          sudo docker-compose down &&
+          sudo docker-compose up -d
+        '
