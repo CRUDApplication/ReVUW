@@ -17,16 +17,20 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-router.get('/reset-password/:token', (req, res) => {
-  res.render('password-reset', { token: req.params.token, title: 'Password Reset', user: null });
-
-});
-
-router.get('/request-password-reset', (req, res) => {
-  res.render('password-reset-request');
-});
-
 // Password reset
+router.get('/reset-password/:token', (req, res) => {
+  req.session.resetToken = req.params.token;
+  // Redirect to the general reset page
+  res.redirect('/auth/reset-password');
+});
+
+router.get('/reset-password', (req, res) => {
+  if (!req.session.resetToken) {
+    return res.status(400).send('Invalid session for password reset.');
+  }
+  res.render('password-reset', { title: 'Password Reset', user: null });
+});
+
 router.post('/request-password-reset', async (req, res) => {
   const email = req.body.email;
 
@@ -51,12 +55,13 @@ router.post('/request-password-reset', async (req, res) => {
 });
 
 router.post('/reset-password', async (req, res) => {
-  const { token, newPassword } = req.body;
+  const newPassword = req.body.newPassword;
 
   if (!newPassword) {
     return res.status(400).send('New password is missing.');
   }
 
+  const token = req.session.resetToken;
   const resetToken = await ResetToken.findOne({ token }).populate('user');
 
   if (!resetToken) {
@@ -67,7 +72,8 @@ router.post('/reset-password', async (req, res) => {
   user.password = newPassword;
   await user.save();
 
-  await ResetToken.deleteOne({ _id: resetToken._id }); // Remove used token
+  await ResetToken.deleteOne({ _id: resetToken._id });
+  delete req.session.resetToken;
 
   res.send('Password successfully reset.');
 });

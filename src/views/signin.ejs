@@ -57,6 +57,9 @@
                             <i class="bi bi-eye-slash toggle-password" data-target="loginPassword"></i>
                         </div>
 
+                        <!-- Forgot password -->
+                        <a href="#" id="forgot-password-link">Forgot Password?</a>
+
                         <!-- Submit button -->
                         <button type="submit" class="signin-btn btn btn-primary btn-block mt-2">Sign in</button>
 
@@ -68,13 +71,6 @@
                         <button class="signin-btn facebook-btn btn btn-lg btn-block btn-primary mb-2" type="submit">
                             <i class="bi bi-facebook"></i>&nbsp;&nbsp;&nbsp;Sign in with Facebook
                         </button>
-                    </form>
-                    <h2>Request Password Reset</h2>
-                    <form action="/auth/request-password-reset" method="post">
-                        <label for="email">Email:</label>
-                        <input type="email" name="email" required>
-                        <button type="submit">Submit</button>
-                    </form>
                 </div>
                 <!--Register-->
                 <div 
@@ -127,6 +123,26 @@
                         </button>
                     </form>
                 </div>
+                <!-- Reset password -->
+                <div
+                    class="tab-pane fade"
+                    id="pills-reset-password"
+                    role="tabpanel"
+                    aria-labelledby="tab-login"
+                >
+                    <form action="/auth/request-password-reset" method="post">
+                        <!-- Email input -->
+                        <div class="form-floating">
+                            <input type="email" id="email" name="email" class="form-control mb-2" placeholder="" required/>
+                            <label class="form-label" for="email">Email</label>
+                        </div>
+                        <button type="submit" class="signin-btn btn btn-primary btn-block mt-2">Submit</button>
+
+                        <br>
+                        <button type="button" id="back-to-login" class="signin-btn btn btn-outline-primary mt-2">Back to Login</button>
+                    </form>
+                </div>
+
             </div>
 
             <script>
@@ -163,22 +179,40 @@
                         }
                     }
 
-                    
-
                     // Set the height based on the active tab when the page loads
                     setHeightForActiveTab();
 
                     const registerPill = document.getElementById('tab-register');
                     const loginPill = document.getElementById('tab-login');
+                    const pillsLogin = document.getElementById('pills-login');
+                    const pillsResetPassword = document.getElementById('pills-reset-password');
+
 
                     registerPill.addEventListener('click', function () {
                         signinContainer.style.height = registerHeight;
+                        pillsResetPassword.classList.remove('show', 'active');
                     });
                     loginPill.addEventListener('click', function () {
                         signinContainer.style.height = signinHeight;
                     });
-                });
 
+                    const forgotPasswordLink = document.getElementById('forgot-password-link');
+                    const backToLoginBtn = document.getElementById('back-to-login');
+
+                    forgotPasswordLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+
+                        // Hide login and show reset password
+                        pillsLogin.classList.remove('show', 'active');
+                        pillsResetPassword.classList.add('show', 'active');
+                    });
+
+                    backToLoginBtn.addEventListener('click', function() {
+                        // Hide reset password and show login
+                        pillsResetPassword.classList.remove('show', 'active');
+                        pillsLogin.classList.add('show', 'active');
+                    });
+                });
             </script>
 
 
