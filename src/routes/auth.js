@@ -1,10 +1,76 @@
 const express = require('express');
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 const path = require('path');
 const User = require(path.join(__dirname, '..', 'models', 'user'));
+const ResetToken = require(path.join(__dirname, "..", 'models', 'resetToken'));
 
 const router = express.Router();
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.PASSWORD_RESET_EMAIL_USERNAME,
+    pass: process.env.PASSWORD_RESET_EMAIL_PASSWORD,
+  },
+});
+
+router.get('/reset-password/:token', (req, res) => {
+  res.render('password-reset', { token: req.params.token, title: 'Password Reset', user: null });
+
+});
+
+router.get('/request-password-reset', (req, res) => {
+  res.render('password-reset-request');
+});
+
+// Password reset
+router.post('/request-password-reset', async (req, res) => {
+  const email = req.body.email;
+
+  const token = crypto.randomBytes(32).toString('hex');
+
+  const user = await User.findOne({ email: email });
+  if (!user) {
+      return res.status(400).send('Email address not found.');
+  }
+  await ResetToken.create({ user: user._id, token });
+
+  const resetLink = `http://localhost:3000/auth/reset-password/${token}`;
+
+  transporter.sendMail({
+    to: email,
+    subject: 'ReVUW password reset request',
+    text: `Click the following link to reset your password: ${resetLink}`
+
+  })
+
+  res.send('Password reset email sent');
+});
+
+router.post('/reset-password', async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  if (!newPassword) {
+    return res.status(400).send('New password is missing.');
+  }
+
+  const resetToken = await ResetToken.findOne({ token }).populate('user');
+
+  if (!resetToken) {
+    return res.status(400).send('Invalid or expired token.');
+  }
+
+  const user = resetToken.user;
+  user.password = newPassword;
+  await user.save();
+
+  await ResetToken.deleteOne({ _id: resetToken._id }); // Remove used token
+
+  res.send('Password successfully reset.');
+});
 
 //Signup
 router.get('/signup', (req, res) => {
