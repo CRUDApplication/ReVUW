@@ -50,7 +50,7 @@ router.post('/request-password-reset', async (req, res) => {
     text: `Click the following link to reset your password: ${resetLink}`
 
   })
-  res.render('signin', {layout: 'layouts/fullWidth', passwordError: null, errorMessage: null, successMessage: 'Password reset email sent!', title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
+  res.redirect('/auth/signin');
 });
 
 router.post('/reset-password', async (req, res) => {
@@ -106,10 +106,7 @@ router.post('/signup', async (req, res) => {
         res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: null, passwordError: 'Email already in use', successMessage: null,  activeTab: 'register'});
       } else {
         await User.create({ email: userEmail, password: userPassword });
-
-        let returnTo = req.session.returnTo || '/';
-        delete req.session.returnTo; // Cleanup session
-        res.redirect(returnTo);
+        res.redirect('/auth/signin');
       }
     } catch (error) {
       res.render('signin', {layout: 'layouts/fullWidth', passwordError: error.message,  errorMessage: null, successMessage: null,  title: 'Authentication Failed', user: req.user, activeTab: 'register' });
@@ -160,7 +157,7 @@ router.post('/signin', storeRedirectInLocals, passport.authenticate('local', {
   failureFlash: true
 }), (req, res) => {
   let returnTo = res.locals.returnTo || '/'
-  if (returnTo == 'http://localhost:3000/auth/reset-password') {
+  if (returnTo == 'http://localhost:3000/auth/reset-password' || returnTo == 'http://localhost:3000/auth/signin') {
     returnTo = '/';
   }
   res.redirect(returnTo);
