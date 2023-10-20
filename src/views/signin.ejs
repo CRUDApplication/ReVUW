@@ -44,6 +44,11 @@
                                 <%= errorMessage %>
                             </div>
                         <% } %>
+                        <% if (successMessage) { %>
+                            <div style="color: rgb(13, 150, 56); margin-bottom: 10px;">
+                                <%= successMessage %>
+                            </div>
+                        <% } %>
                         <!-- Email input -->
                         <div class="form-floating">
                             <input type="email" id="loginName" name="loginName" class="form-control mb-2" placeholder="" required/>

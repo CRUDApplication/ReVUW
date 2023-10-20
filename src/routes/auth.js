@@ -50,10 +50,7 @@ router.post('/request-password-reset', async (req, res) => {
     text: `Click the following link to reset your password: ${resetLink}`
 
   })
-  //return res.status(200);
-  res.redirect('/auth/signin');
-  //res.render('signin', {layout: 'layouts/fullWidth', passwordError: null, errorMessage: 'Password reset email sent!', title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
-  //res.send('Password reset email sent');
+  res.render('signin', {layout: 'layouts/fullWidth', passwordError: null, errorMessage: null, successMessage: 'Password reset email sent!', title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
 });
 
 router.post('/reset-password', async (req, res) => {
@@ -90,7 +87,7 @@ router.get('/signup', (req, res) => {
   else
     req.session.returnTo = req.header('Referer');
     
-  res.render('signin', { layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: null, errorMessage: null, activeTab: 'register' });
+  res.render('signin', { layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: null, errorMessage: null, successMessage: null,  activeTab: 'register' });
 });
 
 
@@ -100,13 +97,13 @@ router.post('/signup', async (req, res) => {
   const userEmail = req.body.email;
   let passwordCheckResult = checkPassword(userPassword, confirmPassword);
   if (passwordCheckResult != null) {
-    res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: passwordCheckResult, errorMessage: null, activeTab: 'register'});
+    res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: passwordCheckResult, errorMessage: null, successMessage: null,  activeTab: 'register'});
   } 
   else {
     try {
       const emailIsUnique = await isEmailUnique(userEmail);
       if (!emailIsUnique) {
-        res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: null, passwordError: 'Email already in use', activeTab: 'register'});
+        res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: null, passwordError: 'Email already in use', successMessage: null,  activeTab: 'register'});
       } else {
         await User.create({ email: userEmail, password: userPassword });
 
@@ -115,7 +112,7 @@ router.post('/signup', async (req, res) => {
         res.redirect(returnTo);
       }
     } catch (error) {
-      res.render('signin', {layout: 'layouts/fullWidth', passwordError: error.message,  errorMessage: null, title: 'Authentication Failed', user: req.user, activeTab: 'register' });
+      res.render('signin', {layout: 'layouts/fullWidth', passwordError: error.message,  errorMessage: null, successMessage: null,  title: 'Authentication Failed', user: req.user, activeTab: 'register' });
     }
   }
 });
@@ -154,7 +151,7 @@ router.get('/signin', (req, res, next) => {
     req.session.returnTo = req.header('Referer')
   const errorMessage = req.flash('error');
   req.session.save(() => {
-    res.render('signin', {layout: 'layouts/fullWidth', passwordError: null, errorMessage: errorMessage[0], title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
+    res.render('signin', {layout: 'layouts/fullWidth', passwordError: null, errorMessage: errorMessage[0], successMessage: null,  title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
   });
 });
 
@@ -163,7 +160,7 @@ router.post('/signin', storeRedirectInLocals, passport.authenticate('local', {
   failureFlash: true
 }), (req, res) => {
   let returnTo = res.locals.returnTo || '/'
-  if (returnTo == 'http://localhost:3000/auth/reset-password' || returnTo == 'http://localhost:3000/auth/signin') {
+  if (returnTo == 'http://localhost:3000/auth/reset-password') {
     returnTo = '/';
   }
   res.redirect(returnTo);
