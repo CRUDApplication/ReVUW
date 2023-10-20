@@ -109,6 +109,9 @@
                                     <span class="star-empty">☆</span>
                                     <% } %>
                                     <% } %>
+                                    <% if (review.isEdited) { %>
+                                        <span class="edited-label">Edited</span>
+                                    <% } %>
                                 </div>
                             </div>
                             <p style="margin-bottom: 0;"><p><%= review.content %></p>
