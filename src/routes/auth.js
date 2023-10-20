@@ -28,7 +28,7 @@ router.get('/reset-password', (req, res) => {
   if (!req.session.resetToken) {
     return res.status(400).send('Invalid session for password reset.');
   }
-  res.render('password-reset', { title: 'Password Reset', user: null });
+  res.render('password-reset', { title: 'Password Reset', user: null, passwordError: null });
 });
 
 router.post('/request-password-reset', async (req, res) => {
@@ -39,6 +39,7 @@ router.post('/request-password-reset', async (req, res) => {
   const user = await User.findOne({ email: email });
   if (!user) {
       return res.status(400).send('Email address not found.');
+      //return res.status(400).json({ message: 'Email address not found.' });
   }
   await ResetToken.create({ user: user._id, token });
 
@@ -50,7 +51,9 @@ router.post('/request-password-reset', async (req, res) => {
     text: `Click the following link to reset your password: ${resetLink}`
 
   })
-  res.send('Password reset email sent');
+  res.redirect('/auth/signin');
+  //res.render('signin', {layout: 'layouts/fullWidth', passwordError: 'Password reset email sent!', errorMessage: null, title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
+  //res.send('Password reset email sent');
 });
 
 router.post('/reset-password', async (req, res) => {
@@ -58,6 +61,11 @@ router.post('/reset-password', async (req, res) => {
 
   if (!newPassword) {
     return res.status(400).send('New password is missing.');
+  }
+  let passwordCheckResult = checkPasswordStrength(newPassword);
+  if (passwordCheckResult != null) {
+    return res.render('password-reset', { title: 'Password Reset', user: null, passwordError: passwordCheckResult });
+    //res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: passwordCheckResult, errorMessage: null, activeTab: 'register'});
   }
 
   const token = req.session.resetToken;
