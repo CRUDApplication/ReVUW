@@ -5,6 +5,9 @@
                 <!-- Display the course rating as stars -->
                 <div class="star-rating">
                     <%- include('../components/rating', { rating: review.rating }) %>
+                    <% if (review.isEdited) { %>
+                        <span class="edited-label">Edited</span>
+                    <% } %>
                 </div>
                 <!-- Display the edit and delete icons if editable is true -->
                 <% if (editable) { %>

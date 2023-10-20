@@ -96,6 +96,12 @@ router.get('/:courseCode/reviews/:reviewId/edit', checkReviewOwnership, async (r
 router.post('/:courseCode/reviews/:reviewId/edit', checkReviewOwnership, async (req, res) => {
     try {
         const review = await ReviewModel.findById(req.params.reviewId);
+
+        // Check if any changes were made to the review
+        if (review.content !== req.body.reviewContent || review.rating !== req.body.rating) {
+            review.isEdited = true;
+        }
+
         review.content = req.body.reviewContent;
         review.rating = req.body.rating;
 
