@@ -68,6 +68,7 @@ router.post('/:courseCode/review', isAuthenticated, async (req, res) => {
             courseCode: req.params.courseCode,
             content: req.body.reviewContent,
             rating: req.body.rating,
+            isEdited: req.body.isEdited,
             userId: userId,
             datePosted: new Date()
         });
