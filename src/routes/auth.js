@@ -58,11 +58,11 @@ router.post('/request-password-reset', async (req, res) => {
 
 router.post('/reset-password', async (req, res) => {
   const newPassword = req.body.newPassword;
-
+  const confirmPassword = req.body.repeatNewPassword;
   if (!newPassword) {
     return res.status(400).send('New password is missing.');
   }
-  let passwordCheckResult = checkPasswordStrength(newPassword);
+  let passwordCheckResult = checkPassword(newPassword, confirmPassword);
   if (passwordCheckResult != null) {
     return res.render('password-reset', { title: 'Password Reset', user: null, successfulReset: null, passwordError: passwordCheckResult });
   }
@@ -96,8 +96,9 @@ router.get('/signup', (req, res) => {
 
 router.post('/signup', async (req, res) => {
   const userPassword = req.body.registerPassword;
+  const confirmPassword = req.body.registerRepeatPassword;
   const userEmail = req.body.email;
-  let passwordCheckResult = checkPasswordStrength(userPassword);
+  let passwordCheckResult = checkPassword(userPassword, confirmPassword);
   if (passwordCheckResult != null) {
     res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: passwordCheckResult, errorMessage: null, activeTab: 'register'});
   } 
@@ -120,13 +121,16 @@ router.post('/signup', async (req, res) => {
 });
 
 
-function checkPasswordStrength(userPassword) {
+function checkPassword(userPassword, confirmPassword) {
   let errorMessage = null;
   if (userPassword.length < 8) {
     errorMessage = 'Use 8 characters or more for your password';
   } else if (!/(?=.*[a-z])/.test(userPassword) || !/(?=.*[A-Z])/.test(userPassword) || !/[0-9]/.test(userPassword)) {
     errorMessage = 'Please choose a stronger password. Use a mix of numbers and letters with upper and lower case';
-  } 
+  } else if (!(userPassword === confirmPassword)){
+    errorMessage = 'Passwords do not match';
+    console.log('passwords dont match');
+  }
   return errorMessage;
 }
 
