@@ -32,7 +32,7 @@ router.get('/reset-password', (req, res) => {
 });
 
 router.post('/request-password-reset', async (req, res) => {
-  const email = req.body.email;
+  const email = req.body.resetEmail;
 
   const token = crypto.randomBytes(32).toString('hex');
 
@@ -50,7 +50,6 @@ router.post('/request-password-reset', async (req, res) => {
     text: `Click the following link to reset your password: ${resetLink}`
 
   })
-
   res.send('Password reset email sent');
 });
 
@@ -63,7 +62,6 @@ router.post('/reset-password', async (req, res) => {
 
   const token = req.session.resetToken;
   const resetToken = await ResetToken.findOne({ token }).populate('user');
-
   if (!resetToken) {
     return res.status(400).send('Invalid or expired token.');
   }
