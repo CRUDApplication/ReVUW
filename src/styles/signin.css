@@ -3,10 +3,21 @@
     height: 80vh;
 }
 
-.box-container {
-    width: 350px;
-    height: 600px;
+#signin-container {
+    background-color: white;
+    width: 500px;
+    height: 510px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: height 0.3s ease;
+    margin: 120px auto;
 }
+
+.box-container {
+    margin-top: 55px;
+    width: 350px;
+}
+
 
 .nav-link.active {
     color: #0D4C38 !important;

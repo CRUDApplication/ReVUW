@@ -1,0 +1,41 @@
+services:
+  client:
+    image: gcr.io/revuw-399809/client:latest
+    environment:
+      - API_URL=http://api_gateway:3001
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - MONGODB_URI=${MONGODB_URI}
+    ports:
+      - "3000:3000"
+
+  api_gateway:
+    image: gcr.io/revuw-399809/gateway:latest
+    environment:
+      - GRPC_ENDPOINT=grpc_server:50051
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - MONGODB_URI=${MONGODB_URI}
+    ports:
+      - "3001:3001"
+    depends_on:
+      - client
+
+  grpc_server:
+    image: gcr.io/revuw-399809/grpc-server:latest
+    environment:
+        - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+        - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+        - SESSION_SECRET=${SESSION_SECRET}
+        - MONGODB_URI=${MONGODB_URI}
+    ports:
+      - "50051:50051"
+    depends_on:
+      - api_gateway
+
+networks:
+  default:
+    external:
+      name: my-net
