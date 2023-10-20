@@ -28,7 +28,7 @@ router.get('/reset-password', (req, res) => {
   if (!req.session.resetToken) {
     return res.status(400).send('Invalid session for password reset.');
   }
-  res.render('password-reset', { title: 'Password Reset', user: null, passwordError: null });
+  res.render('password-reset', { title: 'Password Reset', user: null, successfulReset: null, passwordError: null });
 });
 
 router.post('/request-password-reset', async (req, res) => {
@@ -64,14 +64,13 @@ router.post('/reset-password', async (req, res) => {
   }
   let passwordCheckResult = checkPasswordStrength(newPassword);
   if (passwordCheckResult != null) {
-    return res.render('password-reset', { title: 'Password Reset', user: null, passwordError: passwordCheckResult });
-    //res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: passwordCheckResult, errorMessage: null, activeTab: 'register'});
+    return res.render('password-reset', { title: 'Password Reset', user: null, successfulReset: null, passwordError: passwordCheckResult });
   }
 
   const token = req.session.resetToken;
   const resetToken = await ResetToken.findOne({ token }).populate('user');
   if (!resetToken) {
-    return res.status(400).send('Invalid or expired token.');
+    return res.render('password-reset', { title: 'Password Reset', user: null, successfulReset: null, passwordError: 'Invalid or expired token.' });
   }
 
   const user = resetToken.user;
@@ -81,7 +80,7 @@ router.post('/reset-password', async (req, res) => {
   await ResetToken.deleteOne({ _id: resetToken._id });
   delete req.session.resetToken;
 
-  res.send('Password successfully reset.');
+  return res.render('password-reset', { title: 'Password Reset', user: null, successfulReset: 'Password successfully reset.', passwordError: null});
 });
 
 //Signup
