@@ -26,7 +26,7 @@ router.get('/reset-password/:token', (req, res) => {
 
 router.get('/reset-password', (req, res) => {
   if (!req.session.resetToken) {
-    return res.status(400).send('Invalid session for password reset.');
+    res.render('password-reset', { title: 'Password Reset', user: null, successfulReset: null, passwordError: 'Invalid session for password reset.' });
   }
   res.render('password-reset', { title: 'Password Reset', user: null, successfulReset: null, passwordError: null });
 });
@@ -39,7 +39,6 @@ router.post('/request-password-reset', async (req, res) => {
   const user = await User.findOne({ email: email });
   if (!user) {
       return res.status(400).send('Email address not found.');
-      //return res.status(400).json({ message: 'Email address not found.' });
   }
   await ResetToken.create({ user: user._id, token });
 
@@ -51,8 +50,9 @@ router.post('/request-password-reset', async (req, res) => {
     text: `Click the following link to reset your password: ${resetLink}`
 
   })
+  //return res.status(200);
   res.redirect('/auth/signin');
-  //res.render('signin', {layout: 'layouts/fullWidth', passwordError: 'Password reset email sent!', errorMessage: null, title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
+  //res.render('signin', {layout: 'layouts/fullWidth', passwordError: null, errorMessage: 'Password reset email sent!', title: 'ReVUW | Login', user: req.session.user, activeTab: 'login' });
   //res.send('Password reset email sent');
 });
 
@@ -60,7 +60,7 @@ router.post('/reset-password', async (req, res) => {
   const newPassword = req.body.newPassword;
   const confirmPassword = req.body.repeatNewPassword;
   if (!newPassword) {
-    return res.status(400).send('New password is missing.');
+    return res.render('password-reset', { title: 'Password Reset', user: null, successfulReset: null, passwordError: 'New password is missing.' });
   }
   let passwordCheckResult = checkPassword(newPassword, confirmPassword);
   if (passwordCheckResult != null) {
@@ -109,7 +109,7 @@ router.post('/signup', async (req, res) => {
         res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: null, passwordError: 'Email already in use', activeTab: 'register'});
       } else {
         await User.create({ email: userEmail, password: userPassword });
-        
+
         let returnTo = req.session.returnTo || '/';
         delete req.session.returnTo; // Cleanup session
         res.redirect(returnTo);
@@ -120,7 +120,6 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-
 function checkPassword(userPassword, confirmPassword) {
   let errorMessage = null;
   if (userPassword.length < 8) {
@@ -129,7 +128,6 @@ function checkPassword(userPassword, confirmPassword) {
     errorMessage = 'Please choose a stronger password. Use a mix of numbers and letters with upper and lower case';
   } else if (!(userPassword === confirmPassword)){
     errorMessage = 'Passwords do not match';
-    console.log('passwords dont match');
   }
   return errorMessage;
 }
@@ -165,6 +163,9 @@ router.post('/signin', storeRedirectInLocals, passport.authenticate('local', {
   failureFlash: true
 }), (req, res) => {
   let returnTo = res.locals.returnTo || '/'
+  if (returnTo == 'http://localhost:3000/auth/reset-password' || returnTo == 'http://localhost:3000/auth/signin') {
+    returnTo = '/';
+  }
   res.redirect(returnTo);
 });
 
