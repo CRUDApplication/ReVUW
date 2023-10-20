@@ -30,11 +30,19 @@ router.post('/signup', async (req, res) => {
       if (!emailIsUnique) {
         res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: null, passwordError: 'Email already in use', activeTab: 'register'});
       } else {
-        await User.create({ email: userEmail, password: userPassword });
+        const newUser = await User.create({ email: userEmail, password: userPassword });
         
-        let returnTo = req.session.returnTo || '/';
-        delete req.session.returnTo; // Cleanup session
-        res.redirect(returnTo);
+        req.login(newUser, (err) => {
+          if (err) {
+            return next(err);
+          }
+
+        
+          let returnTo = req.session.returnTo || '/';
+          delete req.session.returnTo; // Cleanup session
+
+          res.redirect(returnTo);
+        });
       }
     } catch (error) {
       res.render('signin', {layout: 'layouts/fullWidth', passwordError: error.message,  errorMessage: null, title: 'Authentication Failed', user: req.user, activeTab: 'register' });
