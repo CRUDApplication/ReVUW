@@ -4,11 +4,11 @@
   "description": "Initializing project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.js",
+    "test": "mocha",
+    "start": "node src/app.js",
     "dev:grpc": "nodemon src/grpc_server/server.js",
     "dev:api_gateway": "nodemon src/api_gateway/gateway.js",
-    "dev:client": "nodemon src/server.js",
+    "dev:client": "nodemon src/app.js",
     "dev": "concurrently \"npm run dev:grpc\" \"npm run dev:api_gateway\" \"npm run dev:client\""
   },
   "repository": {
@@ -42,7 +42,11 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
+    "chai": "^4.3.10",
     "concurrently": "^8.2.1",
-    "nodemon": "^3.0.1"
+    "mocha": "^10.2.0",
+    "nodemon": "^3.0.1",
+    "sinon": "^16.1.3",
+    "supertest": "^6.3.3"
   }
 }
