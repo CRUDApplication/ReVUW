@@ -38,7 +38,7 @@ router.post('/request-password-reset', async (req, res) => {
 
   const user = await User.findOne({ email: email });
   if (!user) {
-      return res.status(400).send('Email address not found.');
+    return res.redirect('/auth/signin');
   }
   await ResetToken.create({ user: user._id, token });
 
