@@ -113,3 +113,8 @@ input, textarea {
     cursor: pointer;
 }
 
+.course-footer .star-filled,
+.course-footer .star-empty {
+    font-size: 20px !important;
+    color: #184D3A;
+}

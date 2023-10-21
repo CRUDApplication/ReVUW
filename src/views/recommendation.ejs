@@ -13,9 +13,11 @@
             <p class="course-description my-0"><%= course.description %></p>
             <button class="toggle-description" data-index="<%= index %>" data-course='<%= JSON.stringify(course) %>'>
                 <i class="bi bi-chevron-compact-down"></i> Read More</button>
-            <div class="course-footer d-flex justify-content-between">
-                <span>rating</span>
-                <span>view reviews</span>
+            <div class="course-footer d-flex justify-content-between  mt-3">
+                <span>
+                    Average Rating: &nbsp <%- include('./components/rating.ejs', { rating: course.averageRating }) %> ( <%=course.averageRating%> )
+                </span>
+                <span><a href="/courses/<%= course.courseCode %>">View reviews &nbsp<i class="bi bi-arrow-right"></i></a></span>
             </div>
             
         </div>
