@@ -1,16 +1,24 @@
+<link rel="stylesheet" href="/styles/course.css">
+
 <div class="container main-content">
-    <h1>Courses</h1>
-    <input type="text" id="courseSearch" placeholder="Search for a course...">
+    <div class="course-title d-flex justify-content-between align-items-center my-4">
+        <h1>Courses</h1>
+        <input type="text" id="courseSearch" placeholder="Search for a course...">
+    </div>
+    <hr>
     <div class="row" id="courseList">
         <% courses.forEach(course => { %>
-            <div class="col-md-4 mb-3">
-                <div class="card" style="height: 300px;">
-                    <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                        <strong>Title:</strong> <a href="/courses/<%= course.courseCode %>" class="course-title"><%= course.title %></a><br>
-                        <strong>Course Code:</strong> <span class="course-code"><%= course.courseCode %></span><br>
-                        <strong>Description:</strong> <%= course.description %><br>
-                        <strong>Lecturers:</strong> <%= course.lecturers %><br>
-                    </div>
+            <div class="col-4 mb-3">
+                <div class="card my-1">
+                    <a href="/courses/<%= course.courseCode %>" class="p-4">
+                        <h3 class="course-title"><%= course.title %></h3>
+                        <p><strong>Course Code: </strong><%= course.courseCode %></p>
+                        <p><strong>Lecturers: </strong>
+                            <% const maxCharacters = 27; %>
+                            <% const lecturers = course.lecturers.length > maxCharacters ? course.lecturers.slice(0, maxCharacters) + '...' : course.lecturers; %>
+                            <%= lecturers %>
+                        </p>
+                    </a>
                 </div>
             </div>
         <% }); %>
