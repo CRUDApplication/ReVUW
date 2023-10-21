@@ -20,6 +20,7 @@ router.get('/signup', (req, res) => {
 router.post('/signup', async (req, res) => {
   const userPassword = req.body.registerPassword;
   const userEmail = req.body.email;
+  const userName = req.body.registerName;
   let passwordCheckResult = checkPasswordStrength(userPassword);
   if (passwordCheckResult != null) {
     res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: passwordCheckResult, errorMessage: null, activeTab: 'register'});
@@ -30,14 +31,13 @@ router.post('/signup', async (req, res) => {
       if (!emailIsUnique) {
         res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: null, passwordError: 'Email already in use', activeTab: 'register'});
       } else {
-        const newUser = await User.create({ email: userEmail, password: userPassword });
+        const newUser = await User.create({ username: userName, email: userEmail, password: userPassword });
         
         req.login(newUser, (err) => {
           if (err) {
             return next(err);
           }
 
-        
           let returnTo = req.session.returnTo || '/';
           delete req.session.returnTo; // Cleanup session
 
