@@ -10,26 +10,26 @@ const router = express.Router();
 //Profile
 router.get('/profile', async (req, res)=> {
   // only accessible if user is logged in
+  
   if (!req.user) {
     res.redirect('/');
-  }
-
-  try {
-    const user = await User.findOne({ email: req.user.email });
-    const savedCourses = [];
-  
-    for (const courseId of user.savedCourses) {
-      const course = await CourseModel.findById(courseId);
-      savedCourses.push(course);
-    }
-     
-    res.render('profile', {title: 'ReVUW | SignUp', user: req.user, userInfo: user, savedCourses});
+  } else {
+    try {
+      const user = await User.findOne({ email: req.user.email });
+      const savedCourses = [];
     
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Failed to fetch profile', success: false });
+      for (const courseId of user.savedCourses) {
+        const course = await CourseModel.findById(courseId);
+        savedCourses.push(course);
+      }
+       
+      res.render('profile', {title: 'ReVUW | SignUp', user: req.user, userInfo: user, savedCourses});
+      
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Failed to fetch profile', success: false });
+    }
   }
- 
   
 });
 
