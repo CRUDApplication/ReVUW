@@ -6,6 +6,7 @@ const nodemailer = require('nodemailer');
 const path = require('path');
 const User = require(path.join(__dirname, '..', 'models', 'user'));
 const ResetToken = require(path.join(__dirname, "..", 'models', 'resetToken'));
+const API_URL = process.env.API_URL || 'http://localhost:3000';
 
 const router = express.Router();
 
@@ -43,7 +44,7 @@ router.post('/request-password-reset', async (req, res) => {
   }
   await ResetToken.create({ user: user._id, token });
 
-  const resetLink = `http://localhost:3000/auth/reset-password/${token}`;
+  const resetLink = `${API_URL}/auth/reset-password/${token}`;
 
   transporter.sendMail({
     to: email,
@@ -158,7 +159,7 @@ router.post('/signin', storeRedirectInLocals, passport.authenticate('local', {
   failureFlash: true
 }), (req, res) => {
   let returnTo = res.locals.returnTo || '/'
-  if (returnTo == 'http://localhost:3000/auth/reset-password' || returnTo == 'http://localhost:3000/auth/signin') {
+  if (returnTo == (`${API_URL}/auth/reset-password`) || returnTo == (`${API_URL}/auth/signin`)) {
     returnTo = '/';
   }
   res.redirect(returnTo);
