@@ -62,7 +62,8 @@ app.use((req, res, next) => {
 
 app.use(flash());
 // Define routes
-app.use('/auth', require('./routes/auth'));
+const authRoutes = require('./routes/auth'); 
+app.use('/auth', authRoutes.router);
 app.use('/courses', require('./routes/courses'));
 
 
@@ -113,7 +114,8 @@ app.get('/privacy', (req, res) => {
     res.render('privacy', { title: 'ReVUW | Privacy Policy', user: req.user });
 });
 
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+module.exports = app;
+// const PORT = 3000;
+// app.listen(PORT, () => {
+//     console.log(`Server is running on http://localhost:${PORT}`);
+// });
