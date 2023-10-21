@@ -3,6 +3,6 @@
 <form action="/courses/<%= courseCode %>/reviews/<%= review._id %>/edit" method="POST">
     <label for="rating">Course Rating:</label>
     <input type="number" name="rating" min="1" max="5" value="<%= review.rating %>" placeholder="(1-5)" required>
-    <textarea name="reviewContent"><%= review.content %></textarea>
+    <textarea name="reviewContent" required><%= review.content %></textarea>
     <button type="submit">Update Review</button>
 </form>

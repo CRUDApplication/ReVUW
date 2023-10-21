@@ -21,3 +21,12 @@
 .header-label {
   margin-top: 20px;
 }
+
+.edited-label {
+  background-color: #0D4C38; 
+  color: #fff; 
+  border-radius: 50%; /* Creates a circular shape around the label */
+  padding: 4px 8px; 
+  font-size: 14px;
+  margin-right: 5px; 
+}

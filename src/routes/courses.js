@@ -63,11 +63,25 @@ router.post('/:courseCode/review', isAuthenticated, async (req, res) => {
         }
 
         userId = req.user._id;
+        const courseCode = req.params.courseCode;
 
+        // Check if the user has already reviewed this course
+        const existingReview = await ReviewModel.findOne({ courseCode, userId });
+
+        if (existingReview) {
+            // User has already reviewed this course
+            const alertMessage = 'You have already reviewed this course.';
+            return res.send(
+                `<script>alert('${alertMessage}'); window.location.href = '/courses/${req.params.courseCode}';</script>`
+            );
+        }
+
+        // If the user hasn't reviewed the course, create a new review
         const review = new ReviewModel({
             courseCode: req.params.courseCode,
             content: req.body.reviewContent,
             rating: req.body.rating,
+            isEdited: req.body.isEdited,
             userId: userId,
             datePosted: new Date()
         });
@@ -96,6 +110,12 @@ router.get('/:courseCode/reviews/:reviewId/edit', checkReviewOwnership, async (r
 router.post('/:courseCode/reviews/:reviewId/edit', checkReviewOwnership, async (req, res) => {
     try {
         const review = await ReviewModel.findById(req.params.reviewId);
+
+        // Check if any changes were made to the review
+        if (review.content !== req.body.reviewContent || review.rating !== req.body.rating) {
+            review.isEdited = true;
+        }
+
         review.content = req.body.reviewContent;
         review.rating = req.body.rating;
 
