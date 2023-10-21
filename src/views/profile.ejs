@@ -23,24 +23,34 @@
     <div class="stats d-flex justify-content-between mx-auto mb-5">
         <div class="stat-box d-flex align-items-center justify-content-center flex-column">
             <h1><%=savedCourses.length%></h1>
+            <br>
             <p>Total Courses<br>Saved</p>
         </div>
         <div class="stat-box d-flex align-items-center justify-content-center flex-column">
             <h1>0</h1>
+            <br>
             <p>Total Reviews<br>Submitted</p>
         </div>
         <div class="stat-box d-flex align-items-center  justify-content-center flex-column">
             <h1>0</h1>
+            <br>
             <p>Average Review<br>Rating</p>
         </div>
     </div>
     <hr>
     <div class="course-collection">
         <h2>Course Collection:</h2>
-        <!--print courses-->
-        <% for (const course of savedCourses) { %>
-            <ul>- <%= course.title%></ul>
-        <% } %>
+        
+        <div class="course-list d-flex justify-content-start">
+            <!--print courses-->
+            <% if (savedCourses.length == 0) { %>
+                    <p>You have not saved any courses.</p>
+            <%} else { for (const course of savedCourses) { %>
+                <div class="p-3"><a href="/courses/<%= course.courseCode %>" class="course-icon-full  d-flex align-items-center justify-content-center"><%= course.courseCode %></a></div>
+            <% }} %>
+        </div>
+       
+    
     </div>
     <div class="review-collection">
         <h2>Review Collection:</h2>

@@ -27,7 +27,6 @@
 .stat-box {
     width: 200px;
     height: 200px;
-    background: #c5d6d1;
     border-radius: 20px;
 }
 
@@ -37,4 +36,22 @@
 
 .stat-box p {
     text-align: center;
+}
+
+.course-icon-full {
+    width: 120px; 
+    height: 70px; 
+    background: #184D3A;/*linear-gradient(119deg, #184D3A 0%, #3CAF95 100%); */
+    border-radius: 16px;
+    margin-right: 15px;
+    transition: 2s ease;
+    font-weight: 300;
+    cursor: pointer;
+    text-decoration: none !important;
+    color: white;
+}
+
+.course-icon-full:hover {
+    text-decoration: none !important;
+    background: linear-gradient(119deg, #184D3A 0%, #3CAF95 100%);
 }
