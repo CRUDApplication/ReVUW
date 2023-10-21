@@ -1,25 +1,48 @@
 <link rel="stylesheet" href="/styles/rating.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.19.0/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="/styles/course.css">
 <script src="/js/deleteReview.js"></script>
 
 <div class="container main-content">
-    <h1><%= course.courseCode %></h1>
 
-    <!-- Display SavedCourse button -->
-    <% if(user) { %>
-        <button class="bi-bookmark toggleSavedCourses" data-target="toggleSavedCourses"></button>
-    <% }%>
+    <div class="course-info mt-3 p-5">
+        <div class="course-title d-flex justify-content-between align-items-start">
+            <span>
+                <h2><%= course.title %></h2>
+                <p><strong>Course Code:</strong> <%= course.courseCode%></p>
+            </span>
+            <!-- Display SavedCourse button -->
+            <% if(user) { %>
+                <button class="bi-bookmark toggleSavedCourses" data-target="toggleSavedCourses"></button>
+            <% }%>
+        </div>
+        <p><%= course.description %></p>
+        
+        <div class="stat-label d-flex">
+            <p><strong>Total: </strong><%= reviews.length %> reviews</p>
+            <p>|</p>
+            <%let sum = 0;%>
+            <%for (const review of reviews) {%>
+                <%sum += review.rating || 0; %>
+            <%}%>
+            <% const avg = reviews.length > 0 ? sum / reviews.length : 0;%>
+            <p><strong>Rating: </strong> <%- include('./components/rating.ejs', { rating: avg.toFixed(1) }) %></p>
+            <p>(<%=avg.toFixed(1) %>)</p>
+        </div>
+    </div>
+    
 
-    <p><%= course.description %></p>
+    
 
     <!-- Display total number of reviews and average rating -->
     <div>
-        <h3 class="header-label">Total Reviews: <%= reviews.length %></h3>
+        
         <% if (reviews.length > 0) { %>
             <% let totalRating = reviews.reduce((sum, review) => {
                 return sum + (isNaN(review.rating) ? 0 : review.rating);
             }, 0); %>
             <% let averageRating = totalRating / reviews.length; %>
+
+
             <% if (!isNaN(averageRating)) { %>
                 <h3 class="header-label">Average Rating: <%= averageRating.toFixed(1) %> / 5</h3>
             <% } else { %>

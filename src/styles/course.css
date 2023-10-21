@@ -33,3 +33,23 @@
     border-color: #3CAF95 !important;
     box-shadow: 0 0 5px #3CAF95;
 }
+
+.stat-label p {
+    padding-right: 20px;
+}
+
+.course-title button {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 15px;
+    font-size: 25px;
+}
+
+.course-info {
+    background: linear-gradient(162deg, rgba(18,40,66,1) 0%, rgba(22,73,54,1) 42%, rgba(27,224,196,1) 100%);
+    color: white !important;
+    border: 1px solid #ccc;
+    border-radius: 10px; 
+    
+}
