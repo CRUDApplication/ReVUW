@@ -47,6 +47,7 @@
 body {
     background-color: #a5a9a8;
     font-family: 'Arsenal', sans-serif !important;
+    font-size: 18px !important;
 }
 
 .wrapper {
@@ -79,5 +80,3 @@ input, textarea {
     color: #fff;
     outline: none;
 }
-
-

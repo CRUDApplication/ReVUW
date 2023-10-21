@@ -38,7 +38,6 @@ router.get('/:courseCode', async (req, res) => {
     }
 });
 
-
 // Review routes
 
 // Middleware to check review ownership
