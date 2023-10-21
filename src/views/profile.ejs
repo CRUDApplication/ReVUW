@@ -1,0 +1,78 @@
+<link rel="stylesheet" href="/styles/profile.css">
+
+<div class="profile-wrapper mx-auto">
+    <div class="my-5 d-flex">
+        <span class="pfp d-flex align-items-center justify-content-center">
+            <% if (!userInfo.username) { %>
+                U
+            <% } else { %>
+                <%= userInfo.username.charAt(0) %>
+            <% } %>
+        </span>
+        <span class="user-info">
+            <h1>
+                <% if (!userInfo.username) { %>
+                    Unamed User
+                <% } else { %>
+                    <%= userInfo.username %>
+                <% } %>
+            </h1>
+            <p class="sub-heading"><%= userInfo.email %></p>
+        </span>
+    </div>
+    <div class="stats d-flex justify-content-between mx-auto mb-5">
+        <div class="stat-box d-flex align-items-center justify-content-center flex-column">
+            <h1><%=savedCourses.length%></h1>
+            <br>
+            <p>Total Courses<br>Saved</p>
+        </div>
+        <div class="stat-box d-flex align-items-center justify-content-center flex-column">
+            <h1><%= reviews.length %></h1>
+            <br>
+            <p>Total Reviews<br>Submitted</p>
+        </div>
+        <div class="stat-box d-flex align-items-center  justify-content-center flex-column">
+            <%let sum = 0;%>
+            <%for (const review of reviews) {%>
+                <%sum += review.rating || 0; %>
+            <%}%>
+            <% const avg = reviews.length > 0 ? sum / reviews.length : 0;%>
+            <h1><%=avg.toFixed(2) %></h1>
+            <br>
+            <p>Average Review<br>Rating</p>
+        </div>
+    </div>
+    <hr>
+    <h2>Your Course Collection:</h2>
+    
+    <div class="course-list d-flex justify-content-start">
+        <!--print courses-->
+        <% if (savedCourses.length == 0) { %>
+                <p>You have not saved any courses.</p>
+        <%} else { %>
+            <div class="row">
+                <% for (const course of savedCourses) { %>
+                <div class="col-2 p-2"><a href="/courses/<%= course.courseCode %>" class="course-icon-full  d-flex align-items-center justify-content-center"><%= course.courseCode %></a></div>
+                <% } %>
+            </div>
+        <%} %>
+    </div>
+    
+    <h2 class="pt-4">Your Reviews:</h2>
+    <div class="review-list">
+        <% if (reviews.length == 0) { %>
+            <p>You have not written any reviews.</p>
+        <%} else { for (const review of reviews) { %>
+            <div class="review-wrapper my-4">
+                <div class="review-content p-4">
+                    <div class="review-course d-flex justify-content-between">
+                        <a href="/courses/<%= review.courseCode %>">Course: <%= review.courseCode %></a>
+                        <p><%- include('./components/rating.ejs', { rating: review.rating }) %></p>
+                    </div>
+                    <p class="review-date">Posted: <%= new Date(review.datePosted).toLocaleString() %></p>
+                    <p><%= review.content%></p>
+                </div>
+            </div>
+        <% }} %>
+    </div>
+</div>

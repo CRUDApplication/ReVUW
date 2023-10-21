@@ -7,6 +7,8 @@ const path = require('path');
 const User = require(path.join(__dirname, '..', 'models', 'user'));
 const ResetToken = require(path.join(__dirname, "..", 'models', 'resetToken'));
 const PUBLIC_URL = process.env.PUBLIC_URL || 'http://localhost:3000';
+const CourseModel = require(path.join(__dirname, '..', 'models', 'course'));
+const ReviewModel = require(path.join(__dirname, '..', 'models', 'review'));
 
 const router = express.Router();
 
@@ -80,6 +82,36 @@ router.post('/request-password-reset', async (req, res) => {
   res.redirect('/auth/signin');
 });
 
+//Profile
+router.get('/profile', async (req, res)=> {
+  // only accessible if user is logged in
+  
+  if (!req.user) {
+    res.redirect('/');
+  } else {
+    try {
+      const user = await User.findOne({ email: req.user.email });
+      // order by most recent
+      const reviews = await ReviewModel.find({ userId: user._id })
+      .sort({ datePosted: -1 })
+      .exec();
+      const savedCourses = [];
+    
+      for (const courseId of user.savedCourses) {
+        const course = await CourseModel.findById(courseId);
+        savedCourses.push(course);
+      }
+       
+      res.render('profile', {title: 'ReVUW | Profile', user: req.user, userInfo: user, savedCourses, reviews});
+      
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Failed to fetch profile', success: false });
+    }
+  }
+});
+
+
 //Signup
 router.get('/signup', (req, res) => {
   if(req.query.origin)
@@ -96,6 +128,7 @@ router.post('/signup', async (req, res) => {
   const confirmPassword = req.body.registerRepeatPassword;
   const userEmail = req.body.email;
   let passwordCheckResult = checkPassword(userPassword, confirmPassword);
+  const userName = req.body.registerName;
   if (passwordCheckResult != null) {
     res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: passwordCheckResult, errorMessage: null, successMessage: null,  activeTab: 'register'});
   } 
@@ -105,7 +138,7 @@ router.post('/signup', async (req, res) => {
       if (!emailIsUnique) {
         res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: null, passwordError: 'Email already in use', successMessage: null,  activeTab: 'register'});
       } else {
-        const newUser = await User.create({ email: userEmail, password: userPassword });
+        const newUser = await User.create({ username: userName, email: userEmail, password: userPassword });
         
         req.login(newUser, (err) => {
           if (err) {
