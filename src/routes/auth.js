@@ -35,7 +35,6 @@ router.get('/reset-password', (req, res) => {
 
 router.post('/request-password-reset', async (req, res) => {
   const email = req.body.resetEmail;
-
   const token = crypto.randomBytes(32).toString('hex');
 
   const user = await User.findOne({ email: email });
