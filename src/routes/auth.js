@@ -96,6 +96,7 @@ router.post('/signup', async (req, res) => {
   const confirmPassword = req.body.registerRepeatPassword;
   const userEmail = req.body.email;
   let passwordCheckResult = checkPassword(userPassword, confirmPassword);
+  const userName = req.body.registerName;
   if (passwordCheckResult != null) {
     res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.user, userEmail: req.body.email, passwordError: passwordCheckResult, errorMessage: null, successMessage: null,  activeTab: 'register'});
   } 
@@ -105,7 +106,7 @@ router.post('/signup', async (req, res) => {
       if (!emailIsUnique) {
         res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: null, passwordError: 'Email already in use', successMessage: null,  activeTab: 'register'});
       } else {
-        const newUser = await User.create({ email: userEmail, password: userPassword });
+        const newUser = await User.create({ username: userName, email: userEmail, password: userPassword });
         
         req.login(newUser, (err) => {
           if (err) {
