@@ -55,3 +55,24 @@
     text-decoration: none !important;
     background: linear-gradient(119deg, #184D3A 0%, #3CAF95 100%);
 }
+
+.review-wrapper {
+    background-color: rgb(227, 238, 232);
+    border-radius: 20px;
+}
+
+.review-course a {
+    font-size: 24px;
+    text-decoration: none;
+    padding-bottom: 0;
+}
+
+.review-course p {
+    font-size: 24px;
+    color: #184D3A;
+    margin-bottom: 0;
+}
+
+.review-date {
+    font-size: 16px;
+}

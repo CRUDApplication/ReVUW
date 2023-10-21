@@ -27,12 +27,17 @@
             <p>Total Courses<br>Saved</p>
         </div>
         <div class="stat-box d-flex align-items-center justify-content-center flex-column">
-            <h1>0</h1>
+            <h1><%= reviews.length %></h1>
             <br>
             <p>Total Reviews<br>Submitted</p>
         </div>
         <div class="stat-box d-flex align-items-center  justify-content-center flex-column">
-            <h1>0</h1>
+            <%let sum = 0;%>
+            <%for (const review of reviews) {%>
+                <%sum += review.rating; %>
+            <%}%>
+            <%const avg=sum/reviews.length;%>
+            <h1><%=avg%></h1>
             <br>
             <p>Average Review<br>Rating</p>
         </div>
@@ -50,17 +55,19 @@
     </div>
     
     <h2>Review Collection:</h2>
-    <div class="review-list"></div>
+    <div class="review-list">
         <% if (reviews.length == 0) { %>
             <p>You have not written any reviews.</p>
         <%} else { for (const review of reviews) { %>
-            <div class="review-wrapper">
-                <div class="review-course d-flex justify-content-between">
-                    <a href="/courses/<%= reviews.courseCode %>">Course: <%= review.courseCode %></a>
-                    <p><%- include('./components/rating.ejs', { rating: review.rating }) %></p>
+            <div class="review-wrapper my-4">
+                <div class="review-content p-4">
+                    <div class="review-course d-flex justify-content-between">
+                        <a href="/courses/<%= review.courseCode %>">Course: <%= review.courseCode %></a>
+                        <p><%- include('./components/rating.ejs', { rating: review.rating }) %></p>
+                    </div>
+                    <p class="review-date">Posted: <%= new Date(review.datePosted).toLocaleString() %></p>
+                    <p><%= review.content%></p>
                 </div>
-                <p class="review-date">Posted: <%= new Date(review.datePosted).toLocaleString() %></p>
-                <p><%= review.content%></p>
             </div>
         <% }} %>
     </div>
