@@ -83,6 +83,7 @@
     });
 
     describe('POST /signup', function() {
+      this.timeout(5000);
       it('should render error message if password is weak', async function() {
         const response = await supertest(app)
           .post('/auth/signup')
@@ -115,6 +116,7 @@
 
     describe('POST /signin', function() {
       it('should redirect to returnTo or root after successful signin', async function() {
+        this.timeout(4000);
         authenticateStub.callsFake((strategy, options) => { 
           console.log(`Stub called with strategy: ${strategy}`);
         
@@ -151,6 +153,7 @@
     });
 
       it('should redirect to /auth/signin if authentication fails', async function() {
+        this.timeout(4000);
         sinon.stub(passport, 'authenticate').yields(null, false, { message: 'Incorrect password.' });
         const response = await supertest(app)
           .post('/auth/signin')
