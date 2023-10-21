@@ -129,4 +129,8 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
 });
 
 
-module.exports = router;
+module.exports = {
+  router,
+  checkPasswordStrength,
+  isEmailUnique
+}

@@ -62,7 +62,8 @@ app.use((req, res, next) => {
 
 app.use(flash());
 // Define routes
-app.use('/auth', require('./routes/auth'));
+const authRoutes = require('./routes/auth'); 
+app.use('/auth', authRoutes.router);
 app.use('/courses', require('./routes/courses'));
 
 
