@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 const path = require('path');
 const User = require(path.join(__dirname, '..', 'models', 'user'));
 const ResetToken = require(path.join(__dirname, "..", 'models', 'resetToken'));
-const API_URL = process.env.API_URL || 'http://localhost:3001';
+const API_URL = process.env.API_URL || 'http://localhost:3000';
 
 const router = express.Router();
 
@@ -31,27 +31,6 @@ router.get('/reset-password', (req, res) => {
   } else {
     res.render('password-reset', { title: 'Password Reset', user: null, successfulReset: null, passwordError: null });
   }
-});
-
-router.post('/request-password-reset', async (req, res) => {
-  const email = req.body.resetEmail;
-  const token = crypto.randomBytes(32).toString('hex');
-
-  const user = await User.findOne({ email: email });
-  if (!user) {
-    return res.redirect('/auth/signin');
-  }
-  await ResetToken.create({ user: user._id, token });
-
-  const resetLink = `${API_URL}/auth/reset-password/${token}`;
-
-  transporter.sendMail({
-    to: email,
-    subject: 'ReVUW password reset request',
-    text: `Click the following link to reset your password: ${resetLink}`
-
-  })
-  res.redirect('/auth/signin');
 });
 
 router.post('/reset-password', async (req, res) => {
@@ -79,6 +58,26 @@ router.post('/reset-password', async (req, res) => {
   delete req.session.resetToken;
 
   return res.render('password-reset', { title: 'Password Reset', user: null, successfulReset: 'Password successfully reset.', passwordError: null});
+});
+
+router.post('/request-password-reset', async (req, res) => {
+  const email = req.body.resetEmail;
+  const token = crypto.randomBytes(32).toString('hex');
+
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    return res.redirect('/auth/signin');
+  }
+
+  await ResetToken.create({ user: user._id, token });
+  const resetLink = `${API_URL}/auth/reset-password/${token}`;
+  transporter.sendMail({
+    to: email,
+    subject: 'ReVUW password reset request',
+    text: `Click the following link to reset your password: ${resetLink}`
+
+  })
+  res.redirect('/auth/signin');
 });
 
 //Signup
