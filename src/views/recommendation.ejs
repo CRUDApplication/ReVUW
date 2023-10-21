@@ -1,0 +1,65 @@
+<div class="container">
+    <% courses.forEach((course, index) => { %>
+        <div class="course-container mx-auto">
+            <div class="course-heading d-flex">
+                <span class="course-icon"></span>
+                <span>
+                    <h1> <strong><%= course.courseCode %>: </strong><%= course.title%> </h1>
+                    <p class="sub-heading"><%= course.lecturers %></p>
+                </span>
+            </div>
+            <p class="course-description my-0"><%= course.description %></p>
+            <button class="toggle-description" data-index="<%= index %>" data-course='<%= JSON.stringify(course) %>'>
+                <i class="bi bi-chevron-compact-down"></i> Read More</button>
+            <div class="course-footer d-flex justify-content-between  mt-3">
+                <span>
+                    Average Rating: &nbsp <%- include('./components/rating.ejs', { rating: course.averageRating }) %> ( <%=course.averageRating%> )
+                </span>
+                <span><a href="/courses/<%= course.courseCode %>">View reviews &nbsp<i class="bi bi-arrow-right"></i></a></span>
+            </div>
+            
+        </div>
+        <hr class="mx-auto" width="900px">
+    <% }); %>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        console.log("clicked");
+        const descriptionElements = document.querySelectorAll(".course-description");
+        const toggleButtons = document.querySelectorAll(".toggle-description");
+        const maxLength = 45; // Maximum number of words to display
+
+        // Function to limit the description and add "Read More" link
+        function limitDescription(index) {
+            const description = descriptionElements[index];
+            const button = toggleButtons[index];
+            const words = description.textContent.split(" ");
+            if (words.length > maxLength) {
+                const truncatedText = words.slice(0, maxLength).join(" ") + "...";
+                description.textContent = truncatedText;
+                button.innerHTML = `<i class="bi bi-chevron-compact-down"></i> Read More`;
+            }
+        }
+
+        // Event listener for "Read More" button
+        toggleButtons.forEach((button, index) => {
+            button.addEventListener("click", function() {
+                const courseData = JSON.parse(button.getAttribute('data-course'));
+                const description = descriptionElements[index];
+                if (button.textContent.includes("Read More")) {
+                    description.textContent = courseData.description;
+                    button.innerHTML = `<i class="bi bi-chevron-compact-up"></i> Read Less`;
+                } else {
+                    limitDescription(index);
+                }
+            });
+
+            // Limit the description initially for courses with more words
+            if (descriptionElements[index].textContent.split(" ").length > maxLength) {
+                limitDescription(index);
+            } else {
+                button.style.display = "none"; // Hide the button for courses that don't exceed the word limit
+            }
+        });
+    });
+</script>

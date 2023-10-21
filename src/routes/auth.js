@@ -105,8 +105,15 @@ router.post('/signup', async (req, res) => {
       if (!emailIsUnique) {
         res.render('signin', {layout: 'layouts/fullWidth', title: 'ReVUW | SignUp', user: req.session.user, userEmail: req.body.email, errorMessage: null, passwordError: 'Email already in use', successMessage: null,  activeTab: 'register'});
       } else {
-        await User.create({ email: userEmail, password: userPassword });
-        res.redirect('/auth/signin');
+        const newUser = await User.create({ email: userEmail, password: userPassword });
+        
+        req.login(newUser, (err) => {
+          if (err) {
+            return next(err);
+          }
+          delete req.session.returnTo; // Cleanup session
+          res.redirect('/auth/signin');
+        });
       }
     } catch (error) {
       res.render('signin', {layout: 'layouts/fullWidth', passwordError: error.message,  errorMessage: null, successMessage: null,  title: 'Authentication Failed', user: req.user, activeTab: 'register' });
@@ -197,4 +204,8 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
 });
 
 
-module.exports = router;
+module.exports = {
+  router,
+  checkPasswordStrength,
+  isEmailUnique
+}

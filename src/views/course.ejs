@@ -74,7 +74,6 @@
         <% }); %>
     </div>
     <% } else { %>
-        <!-- If user is not authenticated, show all reviews in a single section -->
         <!-- Keep the form but disable the textarea, and handle button click with JS -->
         <form id="reviewForm" action="/signin" method="GET">
             <!-- Course Rating -->
@@ -96,25 +95,8 @@
         <div class="row">
             <h3 class="header-label">Users' Reviews</h3>
             <% reviews.forEach((review, index) => { %>
-                <div class="col-md-4">
-                    <div class="card mb-3" style="height: 120px;">
-                        <div class="card-body" style="max-height: 120px; overflow-y: auto;">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <!-- Display the course rating as stars -->
-                                <div class="star-rating">
-                                    <% for (let i = 1; i <= 5; i++) { %>
-                                    <% if (i <= review.rating) { %>
-                                    <span class="star-filled">★</span>
-                                    <% } else { %>
-                                    <span class="star-empty">☆</span>
-                                    <% } %>
-                                    <% } %>
-                                </div>
-                            </div>
-                            <p style="margin-bottom: 0;"><p><%= review.content %></p>
-                        </div>
-                    </div>
-                </div>
+                <!-- Display all reviews in one section -->
+                <%- include('components/review-card', { review: review, courseCode: course.courseCode, editable: false }) %>
                 <% if ((index + 1) % 3 === 0) { %>
                     </div><div class="row">
                 <% } %>
