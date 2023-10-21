@@ -9,6 +9,39 @@ const API_URL = process.env.API_URL || 'http://localhost:3001';
 
 const router = express.Router();
 
+// recommendation routes
+router.get('/recommendation', async (req, res) => {
+    try {
+        const response = await axios.get(`${API_URL}/allcourses`);
+        const courses = response.data;
+
+        const coursesWithRatings = [];
+
+        for (const course of courses) {
+            const { courseCode } = course;
+
+            const reviews = await ReviewModel.find({ courseCode}).populate('userId');
+            let totalRating = reviews.reduce((sum, review) => {
+                return sum + (isNaN(review.rating) ? 0 : review.rating);
+            }, 0);
+
+            let averageRating = totalRating / reviews.length;
+
+            const courseWithRating = {
+                ...course,
+                averageRating: !isNaN(averageRating) ? averageRating.toFixed(1) : 0,
+            }
+            coursesWithRatings.push(courseWithRating);
+        }
+
+        // sorting courses by highest rating
+        coursesWithRatings.sort((a, b) => b.averageRating - a.averageRating);
+        res.render('recommendation', { courses: coursesWithRatings, title: 'ReVUW | Recommendation', user: req.user });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to retrieve courses' });
+    }
+});
+
 // Course routes
 router.get('/allcourses', async (req, res) => {
     try {
@@ -37,7 +70,6 @@ router.get('/:courseCode', async (req, res) => {
         }
     }
 });
-
 
 // Review routes
 
