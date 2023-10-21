@@ -3,6 +3,7 @@ services:
     image: gcr.io/revuw-399809/client:latest
     environment:
       - API_URL=http://api_gateway:3001
+      - PUBLIC_URL=https://revuw.website
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - SESSION_SECRET=${SESSION_SECRET}
