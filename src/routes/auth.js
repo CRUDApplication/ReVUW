@@ -19,11 +19,9 @@ router.get('/profile', async (req, res)=> {
     const savedCourses = [];
   
     for (const courseId of user.savedCourses) {
-      console.log(courseId);
       const course = await CourseModel.findById(courseId);
       savedCourses.push(course);
     }
-    
      
     res.render('profile', {title: 'ReVUW | SignUp', user: req.user, userInfo: user, savedCourses});
     
