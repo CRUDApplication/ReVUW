@@ -19,3 +19,17 @@
 .card p {
     margin-bottom: 0;
 }
+
+#courseSearch {
+    padding: 10px;
+    border: 1px solid #bac4bd;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #fbfbfb;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#courseSearch:focus {
+    border-color: #3CAF95 !important;
+    box-shadow: 0 0 5px #3CAF95;
+}

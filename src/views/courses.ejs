@@ -8,11 +8,11 @@
     <hr>
     <div class="row" id="courseList">
         <% courses.forEach(course => { %>
-            <div class="col-4 mb-3">
+            <div class="course-cards col-4 mb-3">
                 <div class="card my-1">
                     <a href="/courses/<%= course.courseCode %>" class="p-4">
                         <h3 class="course-title"><%= course.title %></h3>
-                        <p><strong>Course Code: </strong><%= course.courseCode %></p>
+                        <p><strong>Course Code: </strong><span class="course-code"><%= course.courseCode %></span></p>
                         <p><strong>Lecturers: </strong>
                             <% const maxCharacters = 27; %>
                             <% const lecturers = course.lecturers.length > maxCharacters ? course.lecturers.slice(0, maxCharacters) + '...' : course.lecturers; %>
