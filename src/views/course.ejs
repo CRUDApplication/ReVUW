@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="/styles/rating.css">
 <link rel="stylesheet" href="/styles/course.css">
 <script src="/js/deleteReview.js"></script>
 
@@ -18,39 +17,15 @@
         <p><%= course.description %></p>
         
         <div class="stat-label d-flex">
-            <p><strong>Total: </strong><%= reviews.length %> reviews</p>
+            <p><strong>Total:&nbsp;&nbsp;</strong><%= reviews.length %> reviews</p>
             <p>|</p>
             <%let sum = 0;%>
             <%for (const review of reviews) {%>
                 <%sum += review.rating || 0; %>
             <%}%>
             <% const avg = reviews.length > 0 ? sum / reviews.length : 0;%>
-            <p><strong>Rating: </strong> <%- include('./components/rating.ejs', { rating: avg.toFixed(1) }) %></p>
-            <p>(<%=avg.toFixed(1) %>)</p>
+            <p><strong>Average Rating:&nbsp;&nbsp;</strong><span class="stars"> <%- include('./components/rating.ejs', { rating: avg.toFixed(1) }) %></span>(<%=avg.toFixed(1) %>)</p>
         </div>
-    </div>
-    
-
-    
-
-    <!-- Display total number of reviews and average rating -->
-    <div>
-        
-        <% if (reviews.length > 0) { %>
-            <% let totalRating = reviews.reduce((sum, review) => {
-                return sum + (isNaN(review.rating) ? 0 : review.rating);
-            }, 0); %>
-            <% let averageRating = totalRating / reviews.length; %>
-
-
-            <% if (!isNaN(averageRating)) { %>
-                <h3 class="header-label">Average Rating: <%= averageRating.toFixed(1) %> / 5</h3>
-            <% } else { %>
-                <h3 class="header-label">No ratings available.</h3>
-            <% } %>
-        <% } else { %>
-            <h3 class="header-label">No reviews available.</h3>
-        <% } %>
     </div>
 
     <!-- If user is authenticated, show form to post review -->
