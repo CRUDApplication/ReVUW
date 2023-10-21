@@ -52,7 +52,7 @@
     <!-- Display user reviews in rows and columns -->
     <div class="row">
         <h3 class="header-label">Your Reviews</h3>
-        <% let userReviews = reviews.filter(review => review.userId._id.toString() === user._id.toString()); %>
+        <% let userReviews = reviews.filter(review => review.userId && review.userId._id.toString() === user._id.toString()); %>
         <% userReviews.forEach((review, index) => { %>
             <%- include('components/review-card', { review: review, courseCode: course.courseCode, editable: true }) %>
             <% if ((index + 1) % 3 === 0) { %>
@@ -65,7 +65,7 @@
     <!-- Display other users' reviews -->
     <div class="row">
         <h3 class="header-label">Other Reviews for <%= course.courseCode %></h3>
-        <% let otherReviews = reviews.filter(review => review.userId._id.toString() !== user._id.toString()); %>
+        <% let otherReviews = reviews.filter(review => review.userId && review.userId._id.toString() !== user._id.toString()); %>
         <% otherReviews.forEach((review, index) => { %>
             <%- include('components/review-card', { review: review, courseCode: course.courseCode, editable: false }) %>
             <% if ((index + 1) % 3 === 0) { %>
