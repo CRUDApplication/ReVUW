@@ -3,8 +3,37 @@ const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const path = require('path');
 const User = require(path.join(__dirname, '..', 'models', 'user'));
+const CourseModel = require(path.join(__dirname, '..', 'models', 'course'));
 
 const router = express.Router();
+
+//Profile
+router.get('/profile', async (req, res)=> {
+  // only accessible if user is logged in
+  if (!req.user) {
+    res.redirect('/');
+  }
+
+  try {
+    const user = await User.findOne({ email: req.user.email });
+    const savedCourses = [];
+  
+    for (const courseId of user.savedCourses) {
+      console.log(courseId);
+      const course = await CourseModel.findById(courseId);
+      savedCourses.push(course);
+    }
+    
+     
+    res.render('profile', {title: 'ReVUW | SignUp', user: req.user, userInfo: user, savedCourses});
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Failed to fetch profile', success: false });
+  }
+ 
+  
+});
 
 //Signup
 router.get('/signup', (req, res) => {
