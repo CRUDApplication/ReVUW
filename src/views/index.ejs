@@ -11,12 +11,13 @@
             <button class="btn btn-primary btn-block mt-2">Write a review!</button>
         </div>
     </div>
-    <a href="/courses/allcourses" class="btn">Courses</a>
-
-    <div class="recom-section">
-        <h1>Recommended Courses</h1>
+    <div class="recom-section my-10">
+        <div class="recom-title d-flex justify-content-between align-items-end">
+            <h1>Recommended Courses</h1>
+            <a href="/courses/allcourses" class="btn">Browse all courses</a>
+        </div>
         <hr>
-        <a href="/courses/recommendation" class="btn">reco</a>
+        <%- include('./recommendation.ejs') %>
     </div>
     
 </div>
