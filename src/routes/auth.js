@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 const path = require('path');
 const User = require(path.join(__dirname, '..', 'models', 'user'));
 const ResetToken = require(path.join(__dirname, "..", 'models', 'resetToken'));
-const API_URL = process.env.API_URL || 'http://localhost:3000';
+const API_URL = process.env.API_URL || 'http://localhost:3001';
 
 const router = express.Router();
 
