@@ -63,7 +63,20 @@ router.post('/:courseCode/review', isAuthenticated, async (req, res) => {
         }
 
         userId = req.user._id;
+        const courseCode = req.params.courseCode;
 
+        // Check if the user has already reviewed this course
+        const existingReview = await ReviewModel.findOne({ courseCode, userId });
+
+        if (existingReview) {
+            // User has already reviewed this course
+            const alertMessage = 'You have already reviewed this course.';
+            return res.send(
+                `<script>alert('${alertMessage}'); window.location.href = '/courses/${req.params.courseCode}';</script>`
+            );
+        }
+
+        // If the user hasn't reviewed the course, create a new review
         const review = new ReviewModel({
             courseCode: req.params.courseCode,
             content: req.body.reviewContent,
