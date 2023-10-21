@@ -44,6 +44,11 @@
                                 <%= errorMessage %>
                             </div>
                         <% } %>
+                        <% if (successMessage) { %>
+                            <div style="color: rgb(13, 150, 56); margin-bottom: 10px;">
+                                <%= successMessage %>
+                            </div>
+                        <% } %>
                         <!-- Email input -->
                         <div class="form-floating">
                             <input type="email" id="loginName" name="loginName" class="form-control mb-2" placeholder="" required/>
@@ -56,6 +61,8 @@
                             <label class="form-label" for="loginPassword">Password</label>
                             <i class="bi bi-eye-slash toggle-password" data-target="loginPassword"></i>
                         </div>
+                        <!-- Forgot password -->
+                        <a href="#" id="forgot-password-link">Forgot Password?</a>
 
                         <!-- Submit button -->
                         <button type="submit" class="signin-btn btn btn-primary btn-block mt-2">Sign in</button>
@@ -121,27 +128,28 @@
                         </button>
                     </form>
                 </div>
+                <!-- Reset password -->
+                <div
+                    class="tab-pane fade"
+                    id="pills-reset-password"
+                    role="tabpanel"
+                    aria-labelledby="tab-login"
+                >
+                    <form action="/auth/request-password-reset" method="post">
+                        <!-- Email input -->
+                        <div class="form-floating">
+                            <input type="email" id="resetEmail" name="resetEmail" class="form-control mb-2" placeholder="" required/>
+                            <label class="form-label" for="resetEmail">Email</label>
+                        </div>
+                        <button type="submit" class="signin-btn btn btn-primary btn-block mt-2">Submit</button>
+                        <br>
+                        <button type="button" id="back-to-login" class="signin-btn btn btn-outline-primary mt-2">Back to Login</button>
+                    </form>
+                </div>
+
             </div>
-
+            <script src="/js/togglePasswordButtons.js"></script>
             <script>
-                const togglePasswordButtons = document.querySelectorAll('.toggle-password');
-        
-                togglePasswordButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const targetId = button.getAttribute('data-target');
-                        const passwordInput = document.querySelector(`#${targetId}`);
-                        
-                        if (passwordInput) {
-                            // Toggle the type attribute of the password input
-                            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                            passwordInput.setAttribute('type', type);
-                            
-                            // Toggle the eye and bi-eye-slash icons
-                            button.classList.toggle('bi-eye');
-                        }
-                    });
-                });
-
                 document.addEventListener('DOMContentLoaded', function () {
                     const signinContainer = document.getElementById('signin-container');
                     const activeTab = '<%= activeTab %>';
@@ -157,25 +165,40 @@
                         }
                     }
 
-                    
-
                     // Set the height based on the active tab when the page loads
                     setHeightForActiveTab();
 
                     const registerPill = document.getElementById('tab-register');
                     const loginPill = document.getElementById('tab-login');
+                    const pillsLogin = document.getElementById('pills-login');
+                    const pillsResetPassword = document.getElementById('pills-reset-password');
 
                     registerPill.addEventListener('click', function () {
                         signinContainer.style.height = registerHeight;
+                        pillsResetPassword.classList.remove('show', 'active');
                     });
                     loginPill.addEventListener('click', function () {
                         signinContainer.style.height = signinHeight;
                     });
+
+                    const forgotPasswordLink = document.getElementById('forgot-password-link');
+                    const backToLoginBtn = document.getElementById('back-to-login');
+
+                    forgotPasswordLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+
+                        // Hide login and show reset password
+                        pillsLogin.classList.remove('show', 'active');
+                        pillsResetPassword.classList.add('show', 'active');
+                    });
+
+                    backToLoginBtn.addEventListener('click', function() {
+                        // Hide reset password and show login
+                        pillsResetPassword.classList.remove('show', 'active');
+                        pillsLogin.classList.add('show', 'active');
+                    });
                 });
-
             </script>
-
-
         </div>
     </div>
 </div>
