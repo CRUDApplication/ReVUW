@@ -47,6 +47,7 @@
 body {
     background-color: #a5a9a8;
     font-family: 'Arsenal', sans-serif !important;
+    font-size: 18px !important;
 }
 
 .wrapper {
@@ -80,4 +81,26 @@ input, textarea {
     outline: none;
 }
 
+.course-container {
+    position: relative;
+    width: 900px;
+    margin: 50px auto;
+}
+
+.course-container .sub-heading {
+    font-size: 16px !important;
+}
+
+.course-heading h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.course-icon {
+    width: 52px; 
+    height: 52px; 
+    background: linear-gradient(119deg, #184D3A 0%, #3CAF95 100%); 
+    border-radius: 16px;
+    margin-right: 15px;
+}
 
