@@ -5,13 +5,14 @@ const CourseModel = require(path.join(__dirname, '..', 'models', 'course'));
 const ReviewModel = require(path.join(__dirname, '..', 'models', 'review'));
 const User = require(path.join(__dirname, '..', 'models', 'user'));
 const isAuthenticated = require('../middleware/isAuthenticated');
+const API_URL = process.env.API_URL || 'http://localhost:3001';
 
 const router = express.Router();
 
 // Course routes
 router.get('/allcourses', async (req, res) => {
     try {
-        const response = await axios.get('http://localhost:3001/allcourses');
+        const response = await axios.get(`${API_URL}/allcourses`);
         const courses = response.data;
         res.render('courses', { courses, title: 'ReVUW | Courses', user: req.user });
     } catch (error) {
@@ -21,8 +22,7 @@ router.get('/allcourses', async (req, res) => {
 
 router.get('/:courseCode', async (req, res) => {
     try {
-        const response = await axios.get(`http://localhost:3001/course/${req.params.courseCode}`);
-        
+        const response = await axios.get(`${API_URL}/course/${req.params.courseCode}`);
         const courseData = response.data;
 
         const reviews = await ReviewModel.find({ courseCode: req.params.courseCode }).populate('userId');

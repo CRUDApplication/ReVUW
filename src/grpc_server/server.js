@@ -52,7 +52,7 @@ server.addService(coursesProto.courses.CourseService.service, {
     }
 });
 
-server.bindAsync('127.0.0.1:50051', grpc.ServerCredentials.createInsecure(), (err, port) => {
+server.bindAsync('0.0.0.0:50051', grpc.ServerCredentials.createInsecure(), (err, port) => {
     if (err) {
         console.error(`Failed to bind server on port 50051: ${err.message}`);
     } else {

@@ -7,7 +7,9 @@ const PROTO_PATH = path.join(__dirname, '..', 'protos', 'courses.proto');
 const packageDefinition = protoLoader.loadSync(PROTO_PATH);
 const coursesProto = grpc.loadPackageDefinition(packageDefinition);
 
-const client = new coursesProto.courses.CourseService('localhost:50051', grpc.credentials.createInsecure());
+const GRPC_ENDPOINT = process.env.GRPC_ENDPOINT || 'localhost:50051';
+
+const client = new coursesProto.courses.CourseService(GRPC_ENDPOINT, grpc.credentials.createInsecure());
 
 const app = express();
 
