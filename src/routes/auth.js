@@ -27,8 +27,9 @@ router.get('/reset-password/:token', (req, res) => {
 router.get('/reset-password', (req, res) => {
   if (!req.session.resetToken) {
     res.render('password-reset', { title: 'Password Reset', user: null, successfulReset: null, passwordError: 'Invalid session for password reset.' });
+  } else {
+    res.render('password-reset', { title: 'Password Reset', user: null, successfulReset: null, passwordError: null });
   }
-  res.render('password-reset', { title: 'Password Reset', user: null, successfulReset: null, passwordError: null });
 });
 
 router.post('/request-password-reset', async (req, res) => {
