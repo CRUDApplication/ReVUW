@@ -10,8 +10,9 @@
                     <p class="sub-heading"><%= course.lecturers %></p>
                 </span>
             </div>
-            <p class="course-description"><%= course.description %></p>
-            <button class="toggle-description" data-index="<%= index %>" data-course='<%= JSON.stringify(course) %>'>Read More</button>
+            <p class="course-description my-0"><%= course.description %></p>
+            <button class="toggle-description" data-index="<%= index %>" data-course='<%= JSON.stringify(course) %>'>
+                <i class="bi bi-chevron-compact-down"></i> Read More</button>
             <div class="course-footer d-flex justify-content-between">
                 <span>rating</span>
                 <span>view reviews</span>
@@ -20,29 +21,10 @@
         </div>
         <hr class="mx-auto" width="900px">
     <% }); %>
-    
-
-    <div class="row" id="courseList">
-        
-
-        <% courses.forEach((course) => { %>
-            <div class="col-md-4 mb-3">
-                <div class="card" style="height: 300px;">
-                    <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                        <strong>Title:</strong> <a href="/courses/<%= course.courseCode %>" class="course-title"><%= course.title %></a><br>
-                        <strong>Course Code:</strong> <span class="course-code"><%= course.courseCode %></span><br>
-                        <strong>Description:</strong> <%= course.description %><br>
-                        <strong>Lecturers:</strong> <%= course.lecturers %><br>
-                    </div>
-                </div>
-            </div>
-        <% }); %>
-    </div>
-
-</div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        console.log("clicked");
         const descriptionElements = document.querySelectorAll(".course-description");
         const toggleButtons = document.querySelectorAll(".toggle-description");
         const maxLength = 45; // Maximum number of words to display
@@ -55,7 +37,7 @@
             if (words.length > maxLength) {
                 const truncatedText = words.slice(0, maxLength).join(" ") + "...";
                 description.textContent = truncatedText;
-                button.textContent = "Read More";
+                button.innerHTML = `<i class="bi bi-chevron-compact-down"></i> Read More`;
             }
         }
 
@@ -64,9 +46,9 @@
             button.addEventListener("click", function() {
                 const courseData = JSON.parse(button.getAttribute('data-course'));
                 const description = descriptionElements[index];
-                if (button.textContent === "Read More") {
+                if (button.textContent.includes("Read More")) {
                     description.textContent = courseData.description;
-                    button.textContent = "Read Less";
+                    button.innerHTML = `<i class="bi bi-chevron-compact-up"></i> Read Less`;
                 } else {
                     limitDescription(index);
                 }
