@@ -133,6 +133,16 @@ function checkPassword(userPassword, confirmPassword) {
   return errorMessage;
 }
 
+function checkPasswordStrength(userPassword) {
+  let errorMessage = null;
+  if (userPassword.length < 8) {
+    errorMessage = 'Use 8 characters or more for your password';
+  } else if (!/(?=.*[a-z])/.test(userPassword) || !/(?=.*[A-Z])/.test(userPassword) || !/[0-9]/.test(userPassword)) {
+    errorMessage = 'Please choose a stronger password. Use a mix of numbers and letters with upper and lower case';
+  }
+  return errorMessage;
+}
+
 /**
  * Check if the email is already in use by querying the database
  * @param {string} email 
