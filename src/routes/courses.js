@@ -36,7 +36,7 @@ router.get('/recommendation', async (req, res) => {
 
         // sorting courses by highest rating
         coursesWithRatings.sort((a, b) => b.averageRating - a.averageRating);
-        res.render('recommendation', { courses: coursesWithRatings, title: 'ReVUW | Recommendation', user: req.user });
+        res.render('recommendation', { courses: coursesWithRatings.slice(0, 3), title: 'ReVUW | Recommendation', user: req.user });
     } catch (error) {
         res.status(500).json({ error: 'Failed to retrieve courses' });
     }
