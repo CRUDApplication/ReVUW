@@ -9,16 +9,21 @@
             <div id="title" class="col-8 text-center my-auto"><a href="/">ReVUW</a></div>
             <div class="col-2 text-end my-auto text-white">
                 <% if (user) { %>
-                    <form class="logout-form" action="/auth/logout" method="post">
-                        <button type="submit" id="logout" class="status-button p-2">
-                            Log Out &nbsp;
-                            <i class="bi bi-box-arrow-right"></i>
-                        </button> 
-                    </form>
+                    <div class="d-flex justify-content-end align-items-center">
+                        
+                        <a href="/auth/profile">
+                            <i class="profile-icon bi bi-person-fill"></i>
+                        </a>
+                        <span class="v-line"></span>
+                        <form class="logout-form" action="/auth/logout" method="post">
+                            <button type="submit" id="logout" class="status-button p-2">
+                                Log Out &nbsp;
+                            </button>
+                        </form>
+                    </div>
                 <% } else { %>
                     <button id="signin" class="status-button p-2">
                         <a href="/auth/signin">Sign In &nbsp;</a>
-                        <i class="bi bi-box-arrow-in-left"></i>
                     </button>
                 <% } %>
             </div>
