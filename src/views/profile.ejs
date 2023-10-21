@@ -38,19 +38,30 @@
         </div>
     </div>
     <hr>
-    <div class="course-collection">
-        <h2>Course Collection:</h2>
-        
-        <div class="course-list d-flex justify-content-start">
-            <!--print courses-->
-            <% if (savedCourses.length == 0) { %>
-                    <p>You have not saved any courses.</p>
-            <%} else { for (const course of savedCourses) { %>
-                <div class="p-3"><a href="/courses/<%= course.courseCode %>" class="course-icon-full  d-flex align-items-center justify-content-center"><%= course.courseCode %></a></div>
-            <% }} %>
-        </div>
+    <h2>Course Collection:</h2>
+    
+    <div class="course-list d-flex justify-content-start">
+        <!--print courses-->
+        <% if (savedCourses.length == 0) { %>
+                <p>You have not saved any courses.</p>
+        <%} else { for (const course of savedCourses) { %>
+            <div class="p-3"><a href="/courses/<%= course.courseCode %>" class="course-icon-full  d-flex align-items-center justify-content-center"><%= course.courseCode %></a></div>
+        <% }} %>
     </div>
-    <div class="review-collection">
-        <h2>Review Collection:</h2>
+    
+    <h2>Review Collection:</h2>
+    <div class="review-list"></div>
+        <% if (reviews.length == 0) { %>
+            <p>You have not written any reviews.</p>
+        <%} else { for (const review of reviews) { %>
+            <div class="review-wrapper">
+                <div class="review-course d-flex justify-content-between">
+                    <a href="/courses/<%= reviews.courseCode %>">Course: <%= review.courseCode %></a>
+                    <p><%- include('./components/rating.ejs', { rating: review.rating }) %></p>
+                </div>
+                <p class="review-date">Posted: <%= new Date(review.datePosted).toLocaleString() %></p>
+                <p><%= review.content%></p>
+            </div>
+        <% }} %>
     </div>
 </div>

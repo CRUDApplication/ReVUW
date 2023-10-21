@@ -8,6 +8,7 @@ const User = require(path.join(__dirname, '..', 'models', 'user'));
 const ResetToken = require(path.join(__dirname, "..", 'models', 'resetToken'));
 const PUBLIC_URL = process.env.PUBLIC_URL || 'http://localhost:3000';
 const CourseModel = require(path.join(__dirname, '..', 'models', 'course'));
+const ReviewModel = require(path.join(__dirname, '..', 'models', 'review'));
 
 const router = express.Router();
 
@@ -90,6 +91,7 @@ router.get('/profile', async (req, res)=> {
   } else {
     try {
       const user = await User.findOne({ email: req.user.email });
+      const reviews = await ReviewModel.find({ userId: user._id });
       const savedCourses = [];
     
       for (const courseId of user.savedCourses) {
@@ -97,7 +99,7 @@ router.get('/profile', async (req, res)=> {
         savedCourses.push(course);
       }
        
-      res.render('profile', {title: 'ReVUW | SignUp', user: req.user, userInfo: user, savedCourses});
+      res.render('profile', {title: 'ReVUW | Profile', user: req.user, userInfo: user, savedCourses, reviews});
       
     } catch (error) {
       console.log(error);
@@ -105,6 +107,7 @@ router.get('/profile', async (req, res)=> {
     }
   }
 });
+
 
 //Signup
 router.get('/signup', (req, res) => {
