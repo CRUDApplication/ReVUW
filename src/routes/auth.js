@@ -91,7 +91,10 @@ router.get('/profile', async (req, res)=> {
   } else {
     try {
       const user = await User.findOne({ email: req.user.email });
-      const reviews = await ReviewModel.find({ userId: user._id });
+      // order by most recent
+      const reviews = await ReviewModel.find({ userId: user._id })
+      .sort({ datePosted: -1 })
+      .exec();
       const savedCourses = [];
     
       for (const courseId of user.savedCourses) {
