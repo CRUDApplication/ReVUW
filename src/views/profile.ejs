@@ -49,12 +49,16 @@
         <!--print courses-->
         <% if (savedCourses.length == 0) { %>
                 <p>You have not saved any courses.</p>
-        <%} else { for (const course of savedCourses) { %>
-            <div class="p-3"><a href="/courses/<%= course.courseCode %>" class="course-icon-full  d-flex align-items-center justify-content-center"><%= course.courseCode %></a></div>
-        <% }} %>
+        <%} else { %>
+            <div class="row">
+                <% for (const course of savedCourses) { %>
+                <div class="col-2 p-2"><a href="/courses/<%= course.courseCode %>" class="course-icon-full  d-flex align-items-center justify-content-center"><%= course.courseCode %></a></div>
+                <% } %>
+            </div>
+        <%} %>
     </div>
     
-    <h2>Review Collection:</h2>
+    <h2 class="pt-4">Review Collection:</h2>
     <div class="review-list">
         <% if (reviews.length == 0) { %>
             <p>You have not written any reviews.</p>
