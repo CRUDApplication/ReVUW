@@ -73,8 +73,8 @@ jobs:
         GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
         MONGODB_URI: ${{ secrets.MONGODB_URI }}
         SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
-        PASSWORD_RESET_EMAIL_USERNAME: ${{ PASSWORD_RESET_EMAIL_USERNAME }}
-        PASSWORD_RESET_EMAIL_PASSWORD: ${{ PASSWORD_RESET_EMAIL_PASSWORD }}
+        PASSWORD_RESET_EMAIL_USERNAME: ${{ secrets.PASSWORD_RESET_EMAIL_USERNAME }}
+        PASSWORD_RESET_EMAIL_PASSWORD: ${{ secrets.PASSWORD_RESET_EMAIL_PASSWORD }}
       run: |
         # Copy docker-compose.yml to the VM's /tmp directory
         gcloud compute scp ./docker-compose.yml $GCP_VM_INSTANCE:/tmp/docker-compose.yml --zone=$GCP_VM_ZONE
