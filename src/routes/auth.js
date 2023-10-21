@@ -7,6 +7,7 @@ const path = require('path');
 const User = require(path.join(__dirname, '..', 'models', 'user'));
 const ResetToken = require(path.join(__dirname, "..", 'models', 'resetToken'));
 const PUBLIC_URL = process.env.PUBLIC_URL || 'http://localhost:3000';
+const CourseModel = require(path.join(__dirname, '..', 'models', 'course'));
 
 const router = express.Router();
 
@@ -78,6 +79,32 @@ router.post('/request-password-reset', async (req, res) => {
 
   })
   res.redirect('/auth/signin');
+});
+
+//Profile
+router.get('/profile', async (req, res)=> {
+  // only accessible if user is logged in
+  if (!req.user) {
+    res.redirect('/');
+  }
+
+  try {
+    const user = await User.findOne({ email: req.user.email });
+    const savedCourses = [];
+  
+    for (const courseId of user.savedCourses) {
+      console.log(courseId);
+      const course = await CourseModel.findById(courseId);
+      savedCourses.push(course);
+    }
+    
+     
+    res.render('profile', {title: 'ReVUW | SignUp', user: req.user, userInfo: user, savedCourses});
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Failed to fetch profile', success: false });
+  }
 });
 
 //Signup
