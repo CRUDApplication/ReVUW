@@ -34,10 +34,10 @@
         <div class="stat-box d-flex align-items-center  justify-content-center flex-column">
             <%let sum = 0;%>
             <%for (const review of reviews) {%>
-                <%sum += review.rating; %>
+                <%sum += review.rating || 0; %>
             <%}%>
-            <%const avg=sum/reviews.length;%>
-            <h1><%=avg%></h1>
+            <% const avg = reviews.length > 0 ? sum / reviews.length : 0;%>
+            <h1><%=avg.toFixed(2) %></h1>
             <br>
             <p>Average Review<br>Rating</p>
         </div>
