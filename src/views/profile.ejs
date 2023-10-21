@@ -14,7 +14,7 @@
                 <% if (!userInfo.username) { %>
                     Unamed User
                 <% } else { %>
-                    <%= userInfo.username.charAt(0) %>
+                    <%= userInfo.username %>
                 <% } %>
             </h1>
             <p class="sub-heading"><%= userInfo.email %></p>
@@ -49,8 +49,6 @@
                 <div class="p-3"><a href="/courses/<%= course.courseCode %>" class="course-icon-full  d-flex align-items-center justify-content-center"><%= course.courseCode %></a></div>
             <% }} %>
         </div>
-       
-    
     </div>
     <div class="review-collection">
         <h2>Review Collection:</h2>
