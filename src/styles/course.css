@@ -78,3 +78,15 @@
     width: 900px;
     margin: auto;
 }
+
+.review-card {
+    width: 500px;
+}
+
+.review-cards {
+    margin-left: 30px;
+}
+
+.rating-stat {
+    margin-right: 30px;
+}
