@@ -32,9 +32,24 @@
         <div class="review-bar d-flex justify-content-between align-items-center">
             <h2>Reviews</h2>
             <div class="show-functionalities d-flex">
-                <div class="filter-by">Filter By:</div>
-                <span class="v-line" style="height: 30px;"></span>
-                <div class="sort-by">Sort By:</div>
+                <div class="filter-by px-2">
+                    Filter By:
+                    <select id="filterStars">
+                        <option value="0">All Stars</option>
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+                <div class="sort-by px-2">
+                    Sort By:
+                    <select id="sortReviews">
+                        <option value="latest">Latest</option>
+                        <option value="oldest">Oldest</option>
+                    </select>
+                </div>
             </div>
         </div>
         <hr><br>
@@ -163,6 +178,7 @@
             });
         }
     });
+
 </script>
 
 
