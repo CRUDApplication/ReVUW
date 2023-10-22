@@ -38,7 +38,7 @@
             </div>
         </div>
         <hr><br>
-        <div class="reviews d-flex">
+        <div class="reviews d-flex justify-content-between">
             <div class="rating-stat">
                 <div class="rating-progress">
                     <% const ratingMap = {
@@ -92,7 +92,10 @@
                                     <button type="submit" class="btn btn-primary" onclick="submitReview()">Post Review</button>
                                 </form>
                             </div>
+
+                        <!-- User's reivew -->
                         <% } else { %>
+                            <h4>Your Review:</h4>
                             <% userReviews.forEach((review, index) => { %>
                                 <%- include('components/review-card', { user: user, review: review, courseCode: course.courseCode, editable: true }) %>
                             <% }); %>
@@ -106,21 +109,17 @@
             </div>    
 
             <div class="review-cards">
-                <div class="row">
-                    <!-- Show other people's reviews -->
-                    <% if (user) { %>
-                        <% let otherReviews = reviews.filter(review => review.userId && review.userId._id && review.userId._id.toString() !== user._id.toString()); %>
-                        <% otherReviews.forEach((review, index) => { %>
-                            <%- include('components/review-card', { user: user, review: review, courseCode: course.courseCode, editable: false }) %>
-                        <% }); %>
-                    <!-- All reviews at one place-->
-                    <% } else { %>
-                        <% reviews.forEach((review, index) => { %>
-                            <%- include('components/review-card', { user: review.userId, review: review, courseCode: course.courseCode, editable: false }) %>
-                        <% }); %>
-                    <% } %>
-                    
-                </div>
+                <!-- Show other people's reviews -->
+                <% const isUserLoggedIn = !!user; %>
+                <% const targetReviews = isUserLoggedIn ? reviews.filter(review => review.userId && review.userId._id.toString() !== user._id.toString()) : reviews; %>
+                <% targetReviews.forEach((review, index) => { %>
+                    <%- include('components/review-card', { user: review.userId, review: review, courseCode: course.courseCode, editable: false }) %>
+                <% }); %>
+                
+                <% if (targetReviews.length === 0) { %>
+                    <p>Leave the first review for this course!</p>
+                <% } %>
+                
             </div>
         </div>
         
