@@ -44,7 +44,6 @@
     background: #184D3A;/*linear-gradient(119deg, #184D3A 0%, #3CAF95 100%); */
     border-radius: 16px;
     margin-right: 15px;
-    transition: 2s ease;
     font-weight: 300;
     cursor: pointer;
     text-decoration: none !important;
