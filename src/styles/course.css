@@ -38,7 +38,7 @@
 }
 
 .stars {
-    color: rgb(231, 198, 105);
+    color: rgb(214, 168, 81);
     user-select: none;
 }
 
@@ -116,4 +116,31 @@
 .action-icons a i:hover {
     padding: 3px;
     color: #184D3A !important;
+}
+
+.form-group {
+    width: 98%;
+    margin: auto;
+}
+
+.form-group label {
+    padding-right: 10px;
+}
+
+.star-rating .star {
+    font-size: 25px;
+    color: rgb(214, 168, 81);
+    cursor: pointer;
+}
+
+.form-group textarea {
+    background-color: #e9ecef;
+}
+
+.form-group textarea:focus {
+    background-color: #e9ecef;
+}
+
+.review-form button {
+    margin: 10px auto !important;
 }
