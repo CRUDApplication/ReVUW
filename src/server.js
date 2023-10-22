@@ -57,8 +57,26 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
+    // If user is not logged in, skip
+    if (!req.session) {
+        return next();
+    }
+
+    // If the user has a lastActive property and it's too old, destroy the session
+    if (req.session.lastActive && (Date.now() - req.session.lastActive > 1000 * 60 * 5)) { // 5 minute timeout
+        return req.session.destroy(err => {
+            if (err) {
+                return next(err);
+            }
+            res.redirect('/auth/signin');
+        });
+    }
+
+    // Update the lastActive time
+    req.session.lastActive = Date.now();
     next();
 });
+
 
 app.use(flash());
 // Define routes
