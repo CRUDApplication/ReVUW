@@ -107,11 +107,19 @@
 
             <div class="review-cards">
                 <div class="row">
-                    <h3 class="header-label">Other Reviews for <%= course.courseCode %></h3>
-                    <% let otherReviews = reviews.filter(review => review.userId && review.userId._id.toString() !== user._id.toString()); %>
-                    <% otherReviews.forEach((review, index) => { %>
-                        <%- include('components/review-card', { user: user, review: review, courseCode: course.courseCode, editable: false }) %>
-                    <% }); %>
+                    <!-- Show other people's reviews -->
+                    <% if (user) { %>
+                        <% let otherReviews = reviews.filter(review => review.userId && review.userId._id && review.userId._id.toString() !== user._id.toString()); %>
+                        <% otherReviews.forEach((review, index) => { %>
+                            <%- include('components/review-card', { user: user, review: review, courseCode: course.courseCode, editable: false }) %>
+                        <% }); %>
+                    <!-- All reviews at one place-->
+                    <% } else { %>
+                        <% reviews.forEach((review, index) => { %>
+                            <%- include('components/review-card', { user: review.userId, review: review, courseCode: course.courseCode, editable: false }) %>
+                        <% }); %>
+                    <% } %>
+                    
                 </div>
             </div>
         </div>
