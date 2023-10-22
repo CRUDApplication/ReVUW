@@ -39,6 +39,7 @@
 
 .stars {
     color: rgb(231, 198, 105);
+    user-select: none;
 }
 
 .course-title button {
@@ -80,13 +81,39 @@
 }
 
 .review-card {
-    width: 500px;
+    width: 98%;
+    margin: 30px auto;
+    padding-bottom: 20px;
 }
 
 .review-cards {
     margin-left: 30px;
+    width: 100%;
 }
 
 .rating-stat {
     margin-right: 30px;
+}
+
+.rating-progress {
+    margin-bottom: 30px;
+}
+
+.review-content {
+    margin-top: 10px;
+}
+
+.review-date {
+    font-size: 16px !important;
+    user-select: none;
+}
+
+.action-icons a i {
+    padding: 3px;
+    color: black !important;
+}
+
+.action-icons a i:hover {
+    padding: 3px;
+    color: #184D3A !important;
 }
