@@ -27,80 +27,102 @@
             <p><strong>Average Rating:&nbsp;&nbsp;</strong><span class="stars"> <%- include('./components/rating.ejs', { rating: avg.toFixed(1) }) %></span>(<%=avg.toFixed(1) %>)</p>
         </div>
     </div>
-
-    <!-- If user is authenticated, show form to post review -->
-    <% if(user) { %>
-        <h3 class="header-label">Post Your Review</h3>
-        <form id="reviewForm" action="/courses/<%= course.courseCode %>/review" method="POST">
-            <!-- Course Rating -->
-            <div class="form-group">
-                <label for="rating">Course Rating:</label>
-                <input type="number" class="form-control" name="rating" min="1" max="5" placeholder="(1-5)" required>
+    <br>
+    <div class="review-section">
+        <div class="review-bar d-flex justify-content-between align-items-center">
+            <h2>Reviews</h2>
+            <div class="show-functionalities d-flex">
+                <div class="filter-by">Filter By:</div>
+                <span class="v-line" style="height: 30px;"></span>
+                <div class="sort-by">Sort By:</div>
             </div>
-            
-            <!-- Review Content -->
-            <div class="form-group">
-                <textarea class="form-control" name="reviewContent" rows="4" placeholder="Write your review..." required></textarea>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary" onclick="submitReview()">Post Review</button>
-        </form>
-
-    <!-- Display user reviews in rows and columns -->
-    <div class="row">
-        <h3 class="header-label">Your Reviews</h3>
-        <% let userReviews = reviews.filter(review => review.userId && review.userId._id.toString() === user._id.toString()); %>
-        <% userReviews.forEach((review, index) => { %>
-            <%- include('components/review-card', { review: review, courseCode: course.courseCode, editable: true }) %>
-            <% if ((index + 1) % 3 === 0) { %>
-                </div><div class="row">
-            <% } %>
-        <% }); %>
-
-    </div>
-
-    <!-- Display other users' reviews -->
-    <div class="row">
-        <h3 class="header-label">Other Reviews for <%= course.courseCode %></h3>
-        <% let otherReviews = reviews.filter(review => review.userId && review.userId._id.toString() !== user._id.toString()); %>
-        <% otherReviews.forEach((review, index) => { %>
-            <%- include('components/review-card', { review: review, courseCode: course.courseCode, editable: false }) %>
-            <% if ((index + 1) % 3 === 0) { %>
-                </div><div class="row">
-            <% } %>
-        <% }); %>
-    </div>
-    <% } else { %>
-        <!-- Keep the form but disable the textarea, and handle button click with JS -->
-        <form id="reviewForm" action="/signin" method="GET">
-            <!-- Course Rating -->
-            <div class="form-group">
-                <label for="rating">Course Rating:</label>
-                <input type="number" class="form-control" name="rating" min="1" max="5" placeholder="(1-5)" disabled>
-            </div>
-            
-            <!-- Review Content -->
-            <div class="form-group">
-                <textarea class="form-control" name="reviewContent" rows="4" placeholder="Write your review..." disabled></textarea>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="button" class="btn btn-primary" onclick="redirectToSignIn()">Post Review</button>
-        </form>
-
-        <!-- Display all reviews in rows and columns -->
-        <div class="row">
-            <h3 class="header-label">Users' Reviews</h3>
-            <% reviews.forEach((review, index) => { %>
-                <!-- Display all reviews in one section -->
-                <%- include('components/review-card', { review: review, courseCode: course.courseCode, editable: false }) %>
-                <% if ((index + 1) % 3 === 0) { %>
-                    </div><div class="row">
-                <% } %>
-            <% }); %>
         </div>
-    <% } %>
+        <hr><br>
+        <div class="reviews d-flex">
+            <div class="rating-stat">
+                <div class="rating-progress">
+                    <% const ratingMap = {
+                        1: 0, 2: 0, 3: 0, 4: 0, 5: 0,
+                    }; %>
+                    
+                    <% reviews.forEach((review) => {
+                        let rating = review.rating;
+                        if (rating >= 1 && rating <= 5) {
+                            ratingMap[rating] += 1;
+                        }
+                    }); %>
+                    
+                    <% const percentageMap = {
+                        1: 0, 2: 0, 3: 0, 4: 0, 5: 0,
+                    }; %>
+                    
+                    <% for (let i = 5; i >= 1; i--) {
+                        percentageMap[i] = ((ratingMap[i] / reviews.length)*100).toFixed(0);
+                    %>
+                    <div class="progress-wrapper d-flex align-items-center">
+                        <p><%=i%>★ </p><span>&nbsp;&nbsp;</span>
+                        <span class="progress-width">
+                            <div class="progress" role="progressbar" aria-label="rating" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" style="width: <%= percentageMap[i] %>%"></div>
+                            </div>
+                        </span>
+                        <p class="rating-number">&nbsp;<%=ratingMap[i]%></p>
+                    </div>
+                    <% } %>
+                </div>
+                <div class="user-review">
+                    <% if (user) { %>
+                        <% let userReviews = reviews.filter(review => review.userId && review.userId._id.toString() === user._id.toString()); %>
+                        <% if (userReviews.length == 0) { %>
+                            <div class="review-form">
+                                <h3 class="header-label">Post Your Review</h3>
+                                <form id="reviewForm" action="/courses/<%= course.courseCode %>/review" method="POST">
+                                    <!-- Course Rating -->
+                                    <div class="form-group">
+                                        <label for="rating">Course Rating:</label>
+                                        <input type="number" class="form-control" name="rating" min="1" max="5" placeholder="(1-5)" required>
+                                    </div>
+                                    
+                                    <!-- Review Content -->
+                                    <div class="form-group">
+                                        <textarea class="form-control" name="reviewContent" rows="4" placeholder="Write your review..." required></textarea>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <button type="submit" class="btn btn-primary" onclick="submitReview()">Post Review</button>
+                                </form>
+                            </div>
+                        <% } else { %>
+                            <% userReviews.forEach((review, index) => { %>
+                                <%- include('components/review-card', { review: review, courseCode: course.courseCode, editable: true }) %>
+                                <% if ((index + 1) % 3 === 0) { %>
+                                    </div><div class="row">
+                                <% } %>
+                            <% }); %>
+                        <% } %>
+                    <% } else { %>
+                        <p>
+                            Sign in to leave a review.
+                        </p>
+                    <% } %>
+                </div>
+            </div>    
+
+            <div class="review-cards">
+                <div class="row">
+                    <h3 class="header-label">Other Reviews for <%= course.courseCode %></h3>
+                    <% let otherReviews = reviews.filter(review => review.userId && review.userId._id.toString() !== user._id.toString()); %>
+                    <% otherReviews.forEach((review, index) => { %>
+                        <%- include('components/review-card', { review: review, courseCode: course.courseCode, editable: false }) %>
+                        <% if ((index + 1) % 3 === 0) { %>
+                            </div><div class="row">
+                        <% } %>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+        
+    </div>
 
 </div>
 
