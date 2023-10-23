@@ -1,13 +1,6 @@
 <link rel="stylesheet" href="/styles/course.css">
 <div class="container">
     <h2 class="mt-5">Edit Review for <%= courseCode %></h2>
-
-    <!-- <form action="/courses/<%= courseCode %>/reviews/<%= review._id %>/edit" method="POST">
-        <label for="rating">Course Rating:</label>
-        <input class="form-group" type="number" name="rating" min="1" max="5" value="<%= review.rating %>" placeholder="(1-5)" required>
-        <textarea class="form-group" name="reviewContent" required><%= review.content %></textarea>
-        <button class="form-group" type="submit">Update Review</button>
-    </form> -->
     
     <form action="/courses/<%= courseCode %>/reviews/<%= review._id %>/edit" method="POST">
         <!-- Course Rating -->
@@ -26,7 +19,7 @@
         
         <!-- Review Content -->
         <div class="form-group">
-            <textarea class="form-control" id="reviewContent" name="reviewContent" rows="4" placeholder="Write your review..." style="max-height: 350px;" required></textarea>
+            <textarea class="form-control" id="reviewContent" name="reviewContent" rows="4" placeholder="Write your review..." style="max-height: 350px;" required><%= review.content %></textarea>
             <p id="charCount" class="mb-2 text-muted my-0">Characters remaining: <span id="count">400</span></p>
         </div>
     
