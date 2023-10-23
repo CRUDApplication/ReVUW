@@ -63,7 +63,8 @@ This also prevents from possible XSS attacks and NoSQL injection.
 ### URL redirection
 We handled URL redirects securely, especially in cases like redirecting users to their profiles. We ensured that users are not able to go to the profile through url link unless they are in an active session.
 
-# Postman Requests for testing the response time of each exposed API under varied workload
+## Test Scripts for the Server End 
+### Postman Requests for testing the response time of each exposed API under varied workload
 For this project, we are defining two categories for the workload:
 1. Low workload - 2 tests per request
 2. Moderate workload - 4 tests per request
@@ -71,7 +72,7 @@ For this project, we are defining two categories for the workload:
 For the low workload of each API, we are sending a GET request with the first two tests under the ***General GET requests for each exposed API*** section.
 For the moderate workload of each API, we are sending a GET request with all the three tests under the ***General GET requests for each exposed API*** section, along with the test under ***Specific GET request test scripts for each exposed API*** section. 
 
-## General GET request test scripts for each exposed API
+### General GET request test scripts for each exposed API
 ```txt
 pm.test("Response time is less than 500ms", function () {
     pm.expect(pm.response.responseTime).to.be.below(500);
@@ -84,36 +85,36 @@ pm.test("Content-Type is present", function () {
 });
 ```
 
-## Specific GET request test scripts for each exposed API (executed along with the general tests above)
-## Root route - https://revuw.website/
+### Specific GET request test scripts for API functions (executed along with the general tests above)
+1. Root route - https://revuw.website/
 ```txt
 pm.test("Body matches string", function () {
     pm.expect(pm.response.text()).to.include("We're dedicated to empowering students");
 });
 ```
 
-## All courses route - https://revuw.website/courses/allcourses
+1. All courses route - https://revuw.website/courses/allcourses
 ```txt
 pm.test("Body matches string", function () {
     pm.expect(pm.response.text()).to.include("ReVUW | Courses");
 });
 ```
-## Course route - https://revuw.website/courses/:courseCode (e.g., https://revuw.website/courses/SWEN303)
+1. Course route - https://revuw.website/courses/:courseCode (e.g., https://revuw.website/courses/SWEN303)
 ```txt
 pm.test("Body matches string", function () {
     pm.expect(pm.response.text()).to.include("Total Reviews");
 });
 ```
 
-## Auth route - https://revuw.website/auth/signin
+1. Auth route - https://revuw.website/auth/signin
 ```txt 
 pm.test("Body matches string", function () {
     pm.expect(pm.response.text()).to.include("Forgot Password?");
 });
 ```
-# Response Times
+### Response Times
 
-## Low Workload
+#### Low Workload
 1. Root route
     - Response time:  456 ms
 1. All courses route
@@ -123,7 +124,7 @@ pm.test("Body matches string", function () {
 1. Auth route
     - Response time:  268 ms
 
-## Moderate Workload
+#### Moderate Workload
 1. Root route
     - Response time:  465 ms
 1. All courses route
