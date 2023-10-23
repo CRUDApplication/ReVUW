@@ -79,7 +79,7 @@
                         <span class="progress-width">
                             <div class="progress" role="progressbar" aria-label="rating" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                                 <div class="progress-bar" style="width: <%= percentageMap[i] %>%"></div> <!-- this is not an error. the editor doesn't like if for some reason -->
-                            </div>
+                </div>
                         </span>
                         <p class="rating-number">&nbsp;<%=ratingMap[i]%></p>
                     </div>
@@ -92,6 +92,7 @@
                             <div class="review-form">
                                 <h3 class="header-label">Leave a review:</h3>
                                 <p><strong>Note:</strong> You can only write one review per course.</p>
+
                                 <form id="reviewForm" action="/courses/<%= course.courseCode %>/review" method="POST">
                                     <!-- Course Rating -->
                                     <div class="form-group d-flex align-items-end">
@@ -109,7 +110,8 @@
                                     
                                     <!-- Review Content -->
                                     <div class="form-group">
-                                        <textarea class="form-control" name="reviewContent" rows="4" placeholder="Write your review..." required style="max-height: 400px;"></textarea>
+                                        <textarea class="form-control" id="reviewContent" name="reviewContent" rows="4" placeholder="Write your review..." required style="max-height: 350px;"></textarea>
+                                        <p id="charCount" class="text-muted my-0">Characters remaining: <span id="count">400</span></p>
                                     </div>
 
                                     <!-- Submit Button -->
@@ -164,6 +166,27 @@
         window.location.href = `/auth/signin?origin=/courses/<%= course.courseCode %>`;
     }
 
+    document.addEventListener("DOMContentLoaded", function() {
+        const textarea = document.getElementById("reviewContent");
+        const charLimit = 400; // Change this to your desired character limit
+        const charCount = document.getElementById("count");
+
+        textarea.addEventListener("input", function() {
+            const remainingChars = charLimit - textarea.value.length;
+            charCount.textContent = remainingChars;
+            
+            if (remainingChars < 10) {
+            charCount.style.color = "red";
+            } else {
+            charCount.style.color = "";
+            }
+
+            if (remainingChars < 0) {
+            textarea.value = textarea.value.slice(0, charLimit);
+            charCount.textContent = 0;
+            }
+        });
+    });
 
     starRating.addEventListener('click', (e) => {
         if (e.target.classList.contains('star')) {
@@ -181,7 +204,6 @@
     });
 
 </script>
-
 
 <% if(user) { %>
     <script>
