@@ -1,0 +1,150 @@
+.card {
+    background-color: #184D3A;
+    height: 180px; 
+    border: none;
+    border-radius: 20px;
+}
+
+.card:hover {
+    background: linear-gradient(0deg, #184D3A 0%, #3CAF95 100%); /* Set the linear gradient on hover */
+}
+
+.card a {
+    text-decoration: none;
+    color: white;
+}
+
+.card p {
+    margin-bottom: 0;
+}
+
+#courseSearch {
+    padding: 10px;
+    border: 1px solid #bac4bd;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #fbfbfb;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#courseSearch:focus {
+    border-color: #3CAF95 !important;
+    box-shadow: 0 0 5px #3CAF95;
+}
+
+.stat-label p {
+    padding-right: 20px;
+    color: white;
+}
+
+.stars {
+    color: rgb(214, 168, 81);
+    user-select: none;
+}
+
+.course-title button {
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 25px;
+}
+
+.course-info {
+    background: linear-gradient(162deg, rgba(18,40,66,1) 0%, rgba(22,73,54,1) 42%, rgba(27,224,196,1) 100%);
+    color: white !important;
+    border: 1px solid #ccc;
+    border-radius: 10px; 
+    
+}
+
+.toggleSavedCourses {
+    color: white;
+}
+
+.progress-width {
+    width: 300px;
+}
+
+.progress-wrapper p {
+    margin: 0 !important;
+    font-size: 16px !important;
+}
+
+.rating-number {
+    text-align: center;
+    width: 30px;
+}
+
+.reviews {
+    width: 80%;
+    max-width: 900px;
+    margin: auto;
+}
+
+.review-card {
+    width: 98%;
+    margin: 30px auto;
+    padding-bottom: 20px;
+}
+
+.review-cards {
+    margin-left: 30px;
+    width: 56%;
+}
+
+.rating-stat {
+    margin-right: 30px;
+    width: 35%;
+}
+
+.rating-progress {
+    margin-bottom: 30px;
+}
+
+.review-content {
+    margin-top: 10px;
+    overflow-wrap: break-word;
+}
+
+.review-date {
+    font-size: 16px !important;
+    user-select: none;
+}
+
+.action-icons a i {
+    padding: 3px;
+    color: black !important;
+}
+
+.action-icons a i:hover {
+    padding: 3px;
+    color: #184D3A !important;
+}
+
+.form-group {
+    width: 98%;
+    margin: auto;
+}
+
+.form-group label {
+    padding-right: 10px;
+}
+
+.star-rating .star {
+    font-size: 25px;
+    color: rgb(214, 168, 81);
+    cursor: pointer;
+}
+
+.form-group textarea {
+    background-color: #e9ecef;
+}
+
+.form-group textarea:focus {
+    background-color: #e9ecef;
+}
+
+.review-form button {
+    margin: 10px auto !important;
+}
+

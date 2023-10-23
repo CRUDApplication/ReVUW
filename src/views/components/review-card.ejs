@@ -1,27 +1,47 @@
-<div class="col-md-4">
-    <div class="card mb-3" style="height: 120px;">
-        <div class="card-body" style="max-height: 120px; overflow-y: auto;">
-            <div class="d-flex align-items-center justify-content-between">
-                <!-- Display the course rating as stars -->
-                <div class="star-rating">
-                    <%- include('../components/rating', { rating: review.rating }) %>
+<div class="review-card">
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="card-info d-flex">
+            <span class="pfp d-flex align-items-center justify-content-center">
+                <% if (!user.username) { %>
+                    U
+                <% } else { %>
+                    <%= user.username.charAt(0) %>
+                <% } %>
+            </span>
+            <div class="card-title">
+                <strong>
+                    <% if (!user.username) { %>
+                        Unamed User
+                    <% } else { %>
+                        <%= user.username %>
+                    <% } %>
+                </strong>
+                <div class="stars"><%- include('../components/rating', { rating: review.rating }) %></div>
+            </div>
+        </div>
+        <div class="card-status align-items-end">
+            <!-- Display the edit and delete icons if editable is true -->
+            <% if (editable) { %>
+                <div class="d-flex action-icons">
+                    <a href="/courses/<%= course.courseCode %>/reviews/<%= review._id %>/edit" class="text-success">
+                        <i class="bi bi-pencil-square star-filled"></i>
+                    </a>
+                    <a href="#" data-id="<%= review._id %>" data-course="<%= course.courseCode %>" class="text-danger delete-review-btn">
+                        <i class="bi bi-trash3"></i>
+                    </a>
+                </div>
+            <% } else { %>
+                <div class="edit-status text-end">
                     <% if (review.isEdited) { %>
                         <span class="edited-label">Edited</span>
                     <% } %>
                 </div>
-                <!-- Display the edit and delete icons if editable is true -->
-                <% if (editable) { %>
-                    <div>
-                        <a href="/courses/<%= course.courseCode %>/reviews/<%= review._id %>/edit" class="text-success">
-                            <i class="bi bi-pencil-square star-filled"></i>
-                        </a>
-                        <a href="#" data-id="<%= review._id %>" data-course="<%= course.courseCode %>" class="text-danger delete-review-btn">
-                            <i class="bi bi-trash-fill"></i>
-                        </a>
-                    </div>
-                <% } %>
-            </div>
-            <p style="margin-bottom: 0;"><%= review.content %></p>
+                <div class="review-date"><%= new Date(review.datePosted).toLocaleString() %></div>
+            <% } %>
         </div>
     </div>
+    <div class="review-content">
+        <p><%= review.content %></p>
+    </div>
+    
 </div>

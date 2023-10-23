@@ -80,3 +80,14 @@ input, textarea {
     color: #fff;
     outline: none;
 }
+
+
+.pfp {
+    width: 53px; 
+    height: 53px; 
+    background: linear-gradient(119deg, #214b63 0%, #7ec1ca 100%); 
+    border-radius: 20px;
+    margin-right: 15px;
+    color: white;
+    user-select: none; 
+}
