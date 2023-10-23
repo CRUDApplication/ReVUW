@@ -8,7 +8,14 @@
                 <% if (user) { %>
                     <div class="d-flex justify-content-end align-items-center">
                         
-                        <a href="/auth/profile">
+                        <a href="/auth/profile" class="d-flex profile-name" style="text-decoration: none;">
+                            <p class="profile-icon" style="margin: 0 !important; text-decoration: none !important;">
+                                <% if (user.username) { %>
+                                    <%= user.username %>
+                                <%} else { %>
+                                    Unnamed User
+                                <% } %> &nbsp;
+                            </p>
                             <i class="profile-icon bi bi-person-fill"></i>
                         </a>
                         <span class="v-line"></span>
