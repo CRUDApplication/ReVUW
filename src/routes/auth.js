@@ -111,6 +111,27 @@ router.get('/profile', async (req, res)=> {
   }
 });
 
+// Chanfing user profile name
+router.post('/update-profile', async (req, res) => {
+  if (!req.user) {
+      return res.redirect('/');
+  }
+
+  const newName = req.body.newName;
+
+  try {
+      const user = await User.findOne({ email: req.user.email });
+      user.username = newName;
+      await user.save();
+
+      res.redirect('/auth/profile');
+  } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Failed to update profile', success: false });
+  }
+});
+
+
 
 //Signup
 router.get('/signup', (req, res) => {
