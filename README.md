@@ -133,7 +133,38 @@ pm.test("Body matches string", function () {
     - Response time:  299 ms
 1. Auth route
     - Response time:  294 ms
+## Authentication Test Ouput (Mocha)
+```sh
+Authentication Utility Functions
+    checkPasswordStrength
+      ✔ should return error for password less than 8 characters
+      ✔ should return error for password without mix of numbers, uppercase, and lowercase letters
+      ✔ should return null for strong password
+    isEmailUnique
+      ✔ should return false if email is already in use
+      ✔ should return true if email is not in use
+Error while checking email uniqueness: Error: DB Error
+      ✔ should throw error for any database error
 
+  Authentication Routes
+stub registered
+    Dummy Initialization Test
+      ✔ should wait for app to initialize
+    POST /signup
+      ✔ should render error message if password is weak
+      ✔ should render error message if email is already in use
+Connected to MongoDB successfully!
+      ✔ should redirect to returnTo or root after successful signup (1711ms)
+    POST /signin
+      ✔ should redirect to returnTo or root after successful signin (571ms)
+      ✔ should redirect to /auth/signin if authentication fails (496ms)
+    POST /logout
+      ✔ should redirect to root after logout (323ms)
+    GET /google
+      ✔ should redirect to google auth
+
+  14 passing (3s)
+```
 # Database Design
 
 ### Platform & Hosting:
