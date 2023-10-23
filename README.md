@@ -63,12 +63,6 @@ This also prevents from possible XSS attacks and NoSQL injection.
 ### URL redirection
 We handled URL redirects securely, especially in cases like redirecting users to their profiles. We ensured that users are not able to go to the profile through url link unless they are in an active session.
 
-## Test Scripts
-
-## 
-
-## Summary of Database Design
-
 # Postman Requests for testing the response time of each exposed API under varied workload
 For this project, we are defining two categories for the workload:
 1. Low workload - 2 tests per request
