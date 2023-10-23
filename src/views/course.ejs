@@ -7,7 +7,7 @@
         <div class="course-title d-flex justify-content-between align-items-start">
             <span>
                 <h2><%= course.title %></h2>
-                <p><strong>Course Code:</strong> <%= course.courseCode%></p>
+                <p><strong>Course Code:</strong> <%= course.courseCode%>, <strong>Lecturers:</strong> <%= course.lecturers %></p>
             </span>
             <!-- Display SavedCourse button -->
             <% if(user) { %>
