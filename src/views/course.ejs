@@ -78,7 +78,8 @@
                         <p><%=i%>★ </p><span>&nbsp;&nbsp;</span>
                         <span class="progress-width">
                             <div class="progress" role="progressbar" aria-label="rating" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                <div class="progress-bar" style="width: <%= percentageMap[i] %>%"></div> <!-- this is not an error. the editor doesn't like if for some reason --> <!-- this is not an error. the editor doesn't like if for some reason -->
+                                <div class="progress-bar" style="width: <%= percentageMap[i] %>%"></div> <!-- this is not an error. the editor doesn't like if for some reason -->
+
                             </div>
                         </span>
                         <p class="rating-number">&nbsp;<%=ratingMap[i]%></p>
@@ -92,6 +93,7 @@
                             <div class="review-form">
                                 <h3 class="header-label">Leave a review:</h3>
                                 <p><strong>Note:</strong> You can only write one review per course.</p>
+
                                 <form id="reviewForm" action="/courses/<%= course.courseCode %>/review" method="POST">
                                     <!-- Course Rating -->
                                     <div class="form-group d-flex align-items-end">
@@ -186,6 +188,23 @@
             }
         });
     });
+
+    starRating.addEventListener('click', (e) => {
+        if (e.target.classList.contains('star')) {
+            const rating = e.target.getAttribute('data-rating');
+            selectedRating.value = rating;
+            // Add visual feedback (e.g., highlight the selected star)
+            starRating.querySelectorAll('.star').forEach((star, index) => {
+                if (index < rating) {
+                    star.textContent = '★'; // Show a filled star
+                } else {
+                    star.textContent = '☆'; // Show an empty star
+                }
+            });
+        }
+    });
+
+</script>
 
     starRating.addEventListener('click', (e) => {
         if (e.target.classList.contains('star')) {

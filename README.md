@@ -100,12 +100,15 @@ pm.test("Body matches string", function () {
 ```
 
 2. All courses route - https://revuw.website/courses/allcourses
+
 ```txt
 pm.test("Body matches string", function () {
     pm.expect(pm.response.text()).to.include("ReVUW | Courses");
 });
 ```
+
 3. Course route - https://revuw.website/courses/:courseCode (e.g., https://revuw.website/courses/SWEN303)
+
 ```txt
 pm.test("Body matches string", function () {
     pm.expect(pm.response.text()).to.include("Total Reviews");
@@ -113,6 +116,7 @@ pm.test("Body matches string", function () {
 ```
 
 4. Auth route - https://revuw.website/auth/signin
+
 ```txt 
 pm.test("Body matches string", function () {
     pm.expect(pm.response.text()).to.include("Forgot Password?");
@@ -190,3 +194,4 @@ For each collection, except the sessions collection, we have set up a correspond
 
 ### Design Choices:
 We had the option to nest reviews within the courses, which means each course document would contain its reviews. This could have made it easier to retrieve the reviews for a course, but we also wanted users to view all of their own reviews on their profile. This requirement meant having the separate review and course collections, with reviews having a user ref makes more sense.
+
