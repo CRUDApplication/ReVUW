@@ -3,6 +3,7 @@
     height: 180px; 
     border: none;
     border-radius: 20px;
+    overflow: hidden;
 }
 
 .card:hover {

@@ -118,14 +118,10 @@ app.get('/', async (req, res) => {
     }
 });
 
-// Add routes for About Us, Contact, and Privacy Policy
+// Add routes for the footer pages
 app.get('/about', (req, res) => {
     
     res.render('about', { title: 'ReVUW | About Us', user: req.user });
-});
-
-app.get('/contact', (req, res) => {
-    res.render('contact', { title: 'ReVUW | Contact', user: req.user });
 });
 
 app.get('/privacy', (req, res) => {

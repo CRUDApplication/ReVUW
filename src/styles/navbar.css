@@ -84,7 +84,7 @@ nav {
     height: 40px;
 }
 
-.profile-icon {
+.profile-name {
     color: white;
     cursor: pointer;
     font-size: 20px;
@@ -92,6 +92,6 @@ nav {
     transition: 0.3s ease;
 }
 
-.profile-icon:hover {
+.profile-name:hover {
     color: rgb(88, 141, 123);
 }

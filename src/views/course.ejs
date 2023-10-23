@@ -78,7 +78,7 @@
                         <p><%=i%>★ </p><span>&nbsp;&nbsp;</span>
                         <span class="progress-width">
                             <div class="progress" role="progressbar" aria-label="rating" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                <div class="progress-bar" style="width: <%= percentageMap[i] %>%"></div> <!-- this is not an error. the editor doesn't like if for some reason -->
+                                <div class="progress-bar" style="width: <%= percentageMap[i] %>%"></div> <!-- this is not an error. the editor doesn't like if for some reason --> <!-- this is not an error. the editor doesn't like if for some reason -->
                             </div>
                         </span>
                         <p class="rating-number">&nbsp;<%=ratingMap[i]%></p>
@@ -91,6 +91,7 @@
                         <% if (userReviews.length == 0) { %>
                             <div class="review-form">
                                 <h3 class="header-label">Leave a review:</h3>
+                                <p><strong>Note:</strong> You can only write one review per course.</p>
                                 <form id="reviewForm" action="/courses/<%= course.courseCode %>/review" method="POST">
                                     <!-- Course Rating -->
                                     <div class="form-group d-flex align-items-end">
@@ -108,7 +109,7 @@
                                     
                                     <!-- Review Content -->
                                     <div class="form-group">
-                                        <textarea class="form-control" name="reviewContent" placeholder="Write your review..." required></textarea>
+                                        <textarea class="form-control" name="reviewContent" rows="4" placeholder="Write your review..." required style="max-height: 400px;"></textarea>
                                     </div>
 
                                     <!-- Submit Button -->

@@ -144,8 +144,7 @@ router.post('/signup', async (req, res) => {
           if (err) {
             return next(err);
           }
-          delete req.session.returnTo; // Cleanup session
-          res.redirect('/auth/signin');
+           res.redirect(req.session.returnTo || '/');
         });
       }
     } catch (error) {
