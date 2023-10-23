@@ -206,24 +206,6 @@
 
 </script>
 
-    starRating.addEventListener('click', (e) => {
-        if (e.target.classList.contains('star')) {
-            const rating = e.target.getAttribute('data-rating');
-            selectedRating.value = rating;
-            // Add visual feedback (e.g., highlight the selected star)
-            starRating.querySelectorAll('.star').forEach((star, index) => {
-                if (index < rating) {
-                    star.textContent = '★'; // Show a filled star
-                } else {
-                    star.textContent = '☆'; // Show an empty star
-                }
-            });
-        }
-    });
-
-</script>
-
-
 <% if(user) { %>
     <script>
         const toggleSavedCourseButtons = document.querySelectorAll('.toggleSavedCourses');
