@@ -91,6 +91,7 @@
                         <% if (userReviews.length == 0) { %>
                             <div class="review-form">
                                 <h3 class="header-label">Leave a review:</h3>
+                                <p><strong>Note:</strong> You can only write one review per course.</p>
                                 <form id="reviewForm" action="/courses/<%= course.courseCode %>/review" method="POST">
                                     <!-- Course Rating -->
                                     <div class="form-group d-flex align-items-end">
