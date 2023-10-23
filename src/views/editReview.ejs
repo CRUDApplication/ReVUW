@@ -1,8 +1,78 @@
-<h2>Edit Review for <%= courseCode %></h2>
+<link rel="stylesheet" href="/styles/course.css">
+<div class="container">
+    <h2 class="mt-5">Edit Review for <%= courseCode %></h2>
 
-<form action="/courses/<%= courseCode %>/reviews/<%= review._id %>/edit" method="POST">
-    <label for="rating">Course Rating:</label>
-    <input type="number" name="rating" min="1" max="5" value="<%= review.rating %>" placeholder="(1-5)" required>
-    <textarea name="reviewContent" required><%= review.content %></textarea>
-    <button type="submit">Update Review</button>
-</form>
+    <!-- <form action="/courses/<%= courseCode %>/reviews/<%= review._id %>/edit" method="POST">
+        <label for="rating">Course Rating:</label>
+        <input class="form-group" type="number" name="rating" min="1" max="5" value="<%= review.rating %>" placeholder="(1-5)" required>
+        <textarea class="form-group" name="reviewContent" required><%= review.content %></textarea>
+        <button class="form-group" type="submit">Update Review</button>
+    </form> -->
+    
+    <form action="/courses/<%= courseCode %>/reviews/<%= review._id %>/edit" method="POST">
+        <!-- Course Rating -->
+        <div class="form-group d-flex align-items-end">
+            <label for="rating">Rate:</label>
+            <div class="star-rating">
+                <span class="star" data-rating="1">☆</span>
+                <span class="star" data-rating="2">☆</span>
+                <span class="star" data-rating="3">☆</span>
+                <span class="star" data-rating="4">☆</span>
+                <span class="star" data-rating="5">☆</span>
+            </div>
+            <input type="hidden" class="form-control" name="rating" id="selectedRating" required>
+            <!-- <input type="number" class="form-control" name="rating" min="1" max="5" placeholder="(1-5)" required> -->
+        </div>
+        
+        <!-- Review Content -->
+        <div class="form-group">
+            <textarea class="form-control" id="reviewContent" name="reviewContent" rows="4" placeholder="Write your review..." style="max-height: 350px;" required></textarea>
+            <p id="charCount" class="mb-2 text-muted my-0">Characters remaining: <span id="count">400</span></p>
+        </div>
+    
+        <!-- Submit Button -->
+        <button type="submit" class="form-group btn btn-primary" onclick="submitReview()">Update Review</button>
+    </form>
+
+</div>
+
+<script>
+    const starRating = document.querySelector('.star-rating');
+    const selectedRating = document.getElementById('selectedRating');
+    document.addEventListener("DOMContentLoaded", function() {
+        const textarea = document.getElementById("reviewContent");
+        const charLimit = 400; // Change this to your desired character limit
+        const charCount = document.getElementById("count");
+
+        textarea.addEventListener("input", function() {
+            const remainingChars = charLimit - textarea.value.length;
+            charCount.textContent = remainingChars;
+            
+            if (remainingChars < 10) {
+            charCount.style.color = "red";
+            } else {
+            charCount.style.color = "";
+            }
+
+            if (remainingChars < 0) {
+            textarea.value = textarea.value.slice(0, charLimit);
+            charCount.textContent = 0;
+            }
+        });
+    });
+
+    starRating.addEventListener('click', (e) => {
+        if (e.target.classList.contains('star')) {
+            const rating = e.target.getAttribute('data-rating');
+            selectedRating.value = rating;
+            // Add visual feedback (e.g., highlight the selected star)
+            starRating.querySelectorAll('.star').forEach((star, index) => {
+                if (index < rating) {
+                    star.textContent = '★'; // Show a filled star
+                } else {
+                    star.textContent = '☆'; // Show an empty star
+                }
+            });
+        }
+    });
+</script>
