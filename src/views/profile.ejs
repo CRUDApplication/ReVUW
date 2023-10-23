@@ -7,7 +7,7 @@
                 U
             <% } else { %>
                 <%= userInfo.username.charAt(0) %>
-            <% } %>
+            <% } %>           
         </span>
         <span class="user-info">
             <h1>
@@ -16,10 +16,22 @@
                 <% } else { %>
                     <%= userInfo.username %>
                 <% } %>
+                <button id="editNameBtn" class="btn btn-link">
+                    <i class="bi bi-pencil-square star-filled bi-2x"></i>
+                </button>
             </h1>
             <p class="sub-heading"><%= userInfo.email %></p>
         </span>
     </div>
+
+    <form action="/auth/update-profile" method="post" class="my-3 update-username" id="editNameForm" style="display: none;">
+        <div class="form-group update-username">
+            <label for="newName">Update Your Name</label>
+            <input type="text" id="newName" name="newName" class="form-control" placeholder="New Name" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Name</button>
+    </form>
+
     <div class="stats d-flex justify-content-between mx-auto mb-5">
         <div class="stat-box d-flex align-items-center justify-content-center flex-column">
             <h1><%=savedCourses.length%></h1>
@@ -76,3 +88,12 @@
         <% }} %>
     </div>
 </div>
+
+<script>
+    const editNameBtn = document.getElementById('editNameBtn');
+    const editNameForm = document.getElementById('editNameForm');
+    editNameBtn.addEventListener('click', () => {
+        editNameBtn.style.display = 'none';
+        editNameForm.style.display = 'block';
+    });
+</script>
