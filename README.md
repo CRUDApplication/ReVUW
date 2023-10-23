@@ -42,9 +42,30 @@ POST /logout - Logs out the currently logged-in user.
 GET /google - Initiates the Google OAuth authentication process.
 GET /google/callback - Handles the callback from Google OAuth and processes the user authentication.
 
-## Fault Tolerance/ Error Handling
+## Fault Tolerance/ Error Handling Features
+
+### Signup/ Login
+We ensured the secure authentication of users during signup and login processes. When user provides an invalid credential, we process these inputs and show a clear feedback message for failures.
+
+We also enforced password complexity to protect against easy-to-guess passwords.
+
+### Session error prevention 
+This feature aims to prevent session-related errors and vulnerabilities, including broken authentication and session management, and session hijacking.
+
+We implemented a session timeout where 5-mins of inactivity will log you out of the website. The session itself has a one hour lifetime for additional security.
+
+
+### Input validation and sanitization
+To ensure that all user inputs are properly validated and sanitized to prevent security vulnerabilities, we used models and ejs escape characters. 
+
+This also prevents from possible XSS attacks and NoSQL injection.
+
+### URL redirection
+We handled URL redirects securely, especially in cases like redirecting users to their profiles. We ensured that users are not able to go to the profile through url link unless they are in an active session.
 
 ## Test Scripts
+
+## 
 
 ## Summary of Database Design
 
