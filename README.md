@@ -2,45 +2,52 @@
 ## Website URL
 https://revuw.website
 
+## Internal APIs (API gateway or gRPC server)
+Note: The API gateway and gRPC server are not exposed.
+
+- GET /allcourses - Retrieves all courses.
+- GET /:courseCode - Retrieves details for a specific course based on its code.
+
+- rpc GetCourse (CourseRequest) returns (CourseResponse); 
+- rpc GetAllCourses (google.protobuf.Empty) returns (CoursesResponse);
+
 ## List of Exposed APIs
-### Course Routes:
-GET /allcourses - Retrieves all courses.
-GET /:courseCode - Retrieves details for a specific course based on its code.
+Note: These routes will return the HTML.  
 
 ### Review Routes:
-POST /:courseCode/review - Posts a review for a specific course. 
-GET /:courseCode/reviews/:reviewId/edit - Retrieves the edit form for a specific review of a course.
-POST /:courseCode/reviews/:reviewId/edit - Updates the review for a specific course.
-DELETE /:courseCode/reviews/:reviewId - Deletes a specific review for a course.
+- POST /:courseCode/review - Posts a review for a specific course. 
+- GET /:courseCode/reviews/:reviewId/edit - Retrieves the edit form for a specific review of a course.
+- POST /:courseCode/reviews/:reviewId/edit - Updates the review for a specific course.
+- DELETE /:courseCode/reviews/:reviewId - Deletes a specific review for a course.
 
 ### Saved Course Routes:
-POST /:courseCode/toggleSavedCourses - Adds or removes a course from a user's saved courses list.
-GET /:courseCode/isSavedCourse - Checks if a course is in the user's saved courses list and returns a boolean.
-GET /allSavedCourses - Retrieves all saved courses for a user.
+- POST /:courseCode/toggleSavedCourses - Adds or removes a course from a user's saved courses list.
+- GET /:courseCode/isSavedCourse - Checks if a course is in the user's saved courses list and returns a boolean.
+- GET /allSavedCourses - Retrieves all saved courses for a user.
 
 ### Password Reset Routes:
-GET /reset-password/:token - Accesses the password reset page using a specific token.
-GET /reset-password - Displays the password reset page.
-POST /reset-password - Processes the password reset request and updates the user's password.
-POST /request-password-reset - Sends a password reset email to the user.
+- GET /reset-password/:token - Accesses the password reset page using a specific token.
+- GET /reset-password - Displays the password reset page.
+- POST /reset-password - Processes the password reset request and updates the user's password.
+- POST /request-password-reset - Sends a password reset email to the user.
 
 ### Profile Route:
-GET /profile - Retrieves the profile data of the logged-in user.
+- GET /profile - Retrieves the profile data of the logged-in user.
 
 ### Signup Routes:
-GET /signup - Displays the user registration page.
-POST /signup - Processes the user registration request.
+- GET /signup - Displays the user registration page.
+- POST /signup - Processes the user registration request.
 
 ### Signin Routes:
-GET /signin - Displays the user login page.
-POST /signin - Processes the user login request.
+- GET /signin - Displays the user login page.
+- POST /signin - Processes the user login request.
 
 ### Logout Route:
-POST /logout - Logs out the currently logged-in user.
+- POST /logout - Logs out the currently logged-in user.
 
 ### Google OAuth Routes:
-GET /google - Initiates the Google OAuth authentication process.
-GET /google/callback - Handles the callback from Google OAuth and processes the user authentication.
+- GET /google - Initiates the Google OAuth authentication process.
+- GET /google/callback - Handles the callback from Google OAuth and processes the user authentication.
 
 ## Fault Tolerance/ Error Handling Features
 
@@ -53,7 +60,6 @@ We also enforced password complexity to protect against easy-to-guess passwords.
 This feature aims to prevent session-related errors and vulnerabilities, including broken authentication and session management, and session hijacking.
 
 We implemented a session timeout where 5-mins of inactivity will log you out of the website. The session itself has a one hour lifetime for additional security.
-
 
 ### Input validation and sanitization
 To ensure that all user inputs are properly validated and sanitized to prevent security vulnerabilities, we used models and ejs escape characters. 
@@ -93,20 +99,24 @@ pm.test("Body matches string", function () {
 });
 ```
 
-1. All courses route - https://revuw.website/courses/allcourses
+2. All courses route - https://revuw.website/courses/allcourses
+
 ```txt
 pm.test("Body matches string", function () {
     pm.expect(pm.response.text()).to.include("ReVUW | Courses");
 });
 ```
-1. Course route - https://revuw.website/courses/:courseCode (e.g., https://revuw.website/courses/SWEN303)
+
+3. Course route - https://revuw.website/courses/:courseCode (e.g., https://revuw.website/courses/SWEN303)
+
 ```txt
 pm.test("Body matches string", function () {
     pm.expect(pm.response.text()).to.include("Total Reviews");
 });
 ```
 
-1. Auth route - https://revuw.website/auth/signin
+4. Auth route - https://revuw.website/auth/signin
+
 ```txt 
 pm.test("Body matches string", function () {
     pm.expect(pm.response.text()).to.include("Forgot Password?");
@@ -183,4 +193,5 @@ Our database is organized into five collections:
 For each collection, except the sessions collection, we have set up a corresponding Model using Mongoose schemas. These models make it easier to interact with our database directly from our code. We're using Mongoose as our data access layer to interact with MongoDB.
 
 ### Design Choices:
-We had the option to nest reviews within the courses, which means each course document would contain its reviews. This could have made it easier to retrieve the reviews for a course, but we also wanted users to view all of their own reviews on their profile. This requirement made having the separate review and course collections, with reviews having a user ref, make more sense.
+We had the option to nest reviews within the courses, which means each course document would contain its reviews. This could have made it easier to retrieve the reviews for a course, but we also wanted users to view all of their own reviews on their profile. This requirement meant having the separate review and course collections, with reviews having a user ref makes more sense.
+

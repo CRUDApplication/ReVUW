@@ -8,7 +8,7 @@
                     Our community of VUW students collaborates to help you navigate your academic journey effectively.</p>
                 <p class="m-0">Discover, Share, and Elevate Your VUW Course Experience.</p>
             </div>
-            <button class="btn btn-primary btn-block mt-2" onclick="window.location.href='/courses/allcourses';">Write a review!</button>
+            <button id="write-review" class="btn btn-primary btn-block mt-2" onclick="window.location.href='/courses/allcourses';">Write a review!</button>
         </div>
     </div>
     <div class="recom-section my-10">
@@ -22,3 +22,16 @@
     
 </div>
 
+<script>
+    const button = document.getElementById('write-review');
+    function updatePosition() {
+        if (window.innerWidth < 1000) {
+            button.style.position = 'static'; 
+        } else {
+            button.style.position = 'absolute';
+        }
+    }
+
+    window.addEventListener('resize', updatePosition);
+    updatePosition();
+</script>

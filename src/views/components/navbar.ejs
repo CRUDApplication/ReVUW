@@ -2,16 +2,20 @@
 
 <nav class="navbar border-bottom border-body" data-bs-theme="dark">
     <div class="container">
-        <div class="row align-item-center p-2">
-            <div class="col-2 text-left my-auto">
-                <button id="menu"> <i class="bi bi-list"></i></button>
-            </div>
-            <div id="title" class="col-8 text-center my-auto"><a href="/">ReVUW</a></div>
-            <div class="col-2 text-end my-auto text-white">
+        <div class="row align-item-center justify-content-between p-2">
+            <div id="title" class="col-8 text-left my-auto"><a href="/">ReVUW</a></div>
+            <div class="col-4 text-end my-auto text-white">
                 <% if (user) { %>
                     <div class="d-flex justify-content-end align-items-center">
                         
-                        <a href="/auth/profile">
+                        <a href="/auth/profile" class="d-flex profile-name" style="text-decoration: none;">
+                            <p class="profile-icon" style="margin: 0 !important; text-decoration: none !important;">
+                                <% if (user.username) { %>
+                                    <%= user.username %>
+                                <%} else { %>
+                                    Unnamed User
+                                <% } %> &nbsp;
+                            </p>
                             <i class="profile-icon bi bi-person-fill"></i>
                         </a>
                         <span class="v-line"></span>
