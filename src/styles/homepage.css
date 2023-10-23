@@ -33,7 +33,8 @@
 
 .course-container {
     position: relative;
-    width: 900px;
+    width: 80%;
+    max-width: 900px;
     margin: 50px auto;
 }
 

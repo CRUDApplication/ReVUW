@@ -76,7 +76,8 @@
 }
 
 .reviews {
-    width: 900px;
+    width: 80%;
+    max-width: 900px;
     margin: auto;
 }
 
@@ -88,11 +89,12 @@
 
 .review-cards {
     margin-left: 30px;
-    width: 100%;
+    width: 56%;
 }
 
 .rating-stat {
     margin-right: 30px;
+    width: 35%;
 }
 
 .rating-progress {
@@ -101,6 +103,7 @@
 
 .review-content {
     margin-top: 10px;
+    overflow-wrap: break-word;
 }
 
 .review-date {
@@ -144,3 +147,4 @@
 .review-form button {
     margin: 10px auto !important;
 }
+

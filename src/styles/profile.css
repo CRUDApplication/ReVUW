@@ -1,5 +1,6 @@
 .profile-wrapper {
-    width: 900px;
+    width: 80%;
+    max-width: 900px;
 }
 
 .user-info {
@@ -12,7 +13,8 @@
 }
 
 .stats {
-    width: 800px;
+    width: 75%;
+    max-width: 800px;
 }
 
 .stat-box {
